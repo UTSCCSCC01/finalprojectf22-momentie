@@ -6,5 +6,5 @@
 | Xu Zheng |  zheng317  | zheng317 | barry.zheng@mail.utoronto.ca |     647-612-8777    |    1coinSeven    | <br />
 | Haoming Hu |  UTORID  | Student ID |            Email            | Best Way to Contact | Discord Username | <br />
 | Yawen Zhang |  UTORID  | Student ID |            Email            | Best Way to Contact | Discord Username | <br />
-| Yuhan Pan |  UTORID  | Student ID |            Email            | Best Way to Contact | Discord Username | <br />
+| Yuhan Pan |  panyuha2  | 1006845808 | evelyn.pan@mail.utoronto.ca |    778-892-9551   | hahahafafafa | <br />
 **Discord Chat/Server Invite :** https://discord.gg/rsNJsHWVsK
