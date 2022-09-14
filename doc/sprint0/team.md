@@ -7,5 +7,5 @@
 | Xu Zheng |  zheng317  | 1006330132 | barry.zheng@mail.utoronto.ca |     647-612-8777    | 1coinSeven#3701 | <br />
 | Haoming Hu |  huhaomi2  | 1006763986 | haomi.hu@mail.utoronto.ca | 647-867-6138 | HH.jpg#9254 | <br />
 | Yawen Zhang |  zhan9153  | 1006739772 |weng.zhang@mail.utoronto.ca|     437-984-8877    | Oliiiiv#7447| <br />
-| Yuhan Pan |  panyuha2  | 1006845808 | evelyn.pan@mail.utoronto.ca |    778-892-9551   | hahahafafafa | <br />
+| Yuhan Pan |  panyuha2  | 1006845808 | evelyn.pan@mail.utoronto.ca |    778-892-9551   | hahahafafafa#7789 | <br />
 **Discord Chat/Server Invite :** https://discord.gg/rsNJsHWVsK
