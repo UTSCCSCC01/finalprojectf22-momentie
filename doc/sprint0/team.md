@@ -2,7 +2,7 @@
 | Full Name | UTORID | Student ID | Email | Best Way to Contact | Discord Username |  <br />
 |-----------|--------|------------|-------|---------------------|------------------|  <br />
 | Jerry Han | hanmiao1 | 1007423566 | jerrym.han@mail.utoronto.ca |     647-572-7852    |    XiaoKeNan     |   <br />
-| Shaopeng Lin |  UTORID  | Student ID |            Email            | Best Way to Contact | Discord Username | <br />
+| Shaopeng Lin |  linshaop  | 1006027452 | shaopeng.lin@mail.utoronto.ca |   825-986-0658   | Sp(Chris)#8995 | <br />
 | Xuen Shen | shenxuen | 1004331984 | xuen.shen@mail.utoronto.ca |   416-835-7868   | iamocdpatient#1419 | <br />
 | Xu Zheng |  zheng317  | 1006330132 | barry.zheng@mail.utoronto.ca |   647-612-8777   | 1coinSeven#3701 | <br />
 | Haoming Hu |  huhaomi2  | 1006763986 | haomi.hu@mail.utoronto.ca |   647-867-6138   | HH.jpg#9254 | <br />
