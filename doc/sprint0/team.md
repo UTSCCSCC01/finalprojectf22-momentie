@@ -1,5 +1,6 @@
 # finalprojectf22-momentie
-| Full Name |  UTORID  | Student ID |            Email            | Best Way to Contact | Discord Username |  <br />
+| Full Name | UTORID | Student ID | Email | Best Way to Contact | Discord Username |  <br />
+|-----------|--------|------------|-------|---------------------|------------------|  <br />
 | Jerry Han | hanmiao1 | 1007423566 | jerrym.han@mail.utoronto.ca |     647-572-7852    |    XiaoKeNan     |   <br />
 | Shaopeng Lin |  UTORID  | Student ID |            Email            | Best Way to Contact | Discord Username | <br />
 | Xuen Shen | shenxuen | 1004331984 | xuen.shen@mail.utoronto.ca | 416-835-7868 | iamocdpatient#1419 | <br />
