@@ -23,5 +23,8 @@ How did you define priority and/or points of user stories? How many rounds of vo
 
 How frequently did you meet?
  - appoximately 4 times per week, with 3 standmeetings(15min long) and one 2hour long meeting.
- - What lessons should you take forward to the next phase?
- - We need to start working on
+ 
+What lessons should you take forward to the next phase?
+ - Start making pre-meeting notes so we do not lose track of topics.
+ - Certain topics does not need to be discussed in group, as they can be distributed to specific group/individual(backend specific, frontend specific, etc.).
+
