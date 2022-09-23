@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose, { PassportLocalSchema } from 'mongoose';
 import bodyParser from 'body-parser';
 import passport from 'passport';
+import cors from 'cors'
 import { Strategy as LocalStrategy } from 'passport-local';
 import expressSession from 'express-session';
 import passportLocalMongoose from 'passport-local-mongoose';
@@ -21,6 +22,7 @@ User.plugin(passportLocalMongoose);
 const UserModel = mongoose.model('userData', User);
 
 const app = express();
+app.use(cors());
 app.use(expressSession({
     name: sessionName,
     secret: 'Momentie',
