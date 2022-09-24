@@ -2,7 +2,7 @@
 
 ## LinkedIn
 
- - LinkedIn is a global platform for job seeking and career development, where job seekers post their CVs and recruiter post their recruitment. LinkedIn works toward both organizations and individuals.
+ - LinkedIn is a global platform for job seeking and career development, where job seekers post their CVs and recruiter post their recruitment. LinkedIn works for both organizations and individuals.
 
 Differentiating factor
 
@@ -10,7 +10,7 @@ Differentiating factor
 
 Why so?
 
- - LinkedIn’s position is to serves as a job seeking platform, and its target customers are job seeker, not advice seeker. Of course they can add a career advice section to their platform, but that will weakens their primary target.
+ - LinkedIn’s position is to serve as a job-seeking platform, and its target customers are job seekers, not advice seekers. Of course, they can add a career advice section to their platform, but that will weaken their primary target.
 
 
 ## Wix
@@ -23,7 +23,7 @@ Differentiating factor
 
 Why so?
 
- - Wix’s main purpose is to serve as a blog website, and it’s main target group is those who are want to develop their web presence creatively. career experience is just a small part shared by the users, if they choose to narrow down to career advice only, they will loose the primary market.
+ - Wix’s main purpose is to serve as a blog website, and its main target group is those who want to develop their web presence creatively. career experience is just a small part shared by the users, if they choose to narrow it down to career advice only, they will lose the primary market.
 
 
 ## Quora
@@ -37,7 +37,7 @@ Differentiating factor
 
 Why so?
 
- - Quora is a platform aimed for asking question and providing answers. same as aboe, career advice is only a small part of its content, they will loose their primary market if they choose to only focus on career development. 
+ - Quora is a platform aimed at asking a question and providing answers. same to above, career advice is only a small part of its content, it will lose its primary market if they choose to only focus on career development. 
 
 
 # Our Product 
@@ -54,4 +54,4 @@ Interactive and connective
 
 Personalized timeline
 
- - A glance of your entire life – an efficient way of learning: by making a timeline on the profile, professionals can better address their points and advice. Also, career seekers can get an overview of that without the need to ask repetitive questions to professionals. 
+ - A glance at your entire life – an efficient way of learning: by making a timeline on the profile, professionals can better address their points and advice. Also, career seekers can get an overview of that without the need to ask repetitive questions to professionals. 
