@@ -31,7 +31,7 @@ Build a social media website that centralizes information on career paths and ad
 
 ### find potential candidates
 
- - A specialized and skilled recruiter is looking for candidates online. She’s looking for highly-skilled and executive-level candidates, however, she found that it’s hard to narrow down her search. She wishes there exists a platform that facilitates her recruitment. 
+ - A specialized and skilled recruiter (Lora Cerulli Totilois) is looking for candidates online. She’s looking for highly-skilled and executive-level candidates, however, she found that it’s hard to narrow down her search. She wishes there exists a platform that facilitates her recruitment. 
 
 
 ## Key Principles:
