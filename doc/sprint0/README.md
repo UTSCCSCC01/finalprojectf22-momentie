@@ -46,13 +46,13 @@ individual feature/bugfix branch contains an exclusive developing feature/ a bug
 
 ### What do you name your branches?
 Feature Branches:
-Features: 
-Branch name should follow [Area of focus]-[short description]-[JIRA Issue]. An example would be: “frontend-add-profile-picture-JIRA-3000”
-Should not be branched from main
-Bug Fixes:
-Branch name should follow bugfix [Area of focus]-[short description]-[JIRA Issue]. An example would be bugfix-backend-http-request-blocked-JIRA3001
-Should not be branched from main
-Feature branch of feature branches: If you are not the only one working on this branch, communicate with your partners.
+- Features:
+	- Branch name should follow [Area of focus]-[short description]-[JIRA Issue]. An example would be: “frontend-add-profile-picture-JIRA-3000”
+	- Should not be branched from main
+- Bug Fixes:<br>
+	- Branch name should follow bugfix [Area of focus]-[short description]-[JIRA Issue]. An example would be bugfix-backend-http-request-blocked-JIRA3001
+	- Should not be branched from main
+- Feature branch of feature branches: If you are not the only one working on this branch, communicate with your partners.
 
 ### Do you use Github issues or another ticketing website?
 We also use Jira for tracing the progress.
@@ -60,12 +60,12 @@ We also use Jira for tracing the progress.
 ### Do you use pull requests?
 Pull Request Format(subject to change):
 	
-	Title: [JIRA Issue]: Short description, try using past tense.
-	Comment:
-Link to JIRA Issue
-Changes: List your changes
-Usage(Optional): Explain how to use your new change to help team to test the change.
-Furthur Information(Optional)
+- Title: [JIRA Issue]: Short description, try using past tense.
+- Comment:
+	- Link to JIRA Issue
+	- Changes: List your changes
+	- Usage(Optional): Explain how to use your new change to help team to test the change.
+	- Furthur Information(Optional)
 
 **DO NOT** merge the changes on PR by yourself.
 Pull requests should be reviewed by Shaopeng Lin or Yawen Zhang, who will be responsible to do a sanity check on code quality and whether the changes are working. They will either approve and merge the branch or request a change if things are incorrect. If you request a change, provide the needed fixes and re-request review.
