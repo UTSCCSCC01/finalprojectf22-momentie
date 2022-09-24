@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
-function button_on_click(callback) {
+function button_on_click() {
   let xhr = new XMLHttpRequest();
   xhr.open("POST", "http://localhost:5000/login?username=candy&password=cane");
 
@@ -9,11 +9,6 @@ function button_on_click(callback) {
   xhr.setRequestHeader("Content-Type", "application/json");
 
   xhr.onload = () => console.log(xhr.responseText);
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState === 4) {
-      callback(xhr);
-    }
-  }
 
   xhr.send();
 }
@@ -22,7 +17,7 @@ function App() {
   return (
     <div className="App">
       <button id="dummy"
-        onClick={() => button_on_click(callback)}
+        onClick={() => button_on_click()}
       >
         "click me!!!!!!!"
       </button>
