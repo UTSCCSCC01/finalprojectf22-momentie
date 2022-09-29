@@ -1,11 +1,18 @@
 import mongoose, { Schema } from 'mongoose';
 import passportLocalMongoose from 'passport-local-mongoose';
 
-const User = new Schema({
-    username: String,
-    password: String
-});
-User.plugin(passportLocalMongoose);
-const UserModel = mongoose.model('userData', User);
+export interface User extends mongoose.Document {
+    email: string;
+    username?: number;
+    createdAt?: string;
+    updatedAt?: string;
+};
 
-export = UserModel;
+const User = new Schema({
+    email: { type: String, require: true },
+    username: { type: String },
+}, { timestamps: true });
+
+User.plugin(passportLocalMongoose, { usernameField: 'email' });
+const UserModel = mongoose.model('userData', User);
+export default UserModel;

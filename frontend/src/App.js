@@ -3,7 +3,7 @@ import './App.css';
 
 function button_on_click() {
   let xhr = new XMLHttpRequest();
-  xhr.open("POST", "http://localhost:5000/login?username=candy&password=cane");
+  xhr.open("POST", "http://localhost:5000/login?email=candy@gmail.com&password=cane");
 
   xhr.setRequestHeader("Accept", "application/json");
   xhr.setRequestHeader("Content-Type", "application/json");
