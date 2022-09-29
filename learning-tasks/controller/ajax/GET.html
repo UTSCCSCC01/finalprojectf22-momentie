@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX GET req</title>
+    <style>
+        #result{
+            width: 200px;
+            height: 100px;
+            border: solid 1px #90b;
+        }
+    </style>
+</head>
+<body>
+    <button>click to send request</button>
+    <div id = "result"></div>
+    
+    <script>
+        const btn = document.getElementsByTagName('button')[0];
+        const result = document.getElementById("result");
+        btn.onclick=function(){
+            const xhr = new XMLHttpRequest();
+            //0: open () not called yet, xhr has been created
+            xhr.open('GET','http://127.0.0.1:8000/server?');
+            //1: open() has been called
+            xhr.send();
+            //2: send() has been called, and headers and status are available
+            //3: downloading; responseText holds partial data
+            //4: done: the operation is complete
+            xhr.onreadystatechange = function(){
+                if (xhr.readyState === 4){
+                    //2xx all represents success
+                    if(xhr.status >= 200 && xhr.status < 300){
+                        // console.log(xhr.status);
+                        // console.log(xhr.statusText);
+                        // console.log(xhr.getAllResponseHeaders);
+                        // console.log(xhr.response);
+                        result.innerHTML = xhr.response;
+                    }
+                    else{
+
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
