@@ -2,13 +2,10 @@
 // import * from './userAuth';
 import UserModel from "../userModel";
 import { Express } from 'express'
-import { PassportStatic } from "passport";
 
-export = function initializeAPI(app: Express, passport: PassportStatic) {
-
-    /* Login API call. */
-    app.post('/login', passport.authenticate('local'), function (req, res) {
-        console.log(req.user)
-        return res.send("You are in!");
-    });
+const userLogin = (req: any, res: any) => {
+    console.log(req.user)
+    return res.send("You are in111!");
 }
+
+module.exports = { userLogin }
