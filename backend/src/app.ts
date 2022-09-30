@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-import UserModel, { init } from './model/userModel';
+import UserModel from './model/userModel';
 passport.use(UserModel.createStrategy());
 passport.serializeUser(UserModel.serializeUser() as any);
 passport.deserializeUser(UserModel.deserializeUser());
