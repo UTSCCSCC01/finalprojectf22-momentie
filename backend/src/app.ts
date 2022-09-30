@@ -33,12 +33,14 @@ passport.use(UserModel.createStrategy());
 passport.serializeUser(UserModel.serializeUser() as any);
 passport.deserializeUser(UserModel.deserializeUser());
 
-import initializeUserAPI from './controller/user/userController'
-initializeUserAPI(app, passport);
+//import initializeAPI from './controller/user/userController'
+//initializeAPI(app, passport);
 
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
+
+app.use('/login', require('./routes/signIn'))
 
 app.listen(5000, () => console.log('Server Running...'));
 
