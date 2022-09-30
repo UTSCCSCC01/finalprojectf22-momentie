@@ -6,5 +6,6 @@ import { Express } from 'express'
 const userLogin = (req: any, res: any) => {
     console.log(req.user)
     return res.send("You are in111!");
+}
 
 module.exports = { userLogin }
