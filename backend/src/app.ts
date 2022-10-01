@@ -18,7 +18,7 @@ const User = new Schema({
     username: String,
     password: String
 });
-User.plugin(passportLocalMongoose);
+User.plugin(passportLocalMongoose, { usernameField: "username" });
 const UserModel = mongoose.model('userData', User);
 
 const app = express();
@@ -37,13 +37,14 @@ app.use(expressSession({
 }))
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(UserModel.createStrategy());
 passport.serializeUser(UserModel.serializeUser() as any);
 passport.deserializeUser(UserModel.deserializeUser());
 
-app.post('/login', passport.authenticate('local', { failureRedirect: '/' }), function (req, res) {
+app.post('/login', passport.authenticate('local'), function (req, res) {
     console.log(req.user)
     return res.send("You are in!");
 });
