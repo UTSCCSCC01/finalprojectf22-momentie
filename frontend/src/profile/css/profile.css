@@ -1,0 +1,169 @@
+/* make margin and padding to 0(页边距和行边距) */
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/* Whole page is 100% width and 100vh height. Background color is from figma */
+.contentBox{
+    width: 100%;
+    /* 因为这个页面太长了我就给他搞到130了，后面会调一下，没时间了 */
+    height: 130vh;
+    background-color: #F5F5F5;
+}
+
+/* This is the box of logo. */
+.logoBox{
+    display: flex;
+    /* 首行开始排列 */
+    justify-content: flex-start; 
+    /* 居中对齐 */
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    /* background color in the box is to test the location/size of the box */
+    /* background-color: red; */
+}
+
+/* Style of the logo */
+.logo{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 49.6px;
+    line-height: 60px;
+    color: #BEACAC;
+}
+
+.titleBox{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    height: 300px;
+    /* background-color: #008c8c; */
+}
+
+.follower{
+    margin-top: 250px;
+    margin-left: 100px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 83px;
+    color: #ea2727;
+}
+
+.picture{
+    /* Define a circle */
+    width: 188px;
+    height: 188px;
+    background: #60bb5c;
+    border-radius: 94px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 31.994px;
+    line-height: 100px;
+    text-align: center;
+    color: #BEACAC;
+    margin-top: 74px;
+    margin-left: 20px;
+}
+
+.row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 140px;
+    /* background-color: pink; */
+}
+
+.side,
+.main {
+    width: 600PX;
+    /* background-color: green; */
+}
+
+.side {
+    margin-right: 200px;
+}
+
+.label {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 46px;
+    color: #BEACAC;
+    margin-bottom: 14px;
+}
+
+.ipt {
+    display: block;
+    width: 497px;
+    height: 74px;
+    background: #FFFFFF;
+    border: 1px solid #9C9C9C;
+    border-radius: 20px;
+    padding-left: 20px;
+    outline: #9C9C9C;
+}
+
+.butBox {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 150px;
+}
+
+.but {
+    width: 69px;
+    height: 69px;
+    background: #D9D9D9;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 31.994px;
+    line-height: 39px;
+    text-align: center;
+    color: #BEACAC;
+    border: none;
+}
+
+
+.linkBox {
+    display: flex;
+    justify-content:left;
+    /*margin-top: 10px; */
+}
+
+.link {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 19.0567px;
+    line-height: 23px;
+    color: #BEACAC;
+    margin: 20px auto 0;
+}
+
+.fakeimg{
+    /* Define a circle */
+    width: 188px;
+    height: 188px;
+    background: #60bb5c;
+    border-radius: 94px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 31.994px;
+    line-height: 100px;
+    text-align: center;
+    color: #441788;
+    margin-top: 74px;
+    margin-left: 20px;
+}
