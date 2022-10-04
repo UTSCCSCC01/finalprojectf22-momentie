@@ -1,4 +1,4 @@
-import { User } from '../model/userModel';
+import UserModel from '../model/userModel';
 
 const express = require('express');
 const router = express.Router();
@@ -12,7 +12,7 @@ router.get('/', (req: any, res: any) => {
 });
 
 // router.post('/login', passport.authenticate('local'), (req: any, res: any) => {userLogin(req, res)});
-router.post('/login', passport.authenticate('local'), userLogin );
+router.post('/login', passport.authenticate('local'), userLogin);
 
 router.post('/signup', userSignUp);
 

@@ -6,46 +6,28 @@ import { time, timeStamp } from 'console';
 import passport from "passport";
 import passportLocal from "passport-local";
 // import UserModel from '../../model/userModel';
+import passportLocalMongoose from 'passport-local-mongoose';
 
 const userLogin = (req: any, res: any) => {
     console.log(req.user)
     return res.send("You are in111!");
 }
 
-interface IReturnRegister{
-    user: User | null;
-    error: boolean;
-    message: string;
-}
-
-const userSignUp = async ({email, username, password}:{email: string, username: string, password: string}) : Promise<IReturnRegister> => {
-    const user = await UserModel.findOne({email: email});
-    if(user){
-        return {
-            message: "User already exists",
-            error: true,
-            user: null
-        }
-    };
+const userSignUp = (req: any, res: any) => {
     const newUser = new UserModel ({
-        email,
-        username
+        email: req.body.email,
+        username: req.body.username,
     });
-    let signUpUser = await UserModel.register(newUser, password);
-    console.log("user registered");
-    if (signUpUser){
-        return {
-            user: signUpUser as User,
-            message: "Sign up successfully",
-            error: false
+    UserModel.register(newUser, req.body.password, (err: any) => {
+        if (err){
+            console.log(err);
+            console.log(req.body.username);
+            console.log(req.body.email);
+            return res.status(409).send(err);
         }
-    }else{
-        return {
-            user: null,
-            message: "Sign up error",
-            error: true
-        }
-    }
+        console.log(newUser);
+        return res.status(200).send("user registered");
+    });
 };
 
 module.exports = { userLogin, userSignUp }
