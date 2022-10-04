@@ -42,6 +42,6 @@ app.get('/', (req, res) => {
 
 app.use('/account', require('./routes/account'))
 
-app.listen(5000, () => console.log('Server Running...'));
+app.listen(8000, () => console.log('Server Running...'));
 
 module.exports = { UserModel }
