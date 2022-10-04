@@ -1,0 +1,135 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.left{
+    float: left;
+    width: 70%;
+}
+.logo{
+    position: absolute;
+    left: 1.6%;
+    right: 88.75%;
+    top: 1.76%;
+    bottom: 92.38%;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 35px;
+    line-height: 60px;
+    color: #beacac;
+}
+.LoginHeader{
+    position: absolute;
+    width: 224px;
+    height: 83px;
+    left: 450px;
+    top: 127px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 83px;
+    color: #beacac;
+}
+.loginPart{
+    
+}
+.username{
+    position: absolute;
+    width: 497px;
+    height: 74px;
+    left: 450px;
+    top: 220px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 83px;
+    color: #beacac;
+}
+.usernameBox{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 300px;
+    height: 40px;
+    left: 0px;
+    top: 70px;
+    font-size: 18px;
+    background: #FFFFFF;
+    border: 1px solid #9C9C9C;
+    border-radius: 20px;
+}
+.password{
+    position: absolute;
+    width: 497px;
+    height: 74px;
+    left: 450px;
+    top: 330px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 83px;
+    color: #beacac;
+}
+.passwordBox{
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 300px;
+    height: 40px;
+    left: 0px;
+    top: 70px;
+    font-size: 18px;
+    background: #FFFFFF;
+    border: 1px solid #9C9C9C;
+    border-radius: 20px;
+}
+.loginButton{
+    position: relative;
+    width: 150px;
+    height: 40px;
+    left: 50px;
+    top: 450px;
+    background: #D9D9D9;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 20px;
+    text-align: center;
+    color: #BEACAC;
+    border: none;
+}
+.loginButtonPart{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.signUp{
+    position: absolute;
+    width: 331px;
+    height: 23px;
+    left: 460px;
+    top: 530px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 23px;
+
+    color: #BEACAC;
+
+}
+.right{
+    float: left;
+    width: 30%;
+}
