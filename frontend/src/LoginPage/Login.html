@@ -4,35 +4,70 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
     <link rel="stylesheet" href="./Login.css">
 </head>
 <body>
+    <!-- Page box(100%) -->
     <div class="page">
+
+        <!-- left part of the page -->
         <div class="left">
-            <div class="logo">
-                <h1>Logo</h1>
-            </div>
-            <div class="loginPart">
-                <div class ="LoginHeader">
-                    <h1>Sign In</h1>
+
+            <div class="logoBox">
+                <div class="logo">
+                    Momentie
                 </div>
+            </div>
+
+            <!-- information box -->
+            <div class ="LoginHeader">
+                <div class="loginText">
+                    Sign In
+                </div>
+            </div>
+
+            <!-- use name box -->
+            <div class="usernameBox">
+
                 <div class="username">
-                    <label for="email">Username:</label>
-                    <input type = "email" class = "usernameBox" placeholder="  Enter your email">
+                    Username
                 </div>
+            </div>
+
+            <!-- user name input box -->
+            <div class="usernameInputBox">
+                <input type = "email" class = "usernameInput" placeholder="  Enter your email">
+            </div>
+            
+            <!-- password box -->
+            <div class="passwordBox">
+
                 <div class="password">
-                    <label for="password">Password:</label>
-                    <input type = "password" class = "passwordBox" placeholder="  Enter your password">
+                    Password
                 </div>
             </div>
-            <div class = "loginButtonPart">
-                <button class="loginButton">Log In</button>
+
+            <!-- user name input box -->
+            <div class="passwordInputBox">
+                <input type = "password" class = "passwordInput" placeholder="  Enter your password">
             </div>
-            <div div class = "signUp">
-                <a href="https://www.google.com">don't have an account? register here</a>
+
+
+            <!-- Login button box -->
+            <div class = "loginButtonBox">
+                <button class="loginButton">
+                    Log In
+                </button>
+            </div>
+
+            <div div class = "linkBox">
+                <a class="signuplink" href="http://127.0.0.1:5500/frontend/src/SignUpPage/html/signup.html">
+                    don't have an account? register here
+                </a>
             </div>
         </div>
+                
         <div class="right">
             <img src="LoginPic.png" alt="Login Picture">
         </div>
