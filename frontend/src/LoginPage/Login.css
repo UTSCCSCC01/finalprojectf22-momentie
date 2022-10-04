@@ -1,0 +1,169 @@
+/* set margin and padding to 0 */
+*{
+    margin: 0;
+    padding: 0;
+}
+
+/* Set the whole page width height and background color */
+.page{
+    width: 100%;
+    height: 100vh;
+    background-color: #F5F5F5;
+}
+
+/* divide the webpage into left part and (right part) */
+.left{
+    float: left;
+    width: 60%;
+}
+
+/* set the position of Box that stores the logo */
+.logoBox{
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    /* background-color: red; */
+}
+
+/* Set the style of logo */
+.logo{
+    margin-top: 0;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 49.6px;
+    line-height: 60px;
+    color: #BEACAC;
+}
+
+/* set the position of Box that stores the header "SignIn */
+.LoginHeader{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    height: 120px;
+    /* background-color: #008c8c; */
+}
+
+/* style of the text of signin */
+.loginText{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 50px;
+    line-height: 83px;
+    color: #beacac;
+    margin-left: 40%;
+}
+
+/* set the position of Box store the label of username/password */
+.usernameBox,
+.passwordBox{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    height: 60px;
+    /* background-color: purple; */
+}
+
+/* set the position of Box store the username/password input */
+.usernameInputBox,
+.passwordInputBox{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    height: 40px;
+    /* background-color: pink;   */
+}
+
+/* style of the username/password labels */
+.username, 
+.password{
+    margin-left: 40%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 83px;
+    color: #beacac;
+}
+
+/* style of the credentials entered (username/password) */
+.usernameInput, 
+.passwordInput{
+    margin-left: 40%;
+    box-sizing: border-box;
+    width: 300px;
+    height: 40px;
+    font-size: 18px;
+    background: #FFFFFF;
+    border: 1px solid #9C9C9C;
+    border-radius: 20px;
+
+}
+
+/* set the position of Box store the Login button */
+.loginButtonBox{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    /* background-color: green; */
+}
+
+/* Style of the login button */
+.loginButton{
+    margin-left: 45%;
+    margin-top: 12vh;
+    width: 150px;
+    height: 40px;
+    background: #D9D9D9;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 20px;
+    text-align: center;
+    color: #BEACAC;
+    border: none;
+}
+
+/* set the position of Box stores the link redirect to the signup page */
+.linkBox{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    /* background-color: pink; */
+}
+
+/* style of the signup page link */
+.signuplink{
+    margin-left: 40%;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 23px;
+    color: #BEACAC;
+}
+
+/* divide the webpage into (left pard) and right part and stores the image */
+.right{
+    float: left;
+    width: 40%;
+}
+
+/* style of the imaging showing in the login page */
+.image{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
