@@ -8,17 +8,17 @@
 .contentBox{
     width: 100%;
     /* 因为这个页面太长了我就给他搞到130了，后面会调一下，没时间了 */
-    height: 130vh;
+    height: 100vh;
     background-color: #F5F5F5;
 }
 
-/* This is the box of logo. */
+/* This is the box of logo. At the top of the page */
 .logoBox{
     display: flex;
     /* 首行开始排列 */
     justify-content: flex-start; 
-    /* 居中对齐 */
     align-items: center;
+
     width: 100%;
     height: 100px;
     /* background color in the box is to test the location/size of the box */
@@ -27,6 +27,7 @@
 
 /* Style of the logo */
 .logo{
+    margin-left: 10px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
@@ -35,25 +36,27 @@
     color: #BEACAC;
 }
 
+/* title box is under the logo box */
 .titleBox{
     display: flex;
     justify-content: flex-start;
     width: 100%;
-    height: 300px;
+    height: 230px;
     /* background-color: #008c8c; */
 }
 
+/* Text "register" */
 .register{
-    margin-top: 33px;
     margin-left: 100px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
-    font-size: 68.2px;
+    font-size: 40px;
     line-height: 83px;
     color: #BEACAC;
 }
 
+/* Position to upload profile piecture */
 .picture{
     /* Define a circle */
     width: 188px;
@@ -68,18 +71,20 @@
     line-height: 100px;
     text-align: center;
     color: #BEACAC;
-    margin-top: 74px;
-    margin-left: 300px;
+    margin-top: 30px;
+    margin-left: 400px;
 }
 
+/* There are two information box, details write in the .html. Directly under the titleBox*/
 .informationBox{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 140px;
+    height: 100px;
     /* background-color: pink; */
 }
+
 
 .inforLeft,
 .inforRight {
@@ -88,58 +93,65 @@
 }
 
 .inforLeft {
+    margin-left: 200px;
     margin-right: 200px;
 }
 
+/* All text style in the informationBox */
 .label {
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
-    font-size: 38px;
-    line-height: 46px;
+    font-size: 30px;
     color: #BEACAC;
-    margin-bottom: 14px;
 }
 
+
+/* Style of the input */
 .ipt {
     display: block;
-    width: 497px;
-    height: 74px;
+    box-sizing: border-box;
+    width: 300px;
+    height: 40px;
+    font-size: 18px;
     background: #FFFFFF;
     border: 1px solid #9C9C9C;
     border-radius: 20px;
-    padding-left: 20px;
-    outline: #9C9C9C;
 }
 
+/* Button box, directly under two infor box */
 .butBox {
     display: flex;
     justify-content: center;
     margin-top: 30px;
 }
 
-.but {
-    width: 280px;
-    height: 69px;
+
+/* Style of the botton */
+.but{
+    width: 150px;
+    height: 40px;
     background: #D9D9D9;
     border-radius: 20px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
-    font-size: 31.994px;
-    line-height: 39px;
+    font-size: 30px;
+    line-height: 20px;
     text-align: center;
     color: #BEACAC;
     border: none;
 }
 
-
+/* LinkBox, under button */
 .linkBox {
     display: flex;
     justify-content: center;
     margin-top: 10px;
 }
 
+
+/* Style of the link text. */
 .link {
     font-family: 'Inter';
     font-style: normal;
