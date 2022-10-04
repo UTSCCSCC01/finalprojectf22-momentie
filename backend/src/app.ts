@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-app.use('/login', require('./routes/signIn'))
+app.use('/account', require('./routes/account'))
 
 app.listen(5000, () => console.log('Server Running...'));
 
