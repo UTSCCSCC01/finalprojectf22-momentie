@@ -30,8 +30,13 @@ const userSignUp = (req: any, res: any) => {
             description: "",
             email: req.body.email,
         });
-        ProfileModel.create(newPorfile);
-        console.log(newPorfile);
+        ProfileModel.create(newPorfile, (err: any) => {
+            if (err){
+                console.log(err);
+                return res.status(409).send(err);
+            }
+            console.log(newPorfile);
+        });
         return res.status(200).send("user registered");
     });
 };
