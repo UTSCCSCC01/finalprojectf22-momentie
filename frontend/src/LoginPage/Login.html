@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./Login.css">
+</head>
+
+<body>
+    <!-- Page box(Covers 100% of the webpage) -->
+    <div class="page">
+
+        <!-- left part of the webpage(60%) -->
+        <div class="left">
+
+            <!-- LogoBox:Store the logo "Momentie" -->
+            <div class="logoBox">
+                <div class="logo">
+                    Momentie
+                </div>
+            </div>
+
+            <!-- LoginHeader Box:Store the header "Sign In"-->
+            <div class ="LoginHeader">
+                <div class="loginText">
+                    Sign In
+                </div>
+            </div>
+
+            <!-- username Box: Store the username label -->
+            <div class="usernameBox">
+                <div class="username">
+                    Username
+                </div>
+            </div>
+
+            <!-- username input Box: Store the username input from user -->
+            <div class="usernameInputBox">
+                <!-- Input according to email format -->
+                <input type = "email" class = "usernameInput" placeholder="  Enter your email">
+            </div>
+            
+           <!-- password Box: Store the password label -->
+            <div class="passwordBox">
+                <div class="password">
+                    Password
+                </div>
+            </div>
+            <!-- password input box: Store the password input from user -->
+            <div class="passwordInputBox">
+                <!-- password input will not be seen by password format (ie *****)-->
+                <input type = "password" class = "passwordInput" placeholder="  Enter your password">
+            </div>
+
+            <!-- Login button Box: Store the login Button -->
+            <div class = "loginButtonBox">
+                <button class="loginButton">
+                    Log In
+                </button>
+            </div>
+
+            <!-- Link Box: Store the link redirect to signup page -->
+            <div class = "linkBox">
+                <a class="signuplink" href="http://127.0.0.1:5500/frontend/src/SignUpPage/html/signup.html">
+                    don't have an account? register here
+                </a>
+            </div>
+        </div>
+
+        <!-- right part of the webpage(60%) -->
+        <div class="right">
+            <!-- The image showing in the login page -->
+            <img src="LoginPic.png" class="image" alt="Login Picture">
+        </div>
+    </div>
+</body>
+</html>
