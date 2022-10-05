@@ -5,6 +5,8 @@ window.onload = function () {
     var password = document.querySelector('#password')
     //var identity = document.querySelector('#identity')
     var submit = document.getElementById('submit')
+
+    // Please do not write like this, so stupid:)
     submit.addEventListener('click', function () {
         if (email.value == '') {
             return alert('please enter the email address')
@@ -16,8 +18,9 @@ window.onload = function () {
             return alert('please enter the password')
         }
 
-        console.log('123123', email.value, username.value, password.value)
+        //console.log('123123', email.value, username.value, password.value)
 
+        // HTTP request
         let xhr = new XMLHttpRequest();
         xhr.open("POST", `http://localhost:5000/account/signup?email=${email.value}&password=${password.value}&username${username.value}`);
         xhr.setRequestHeader("Accept", "application/json");
