@@ -1,6 +1,7 @@
 /* Exports function that initializes API calls on express  */
 // import * from './userAuth';
-import UserModel, { User } from '../../model/userModel';
+import UserModel from '../../model/userModel';
+import ProfileModel from '../../model/profileModel';
 
 const userLogin = (req: any, res: any) => {
     console.log(req.user)
@@ -24,6 +25,13 @@ const userSignUp = (req: any, res: any) => {
             return res.status(409).send(err);
         }
         console.log(newUser);
+        //after successfully sign up for a user, a profile needed to be created for the user
+        let newPorfile = new ProfileModel({
+            description: "",
+            email: req.body.email,
+        });
+        ProfileModel.create(newPorfile);
+        console.log(newPorfile);
         return res.status(200).send("user registered");
     });
 };
