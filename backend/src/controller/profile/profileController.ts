@@ -5,15 +5,13 @@ const retrieve_profile = async (req: any, res: any) => {
   const { page, email } = req.query;
   /** email provided */
   if (email) {
-    /* Find the target user */
-    let user = await UserModel.findOne({ email: email })
-    if (!user) {
-      return res.status(500).json({ msg: 'No such profile' })
-    }
-    /* Retrieve user profile based on the user id */
-    let profile = await ProfileModel.find({ postBy: user?._id })
 
-    console.log(profile)
+    /* Retrieve user profile based on the email */
+    let profile = await ProfileModel.findOne({ email: email })
+
+    if (!profile)
+      return res.status(501).json({ err: 'Profile Not Found' })
+
     return res.status(200).json(profile)
   }
 
