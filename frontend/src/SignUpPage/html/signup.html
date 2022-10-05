@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignUp</title>
     <link rel="stylesheet" href="../css/signup.css">
+    <script src="../js/signup.js"  type="text/javascript"></script>
 </head>
 
 
@@ -49,7 +50,7 @@
                     e-mail
                 </div>
                 <!-- input box -->
-                <input type="text" placeholder="please input email address" class="ipt">
+                <input type="text" placeholder="please input your email address" class="ipt" id="email">
                 
             </div>
 
@@ -61,7 +62,7 @@
                     username
                 </div>
                 <!-- input box -->
-                <input type="text" placeholder="please input username" class="ipt">
+                <input type="text" placeholder="please input your username" class="ipt" id="username">
                 
             </div>
 
@@ -78,7 +79,7 @@
                     password
                 </div>
                 <!-- input box -->
-                <input type="text" placeholder="please input email address" class="ipt">
+                <input type="text" placeholder="please input your password" class="ipt" id="password">
                 
             </div>
 
@@ -90,14 +91,14 @@
                     join in as
                 </div>
                 <!-- input box -->
-                <input type="text" placeholder="please input username" class="ipt">
+                <input type="text" placeholder="please input your identity" class="ipt" id="identity">
                 
             </div>
         </div>
 
         <!-- Sign up button -->
         <div class="butBox">
-            <button class="but">
+            <button class="but" id="submit">
                 SIGN UP
             </button>
         </div>
