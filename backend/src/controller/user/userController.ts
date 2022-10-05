@@ -4,7 +4,8 @@ import UserModel from '../../model/userModel';
 import ProfileModel from '../../model/profileModel';
 
 const userLogin = (req: any, res: any) => {
-    console.log(req.user)
+    console.log("user: ", req.user);
+    console.log("session id: ", req.sessionID);
     return res.send("You are in111!");
 }
 
@@ -41,4 +42,14 @@ const userSignUp = (req: any, res: any) => {
     });
 };
 
-module.exports = { userLogin, userSignUp }
+const userLogout = (req: any, res: any) => {
+    req.logout((err: any) => {
+        if (err){
+            console.log(err);
+            return res.status(409).send(err);
+        }
+        return res.status(200).send("logout successfully")
+    }); 
+};
+
+module.exports = { userLogin, userSignUp, userLogout }
