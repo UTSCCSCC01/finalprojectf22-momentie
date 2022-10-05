@@ -3,12 +3,13 @@ import ProfileModel from '../../model/profileModel'
 
 const retrieve_profile = async (req: any, res: any) => {
   const { page, email } = req.query;
-  // email provided
+
+  /** email provided */
   if (email) {
     /* Find the target user */
     let user = await UserModel.findOne({ email: email })
     if (!user) {
-      res.status(500).json({ msg: 'No such profile' })
+      return res.status(500).json({ msg: 'No such profile' })
     }
     /* Retrieve user profile based on the user id */
     let profile = await ProfileModel.find({ postBy: user?._id })
@@ -20,14 +21,29 @@ const retrieve_profile = async (req: any, res: any) => {
   let profiles = await ProfileModel.find()
   let profile_pool_size = profiles.length
 
-  // page provided but not email
+  /** page provided but not email */
   if (page && page * 10 <= profile_pool_size) {
     let sorted_profiles = profiles.slice(page * 10, (page + 1) * 10 - 1)
     return res.status(200).json(sorted_profiles)
   }
 
-  // display the first 10 user profiles (neither email nor page is provided)
+  /** display the first 10 user profiles (neither email nor page is provided) */
   return res.status(200).json(profiles.slice(0, 9))
 }
 
-module.exports = { retrieve_profile }
+const edit_profile = async (req: any, res: any) => {
+  /** Params and body */
+  let { email } = req.query
+  let { content } = req.body
+  /** Default empty content */
+  if (!content)
+    content = ''
+  /** Update user profile */
+  let user = await UserModel.findOne({ email: email })
+  let newProfile = await ProfileModel.findOneAndUpdate({ postBy: user?._id },
+    { content: content }, { new: true })
+
+  return res.status(200).json(newProfile)
+}
+
+module.exports = { retrieve_profile, edit_profile }
