@@ -18,11 +18,11 @@ window.onload = function () {
 
         console.log('123123', email.value, username.value, password.value)
 
-        // let xhr = new XMLHttpRequest();
-        // xhr.open("POST", `http://localhost:5000/account/signup?email=${email.value}&password=${password.value}&username${username.value}`);
-        // xhr.setRequestHeader("Accept", "application/json");
-        // xhr.setRequestHeader("Content-Type", "application/json");
-        // xhr.onload = () => console.log(xhr.responseText);
-        // xhr.send();
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", `http://localhost:5000/account/signup?email=${email.value}&password=${password.value}&username${username.value}`);
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = () => console.log(xhr.responseText);
+        xhr.send();
     })
 }
