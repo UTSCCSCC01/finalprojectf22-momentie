@@ -1,8 +1,8 @@
-import mongoose, { Schema, Types } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export interface Profile extends mongoose.Document {
-    content: string;
-    postBy: Types.ObjectId;
+    description: string;
+    email: string
     like: number;
     image?: string //change to image id when enable uploading image feature
     createdAt?: string;
@@ -10,10 +10,10 @@ export interface Profile extends mongoose.Document {
 };
 
 const Profile = new Schema({
-    content: { type: String, require: true },
-    postBy: {type: Schema.Types.ObjectId, ref: 'userData', require: true},
-    like: {type: Number, require: true, default: 0},
-    image: {type: String}, //change to image id when enable uploading image feature
+    description: { type: String, require: true },
+    email: { type: String, ref: 'userData', require: true },
+    like: { type: Number, require: true, default: 0 },
+    image: { type: String }, //change to image id when enable uploading image feature
 }, { timestamps: true });
 
 
