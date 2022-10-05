@@ -2,6 +2,7 @@
 // import * from './userAuth';
 import UserModel from '../../model/userModel';
 import ProfileModel from '../../model/profileModel';
+import { getConstantValue } from 'typescript';
 
 const userLogin = (req: any, res: any) => {
     console.log(req.user)
@@ -41,4 +42,24 @@ const userSignUp = (req: any, res: any) => {
     });
 };
 
-module.exports = { userLogin, userSignUp }
+const userLogout = (req: any, res: any) => {
+    req.session.user = null
+    req.session.save((err: any) => {
+        if (err){
+            console.log(err);
+            return res.status(409).send("userLogout error: ", err);
+        }
+        console.log("logout successfully");
+    });
+
+    req.session.regenerate((err: any) => {
+        if (err){
+            console.log(err);
+            return res.status(409).send("regenerate session error: ", err);
+        }
+        console.log("regenerate successfully");
+        res.redirect('/');
+    });
+};
+
+module.exports = { userLogin, userSignUp, userLogout }
