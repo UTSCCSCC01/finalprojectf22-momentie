@@ -5,7 +5,8 @@ import ProfileModel from '../../model/profileModel';
 import { getConstantValue } from 'typescript';
 
 const userLogin = (req: any, res: any) => {
-    console.log(req.user)
+    console.log("user: ", req.user);
+    console.log("session id: ", req.sessionID);
     return res.send("You are in111!");
 }
 
