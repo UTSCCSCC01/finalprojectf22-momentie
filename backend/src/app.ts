@@ -41,6 +41,7 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
+app.use('/profile', require('./routes/profile'))
 app.use('/account', require('./routes/account'))
 
 app.listen(5000, () => console.log('Server Running...'));
