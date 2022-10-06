@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="./Login.css">
+    <script src = "Login.js" defer></script>
 </head>
 
 <body>
@@ -39,7 +40,7 @@
             <!-- username input Box: Store the username input from user -->
             <div class="usernameInputBox">
                 <!-- Input according to email format -->
-                <input type = "email" class = "usernameInput" placeholder="  Enter your email">
+                <input type = "email" class = "usernameInput" placeholder="  Enter your email" id = "email">
             </div>
             
            <!-- password Box: Store the password label -->
@@ -51,12 +52,12 @@
             <!-- password input box: Store the password input from user -->
             <div class="passwordInputBox">
                 <!-- password input will not be seen by password format (ie *****)-->
-                <input type = "password" class = "passwordInput" placeholder="  Enter your password">
+                <input type = "password" class = "passwordInput" placeholder="  Enter your password" id = "password">
             </div>
 
             <!-- Login button Box: Store the login Button -->
             <div class = "loginButtonBox">
-                <button class="loginButton">
+                <button class="loginButton" id="login">
                     Log In
                 </button>
             </div>
