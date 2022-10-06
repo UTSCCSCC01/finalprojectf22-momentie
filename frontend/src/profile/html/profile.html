@@ -17,12 +17,12 @@
             <div class="headbar">
               <!-- logo of header -->
               <h1 class="logo">
-                <img src="../logo.png" alt="to be changed" height="40">
+                <img src="../D-logo.png" alt="to be changed" height="40">
               </h1>
               <!-- serachbar of header -->
               <div class="search-container">
                 <form action="/action_page.php">
-                  <input type="text" placeholder="Search.." name="search">
+                  <input type="text" placeholder="Search.." name="search" class="search-bar">
                   <button type="submit">GO<i class="fa fa-search"></i></button>
                 </form>
               </div>
@@ -55,25 +55,65 @@
                     <img src="../random.png" alt="to be changed" width="30" height="30">
                 </div>
                 -->
-                <li><a href="#">follower|following</a></li>
+                <li><a href="#">2,030 follower | 1,305 following</a></li>
                 <!-- color change based on profile photo, to be added later-->
             </div>
 
             <div class="description">
-                description/tagline
+                Steph Delly is a twenty-eight-year-old man 
+                that dropped out from his developer job and moved 
+                to become a web development content creator on Youtube. 
+                He has been invested in this profession for around six years 
+                and gained a substantial following of around two million 
+                followers on Youtube. His excellent verbal communication 
+                skills, the ability to simplify problems, and foresight 
+                on emerging web technologies have been great contributing 
+                factors to his success.
+
             </div>
 
             <div class="profile-photo">
                 <!-- 随便放的profile photo， 以后再改default-->
-                <img src="../random.png" class="rounded-circle" width="100" height="100" class = "profile-photo">
+                <img src="../D-profile-photo.jpg" class="rounded-circle" width="100" height="100" class = "profile-photo">
                 <div class="photo-middle">
                     <div class="photo-middle-text">Upload Photo</div>
                   </div>
             </div>
 
             <div class="posts">
-                <!-- 以后再搞post 链接-->
-               additional information and posts
+                <div class="slideshow-container">
+                    <div class="mySlides fade">
+                      <div class="numbertext">1 / 3</div>
+                      <img src="../D-wide-image1.jpg" class="round-corner" height="250px">
+                      <div class="text">Steve's first project</div>
+                    </div>
+                    
+                    <div class="mySlides fade">
+                      <div class="numbertext">2 / 3</div>
+                      <img src="../D-wide-image2.jpg" style="width:100%" height="250px" width="500px">
+                      <div class="text">Steve's second project</div>
+                    </div>
+                    
+                    <div class="mySlides fade">
+                      <div class="numbertext">3 / 3</div>
+                      <img src="../D-wide-image3.jpg" style="width:100%" height="250px" width="500px">
+                      <div class="text">Steve's third project</div>
+                    </div>
+                    
+                    <a class="prev" onclick="plusSlides(-1)">❮</a>
+                    <a class="next" onclick="plusSlides(1)">❯</a>
+                    
+                </div>
+                <br>
+                    
+                <div style="text-align:center">
+                    <span class="dot" onclick="currentSlide(1)"></span> 
+                    <span class="dot" onclick="currentSlide(2)"></span> 
+                    <span class="dot" onclick="currentSlide(3)"></span> 
+                </div>
+
+                <script src="../js/profile.js"></script>
+
             </div>
 
         </div>
