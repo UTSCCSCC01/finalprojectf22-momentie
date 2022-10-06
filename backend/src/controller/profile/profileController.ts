@@ -29,4 +29,26 @@ const retrieve_profile = async (req: any, res: any) => {
   return res.status(200).json(profiles.slice(0, 9))
 }
 
-module.exports = { retrieve_profile }
+const edit_profile = async (req: any, res: any) => {
+  /** Params and body */
+  let { email } = req.query
+  let { description } = req.body
+  /** Default empty content */
+  if (!description) {
+    let Profile = await ProfileModel.findOne({ email: email })
+    return res.status(200).json(Profile)
+  }
+
+  /** Identity is not authenticated */
+  if (req.user === undefined || !req.user.email == email)
+    return res.status(501).json({ err: 'Identity is not authenticated' })
+
+  /** Update user profile */
+  let newProfile = await ProfileModel.findOneAndUpdate({ email: email },
+    { description: description }, { new: true })
+
+  return res.status(200).json(newProfile)
+
+}
+
+module.exports = { retrieve_profile, edit_profile }
