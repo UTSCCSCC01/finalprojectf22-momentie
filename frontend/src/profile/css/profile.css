@@ -94,6 +94,12 @@ nav a:hover::before {
     margin-top: 20px;
 }
 
+.headbar .search-container .search-bar{
+    border-radius: 20%;
+    padding-top: 5px;
+    border-color: #8a7c7c;
+}
+
 .headbar .search-container input{
     color: #D9D9D9;
     text-decoration: none;
@@ -112,6 +118,7 @@ nav a:hover::before {
     text-decoration: none;
     text-transform: uppercase;
     font-size: 14px;
+    border-radius: 20%;
 }
   
 .headbar .search-container button:hover {
