@@ -1,6 +1,7 @@
 
 var express = require('express');
 var router = express.Router();
+
 const { retrieve_profile,
   edit_profile } = require('../controller/profile/profileController')
 
