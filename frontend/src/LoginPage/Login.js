@@ -26,9 +26,15 @@ const request = () => {
 
     const xhr = new XMLHttpRequest();
     //Indicate user if entered incorrect information or user doesn't exist
+    //redirect to profile page if account exist
     xhr.addEventListener('readystatechange', () => {
+        //alert message if entered incorrect information
         if(xhr.readyState === 4 && xhr.status != 200) {
             alert("Incorrect username/password, or user doesn't exist");
+        }
+        //Redirect to profile page if account exist
+        else if(xhr.status == 200) {
+            location.href = '../profile/html/profile.html';
         }
     });
     xhr.open('POST', `http://localhost:5000/account/login?email=${email.value}&password=${password.value}`);
