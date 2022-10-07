@@ -1,5 +1,5 @@
 
-var express = require('express');
+const express = require('express');
 var router = express.Router();
 
 const { retrieve_profile,
@@ -9,4 +9,4 @@ router.get('/', retrieve_profile);
 
 router.patch('/', edit_profile)
 
-module.exports = router
+export = router
