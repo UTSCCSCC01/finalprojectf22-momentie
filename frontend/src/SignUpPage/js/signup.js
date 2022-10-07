@@ -27,5 +27,16 @@ window.onload = function () {
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = () => console.log(xhr.responseText);
         xhr.send(JSON.stringify({email:email.value, password:password.value, username:username.value}))
+        
+
+        xhr.addEventListener('readystatechange', () => {
+            if(xhr.status == 200){
+                location.href = '../../LoginPage/Login.html';
+            }
+            else{
+                alert('Registration failed!(User already exist) Please do it again!!!')
+            }
+        });
+        
     })
 }
