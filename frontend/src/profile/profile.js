@@ -1,7 +1,9 @@
 /*import React, { useState } from 'react';
 import Parse from 'parse/dist/parse.min.js';
 import './App.css';
-import { Button, Divider, Input } from 'antd';
+import { Button, Divider, Input } from 'antd'; */
+
+/*
 
 const doUserLogOut = async function () {
     try {
@@ -21,7 +23,7 @@ const doUserLogOut = async function () {
   };*/
 var logoutURL = "http://localhost:5000/account/logout",
   method = "POST",
-  xmlhttp = new XMLHttpRequest();
+  xhr = new XMLHttpRequest();
 
 function logoutUser() {
     /*
@@ -32,6 +34,7 @@ function logoutUser() {
     }
     //alert(xmlhttp);
     */
+   /*
     xmlhttp.onreadystatechange = function() {
         if (this.status == 409){
             console.error("error occurs when logout failed");
@@ -42,12 +45,23 @@ function logoutUser() {
           document.getElementById("logout").innerHTML = this.responseText;
         }
     };
-    xmlhttp.open(method, logoutURL, true);
-    xmlhttp.setRequestHeader( 'Accept', 'logout data' );   
-    xmlhttp.send("null");
+    */
+    xhr.open(method, logoutURL, true);
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = () => console.log(xhr.responseText);
+    xhr.send();
+    
+    xhr.addEventListener('readystatechange', () => {
+      if(xmlhttp.status == 200){
+          location.href = '../../LoginPage/Login.html';
+      }
+      else{
+          alert('Registration failed!(User already exist) Please do it again!!!')
+      }
+    });
 }
 
-logoutUser();
 /*
 const request = () => {
     var xhr = new XMLHttpRequest();
