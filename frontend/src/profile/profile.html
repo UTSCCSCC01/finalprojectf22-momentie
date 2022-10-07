@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    <link rel="stylesheet" href="../css/profile.css">
+    <script src="./profile.js"></script>
+    <link rel="stylesheet" href="./profile.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
@@ -17,7 +18,7 @@
             <div class="headbar">
               <!-- logo of header -->
               <h1 class="logo">
-                <img src="../logo.png" alt="to be changed" height="40">
+                <img src="./logo.png" alt="to be changed" height="40">
               </h1>
               <!-- serachbar of header -->
               <div class="search-container">
@@ -39,7 +40,9 @@
               <div class="dropdown">
                 <button class="dropbtn">ME</button>
                 <div class="dropdown-content">
-                  <a class = logout href="http://127.0.0.1:5500/frontend/src/SignUpPage/html/signup.html">Logout</a>
+                    <!--
+                  <a class = logout onclick="logoutUser()">Logout</a> -->
+                  <button type="button" onclick="logoutUser()">Logout</button>
                   <a href="#">Setting</a>
                   <a href="#">Edit Profile</a>
                 </div>
@@ -64,15 +67,15 @@
             </div>
 
             <div class="profile-photo">
-                <!-- 随便放的profile photo， 以后再改default-->
-                <img src="../random.png" class="rounded-circle" width="100" height="100" class = "profile-photo">
+                <!-- -->
+                <img src="./random.png" class="rounded-circle" width="100" height="100" class = "profile-photo">
                 <div class="photo-middle">
                     <div class="photo-middle-text">Upload Photo</div>
                   </div>
             </div>
 
             <div class="posts">
-                <!-- 以后再搞post 链接-->
+                <!-- -->
                additional information and posts
             </div>
 
@@ -85,7 +88,7 @@
                     <!--
                     <i class="bi bi-clock" style="font-size: 33px;"></i>
                     -->
-                    <img src="../icon_column.PNG">
+                    <img src="./icon_column.PNG">
                 </div>
                 <div class="experience-column">
                     <div class="experience1-head">
