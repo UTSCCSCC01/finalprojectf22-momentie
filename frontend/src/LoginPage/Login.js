@@ -34,7 +34,7 @@ const request = () => {
         }
         //Redirect to profile page if account exist
         else if(xhr.status == 200) {
-            location.href = '../profile/html/profile.html';
+            location.href = '../profile/profile.html';
         }
     });
     xhr.open('POST', `http://localhost:5000/account/login?email=${email.value}&password=${password.value}`);
