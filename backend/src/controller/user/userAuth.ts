@@ -1,0 +1,1 @@
+/* Contains authentication helper functions used in API calls */

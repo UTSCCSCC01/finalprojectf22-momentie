@@ -1,0 +1,42 @@
+window.onload = function () {
+    // Get the user input
+    var email = document.querySelector('#email')
+    var username = document.querySelector('#username')
+    var password = document.querySelector('#password')
+    //var identity = document.querySelector('#identity')
+    var submit = document.getElementById('submit')
+
+    // Please do not write like this, so stupid:)
+    submit.addEventListener('click', function () {
+        if (email.value == '') {
+            return alert('please enter the email address')
+        }
+        if (username.value == '') {
+            return alert('please enter the username')
+        }
+        if (password.value == '') {
+            return alert('please enter the password')
+        }
+
+        //console.log('123123', email.value, username.value, password.value)
+
+        // HTTP request
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", `http://localhost:5000/account/signup?email=${email.value}&password=${password.value}&username${username.value}`);
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = () => console.log(xhr.responseText);
+        xhr.send(JSON.stringify({email:email.value, password:password.value, username:username.value}))
+        
+
+        xhr.addEventListener('readystatechange', () => {
+            if(xhr.status == 200){
+                location.href = '../../LoginPage/Login.html';
+            }
+            else{
+                alert('Registration failed!(User already exist) Please do it again!!!')
+            }
+        });
+        
+    })
+}
