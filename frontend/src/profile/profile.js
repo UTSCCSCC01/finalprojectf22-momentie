@@ -33,7 +33,7 @@ function logoutUser() {
     //alert(xmlhttp);
     */
     xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 409){
+        if (this.status == 409){
             console.error("error occurs when logout failed");
             xmlhttp.abort();
         }
