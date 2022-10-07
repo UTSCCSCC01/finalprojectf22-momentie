@@ -31,6 +31,7 @@ Yawen Zhang:
  - Implemented RESTApi for logout, 1 hour MOM-34
  - Created Software Architecture Diagram, 3 hours
  - Code review, 1 hour
+ - fix bug about importing express module issue, 0.5 hour, MOM-58
  
 Yuhan Pan:
  - Learning CSS, HTML, JS 72 hour  MOM-50 
@@ -42,6 +43,7 @@ Jerry Han:
  - Created Login webpage, 6 hours. MOM-41
  - Get the user input data and send http request with data to API, 3 hour. MOM-45 
  - Redirect to profile page after successfully logged in, provide link that allows user to register. 1 hour. MOM-47
+ - fix bug about failed to direct to profile page after login, 0.5 hour, MOM-59
  
 User stories done:
  - MOM-5  
