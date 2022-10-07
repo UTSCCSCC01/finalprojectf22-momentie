@@ -44,7 +44,7 @@ function logoutUser() {
     };
     xmlhttp.open(method, logoutURL, true);
     xmlhttp.setRequestHeader( 'Accept', 'logout data' );   
-    xmlhttp.send();
+    xmlhttp.send("null");
 }
 
 logoutUser();
