@@ -34,7 +34,7 @@ Choice are: 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89
 
 
 
- - Sprint1:
+ ## Sprint1:
 
 1. As a general user, I want to create an account, so that I can get access to more services provided by the website. (Basic Expectation) P: HP.  D: 8 MOM-3
 
@@ -44,7 +44,7 @@ Choice are: 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89
 
 4. As Steph Delly (a career expert) or Jialin Shang (a career seeker), I want to have a basic profile page with an about/description section, so that I can give people a brief overview of my career(education/career experience). (Basic Expectation) P:HP. D: 8 MOM-5
 
- - Unmapped User stories:
+## Unmapped User stories:
 
 1. As a general user, I want to reset my password if I forget, so that I won’t lose my account if I happen to forget my password. (Satisifer) P:LP. D: 8 MOM-6
 
@@ -94,7 +94,7 @@ Choice are: 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89
 
 
 
- - Left-over Tasks and Bugs:
+## Left-over Tasks and Bugs:
 
 Backend:
 
