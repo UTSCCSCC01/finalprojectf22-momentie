@@ -28,11 +28,15 @@ window.onload = function () {
         xhr.onload = () => console.log(xhr.responseText);
         xhr.send(JSON.stringify({email:email.value, password:password.value, username:username.value}))
         
-        if(xhr.readyState == 4 && xhr.status == 200){
-            alert('Successfly register! Please go to the login page!!!')
-        }
-        else{
-            alert('Registration failed!(User already exist) Please do it again!!!')
-        }
+
+        xhr.addEventListener('readystatechange', () => {
+            if(xhr.status == 200){
+                location.href = '../../LoginPage/Login.html';
+            }
+            else{
+                alert('Registration failed!(User already exist) Please do it again!!!')
+            }
+        });
+        
     })
 }
