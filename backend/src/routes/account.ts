@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express')
 const router = express.Router();
 const passport = require('passport');
 
@@ -12,4 +12,4 @@ router.post('/login', passport.authenticate('local'), userLogin);
 router.post('/signup', userSignUp);
 router.post('/logout', userLogout);
 
-module.exports = router
+export = router
