@@ -27,7 +27,7 @@ With the emergence of an overwhelming number of new tools and techniques, as wel
    npm run dev
    
    ```
-4. Start frontend (go to finalprojectf22-momentie/frontend/src/LoginPage/Loging.html)
+4. Start frontend (go to finalprojectf22-momentie/frontend/src/LoginPage/Login.html)
 
    ```
    #right click and click "Open in Default Browsers (Alt + B)
