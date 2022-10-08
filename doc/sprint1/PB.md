@@ -98,7 +98,7 @@ Choice are: 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89
 
 Backend:
 
-1. Error code needs to follow standards.
+1. Error code needs to follow standards. Unsure if we should make a issue for now.
 
 Frontend:
 
