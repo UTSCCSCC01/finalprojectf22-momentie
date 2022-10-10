@@ -14,7 +14,7 @@ export default function Login() {
     //function that checks if some input is empty and indicates 
     //user to re-enter the information.
     //send request if all fields are filled.
-    function check() {
+    function check(e) {
         if (isEmpty(email) || isEmpty(password)) {
             return alert("Please fill in your email and password!");
         }
@@ -29,16 +29,18 @@ export default function Login() {
         const xhr = new XMLHttpRequest();
         //Indicate user if entered incorrect information or user doesn't exist
         //redirect to profile page if account exist
-        xhr.addEventListener('readystatechange', () => {
+        xhr.onreadystatechange = () => {
             //alert message if entered incorrect information
-            if (xhr.readyState === 4 && xhr.status != 200) {
-                alert("Incorrect username/password, or user doesn't exist");
+            if (xhr.readyState === 4) {
+                if (xhr.status != 200) {
+                    alert("Incorrect username/password, or user doesn't exist");
+                }
+                //Redirect to profile page if account exist
+                else if (xhr.status == 200) {
+                    navigate("/profile");
+                }
             }
-            //Redirect to profile page if account exist
-            else if (xhr.status == 200) {
-                navigate("/profile");
-            }
-        });
+        };
         xhr.open('POST', `http://localhost:5000/account/login`);
         xhr.setRequestHeader("Accept", "application/json");
         xhr.setRequestHeader("Content-Type", "application/json");
