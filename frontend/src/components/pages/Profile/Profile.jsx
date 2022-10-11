@@ -2,12 +2,15 @@ import "./profile.css";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { backendHost } from '../constants';
-import { useSelector } from 'react-redux'
+import { changeEmail } from "../../../reduxStore/userSlice";
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from "react";
 
 export default function Profile() {
 
-    const currentUserEmail = useSelector((state) => state.user.email)
+    const currentUserEmail = useSelector((state) => state.email)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     function logoutUser() {
         axios.defaults.withCredentials = true;
@@ -20,11 +23,18 @@ export default function Profile() {
                 },
             }
         ).then(() => {
+            dispatch(changeEmail(""));
             navigate("/login");
         }).catch(function () {
             alert('Somethingwent wrong with the logout process.');
         });
     }
+
+    useEffect(() => {
+        if (currentUserEmail === "") {
+            navigate("/login");
+        }
+    });
 
     return (
 

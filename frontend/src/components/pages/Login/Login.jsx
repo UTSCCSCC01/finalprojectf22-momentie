@@ -43,7 +43,6 @@ export default function Login() {
                 },
             }
         ).then((response) => {
-            console.log(response.data.email);
             dispatch(changeEmail(response.data.email))
             navigate("/profile");
         }).catch(() => {
