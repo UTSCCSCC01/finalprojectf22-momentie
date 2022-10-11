@@ -10,7 +10,7 @@ const connection: string = "mongodb+srv://Chris:D0608c037a40@cluster0.qfiq3qb.mo
 mongoose.connect(connection, { ssl: true }).catch(error => console.log(error));
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(expressSession({
     name: sessionName,
     secret: 'Momentie',
@@ -20,7 +20,7 @@ app.use(expressSession({
         maxAge: 600000,
         httpOnly: true,
         secure: false,
-        sameSite: "none",
+        sameSite: "lax",
     }
 }));
 app.set('trust proxy', 1)

@@ -1,6 +1,8 @@
 import './Login.css';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { backendHost } from '../constants';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -28,31 +30,20 @@ export default function Login() {
 
     //Send Http request and JSON data to the Login API
     const request = () => {
-
-        const xhr = new XMLHttpRequest();
-        //Indicate user if entered incorrect information or user doesn't exist
-        //redirect to profile page if account exist
-        xhr.onreadystatechange = () => {
-            //alert message if entered incorrect information
-            if (xhr.readyState === 4) {
-                if (xhr.status != 200) {
-                    alert("Incorrect username/password, or user doesn't exist");
-                }
-                //Redirect to profile page if account exist
-                else if (xhr.status == 200) {
-                    navigate("/profile");
-                }
+        axios.defaults.withCredentials = true;
+        axios.post(backendHost + `/account/login`,
+            { "email": email, "password": password },
+            {
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': backendHost,
+                },
             }
-        };
-        xhr.open('POST', `http://localhost:5000/account/login`);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = () => console.log(xhr.responseText);
-        //Pack up the json data to be sent
-        const data = { "email": email, "password": password };
-        const jsonData = JSON.stringify(data);
-        // console.log(jsonData);
-        xhr.send(jsonData);
+        ).then(() => {
+            navigate("/profile");
+        }).catch(function () {
+            alert("Incorrect username/password, or user doesn't exist");
+        });
     }
 
     return (
