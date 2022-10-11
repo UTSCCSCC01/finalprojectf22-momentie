@@ -22,7 +22,8 @@ app.use(expressSession({
         secure: false,
         sameSite: "none",
     }
-}))
+}));
+app.set('trust proxy', 1)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
