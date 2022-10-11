@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import Login from '../src/components/pages/Login/Login.jsx'
 import Profile from '../src/components/pages/Profile/Profile.jsx'
 import SignUp from './components/pages/SignUp/SignUp.jsx';
+
 function App() {
 
   return (

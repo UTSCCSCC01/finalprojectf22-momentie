@@ -6,22 +6,22 @@ import ProfileModel from '../../model/profileModel';
 const userLogin = (req: any, res: any) => {
     console.log("user: ", req.user);
     console.log("session id: ", req.sessionID);
-    return res.send("You are in111!");
+    return res.send(req.user);
 }
 
 const userSignUp = (req: any, res: any) => {
-    if (req.body.email === "" || req.body.email === undefined){
+    if (req.body.email === "" || req.body.email === undefined) {
         return res.status(401).send("Please fill in email");
     }
-    if (req.body.password === "" || req.body.password === undefined){
+    if (req.body.password === "" || req.body.password === undefined) {
         return res.status(401).send("Please fill in password");
     }
-    const newUser = new UserModel ({
+    const newUser = new UserModel({
         email: req.body.email,
         username: req.body.username,
     });
     UserModel.register(newUser, req.body.password, (err: any) => {
-        if (err){
+        if (err) {
             console.log(err);
             return res.status(409).send(err);
         }
@@ -32,7 +32,7 @@ const userSignUp = (req: any, res: any) => {
             email: req.body.email,
         });
         ProfileModel.create(newPorfile, (err: any) => {
-            if (err){
+            if (err) {
                 console.log(err);
                 return res.status(409).send(err);
             }
@@ -44,12 +44,12 @@ const userSignUp = (req: any, res: any) => {
 
 const userLogout = (req: any, res: any) => {
     req.logout((err: any) => {
-        if (err){
+        if (err) {
             console.log(err);
             return res.status(409).send(err);
         }
         return res.status(200).send("logout successfully")
-    }); 
+    });
 };
 
 module.exports = { userLogin, userSignUp, userLogout }

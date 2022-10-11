@@ -2,10 +2,15 @@ import "./profile.css";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { backendHost } from '../constants';
+import { changeEmail } from "../../../reduxStore/userSlice";
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from "react";
 
 export default function Profile() {
 
+    const currentUserEmail = useSelector((state) => state.email)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     function logoutUser() {
         axios.defaults.withCredentials = true;
@@ -18,17 +23,23 @@ export default function Profile() {
                 },
             }
         ).then(() => {
+            dispatch(changeEmail(""));
             navigate("/login");
         }).catch(function () {
             alert('Somethingwent wrong with the logout process.');
         });
     }
 
+    useEffect(() => {
+        if (currentUserEmail === "") {
+            navigate("/login");
+        }
+    });
+
     return (
 
         // < !--Page box(100 %)-- >
         <div class="page">
-
             {/* <!-- header of the page --> */}
             <header>
                 <div class="headbar">
@@ -133,7 +144,7 @@ export default function Profile() {
 
             <div class="footer">
                 {/* <!-- 留出来，以后想加footer就加--> */}
-                <h2>Footer</h2>
+                <h2>{currentUserEmail}</h2>
             </div>
 
         </div>);
