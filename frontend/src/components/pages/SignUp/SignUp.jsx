@@ -1,6 +1,8 @@
 import "./signup.css"
 import { useState } from 'react';
-import { Navigate, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { backendHost } from '../constants';
 
 export default function SignUp() {
     // Get the user input
@@ -28,25 +30,20 @@ export default function SignUp() {
         //console.log('123123', email.value, username.value, password.value)
 
         // HTTP request
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", `http://localhost:5000/account/signup`);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = () => console.log(xhr.responseText);
-        xhr.send(JSON.stringify({ email: email, password: password, username: username }))
-
-
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    navigate("/login");
-                }
-                else {
-                    alert('Registration failed!(User already exist) Please do it again!!!')
-                }
+        axios.defaults.withCredentials = true;
+        axios.post(backendHost + `/account/signup`,
+            { email: email, password: password, username: username },
+            {
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': backendHost,
+                },
             }
-        };
-
+        ).then(() => {
+            navigate("/login");
+        }).catch(function () {
+            alert('Registration failed!(User already exist) Please do it again!!!');
+        });
     };
 
     return (

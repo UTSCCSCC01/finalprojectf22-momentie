@@ -1,31 +1,27 @@
 import "./profile.css";
+import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-
-var logoutURL = "http://localhost:5000/account/logout",
-    method = "POST"
+import { backendHost } from '../constants';
 
 export default function Profile() {
 
     const navigate = useNavigate();
 
     function logoutUser() {
-        const xhr = new XMLHttpRequest();
-        xhr.open(method, logoutURL, true);
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = () => console.log(xhr.responseText);
-        xhr.send();
-
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState == 4) {
-                if (xhr.status == 200) {
-                    navigate("/login");
-                }
-                else {
-                    alert('Registration failed!(User already exist) Please do it again!!!')
-                }
+        axios.defaults.withCredentials = true;
+        axios.post(backendHost + `/account/logout`,
+            {},
+            {
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': backendHost,
+                },
             }
-        };
+        ).then(() => {
+            navigate("/login");
+        }).catch(function () {
+            alert('Somethingwent wrong with the logout process.');
+        });
     }
 
     return (
