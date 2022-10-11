@@ -3,11 +3,14 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { backendHost } from '../constants';
+import { useDispatch } from 'react-redux'
+import { changeEmail } from '../../../reduxStore/userSlice';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     function swicthToSignup() {
         navigate("/signup");
@@ -39,9 +42,11 @@ export default function Login() {
                     'Access-Control-Allow-Origin': backendHost,
                 },
             }
-        ).then(() => {
+        ).then((response) => {
+            console.log(response.data.email);
+            dispatch(changeEmail(response.data.email))
             navigate("/profile");
-        }).catch(function () {
+        }).catch(() => {
             alert("Incorrect username/password, or user doesn't exist");
         });
     }

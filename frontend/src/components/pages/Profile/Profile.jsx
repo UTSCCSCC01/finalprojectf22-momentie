@@ -2,9 +2,11 @@ import "./profile.css";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { backendHost } from '../constants';
+import { useSelector } from 'react-redux'
 
 export default function Profile() {
 
+    const currentUserEmail = useSelector((state) => state.user.email)
     const navigate = useNavigate();
 
     function logoutUser() {
@@ -28,7 +30,6 @@ export default function Profile() {
 
         // < !--Page box(100 %)-- >
         <div class="page">
-
             {/* <!-- header of the page --> */}
             <header>
                 <div class="headbar">
@@ -133,7 +134,7 @@ export default function Profile() {
 
             <div class="footer">
                 {/* <!-- 留出来，以后想加footer就加--> */}
-                <h2>Footer</h2>
+                <h2>{currentUserEmail}</h2>
             </div>
 
         </div>);
