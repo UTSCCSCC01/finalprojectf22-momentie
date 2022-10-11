@@ -7,6 +7,9 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    function swicthToSignup() {
+        navigate("/signup");
+    }
     function isEmpty(str) {
         return !str.trim().length;
     }
@@ -117,7 +120,7 @@ export default function Login() {
 
                 {/* <!-- Link Box: Store the link redirect to signup page --> */}
                 <div class="linkBox">
-                    <a class="signuplink" href="../SignUpPage/html/signup.html">
+                    <a class="signuplink" onClick={swicthToSignup}>
                         don't have an account? register here
                     </a>
                 </div>
