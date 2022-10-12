@@ -2,7 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 
 export interface Profile extends mongoose.Document {
     description: string;
-    email: string
+    email: string;
     like: number;
     image?: string //change to image id when enable uploading image feature
     createdAt?: string;
