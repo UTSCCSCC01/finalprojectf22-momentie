@@ -3,7 +3,7 @@ import passportLocalMongoose from 'passport-local-mongoose';
 
 export interface User extends mongoose.Document {
     email: string;
-    username?: number;
+    username?: string;
     createdAt?: string;
     updatedAt?: string;
 };
