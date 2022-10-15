@@ -2,7 +2,7 @@ import "./signup.css"
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { backendHost } from '../constants';
+import { backendHost } from '../../../constants';
 
 export default function SignUp() {
     // Get the user input
