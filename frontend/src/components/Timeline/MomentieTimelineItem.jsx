@@ -1,12 +1,28 @@
 import { TimelineItem, TimelineContent, TimelineSeparator, TimelineConnector, TimelineDot, TimelineOppositeContent } from '@mui/lab'
-import { Typography, Paper, Button, Box } from '@mui/material';
+import { Typography, Paper, Button, Box, TextField } from '@mui/material';
+import dayjs from 'dayjs'
 import { useState } from 'react';
-import Calendar from 'react-calendar';
+import EastIcon from '@mui/icons-material/East';
+import CloseIcon from '@mui/icons-material/Close';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 export default function MomentieTimelineItem(props) {
-    const { timelineItem } = props
+    const { timelineItem, width, editMode } = props
+    const [title, setTitle] = useState(timelineItem.title);
+    const [content, setContent] = useState(timelineItem.content);
+    const [startTime, setStartTime] = useState(dayjs(timelineItem.startTime));
+    const [endTime, setEndTime] = useState(dayjs(timelineItem.endTime));
     const [isEditStartTime, setIsEditStartTime] = useState(false);
     const [isEditEndTime, setIsEditEndTime] = useState(false);
+
+    const handleChangeTitle = (event) => {
+        setTitle(event.target.value);
+    };
+    const handleChangeContent = (event) => {
+        setContent(event.target.value);
+    };
     return (
         <TimelineItem>
             <TimelineOppositeContent display="none" />
@@ -14,33 +30,88 @@ export default function MomentieTimelineItem(props) {
                 <TimelineDot />
                 <TimelineConnector />
             </TimelineSeparator>
-            <TimelineContent >
-                <Paper >
-                    <Typography
-                        sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-                        {timelineItem.title}
-                    </Typography>
-                    <Typography>{timelineItem.content}</Typography>
-                    <Box justifyContent="flex-end">
-                        <Button
-                            variant="outlined"
-                            onClick={() => { setIsEditStartTime(!isEditStartTime); setIsEditEndTime(false) }}>
-                            {new Date(timelineItem.startTime).toDateString()}
+            <TimelineContent sx={{ textAlign: "center" }}>
+                {editMode ?
+                    <Paper sx={{ width: width, padding: "10px", position: "relative" }} elevation={3}>
+                        <Button variant="outlined" startIcon={<CloseIcon />}
+                            sx={{ backgroundColor: "white", height: "25px", margin: "10px" }}>
+                            Delete Item
                         </Button>
-                        <Button
-                            variant="outlined"
-                            onClick={() => { setIsEditEndTime(!isEditEndTime); setIsEditStartTime(false) }}>
-                            {new Date(timelineItem.endTime).toDateString()}
-                        </Button>
-                        {isEditStartTime || isEditEndTime ?
-                            <Box>
-                                {isEditStartTime && <Typography>StartTime</Typography>}
-                                {isEditEndTime && <Typography>EndTime</Typography>}
-                                <Calendar />
-                            </Box> : null}
-                    </Box>
-                </Paper>
+                        <TextField
+                            required
+                            id="outlined-required"
+                            label="Required Title"
+                            defaultValue={title}
+                            onChange={handleChangeTitle}
+                            sx={{ margin: "10px" }}
+                        />
+                        <TextField
+                            id="standard-multiline-static"
+                            label="Content"
+                            multiline
+                            defaultValue={content}
+                            onChange={handleChangeTitle}
+                            variant="filled"
+                            sx={{ margin: "10px", width: "90%" }}
+                        />
+
+                        <Box sx={{ padding: "10px" }}>
+                            <Box display="flex" justifyContent="space-between" >
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => { setIsEditStartTime(!isEditStartTime); setIsEditEndTime(false) }}>
+                                    {startTime.format('DD/MM/YYYY')}
+                                </Button>
+                                <EastIcon />
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => { setIsEditEndTime(!isEditEndTime); setIsEditStartTime(false) }}>
+                                    {endTime.format('DD/MM/YYYY')}
+                                </Button>
+                            </Box>
+                            {isEditStartTime || isEditEndTime ?
+                                <Box>
+                                    {isEditStartTime && <Typography>StartTime</Typography>}
+                                    {isEditEndTime && <Typography>EndTime</Typography>}
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DatePicker
+                                            label={isEditStartTime ? "Start Time" : "End Time"}
+                                            value={isEditStartTime ? startTime : endTime}
+                                            onChange={(newValue) => {
+                                                if (isEditStartTime) {
+                                                    setStartTime(newValue);
+                                                } else {
+                                                    setEndTime(newValue);
+                                                }
+                                            }}
+                                            renderInput={(params) => <TextField {...params} />}
+                                        />
+                                    </LocalizationProvider>
+                                </Box> : null}
+                        </Box>
+                    </Paper>
+
+                    :
+
+                    <Paper sx={{ width: width, padding: "10px" }} elevation={3}>
+                        <Typography
+                            sx={{ fontWeight: 'bold', textTransform: 'uppercase', wordBreak: "break-word" }}>
+                            {timelineItem.title}
+                        </Typography>
+                        <Typography sx={{ wordBreak: "break-word" }}>{timelineItem.content}</Typography>
+                        <Box sx={{ padding: "10px" }}>
+                            <Box display="flex" justifyContent="space-between" >
+                                <Paper elevation={0} variant="outlined" sx={{ borderWidth: "5px", padding: "3px" }}>
+                                    {startTime.format('DD/MM/YYYY')}
+                                </Paper>
+                                <EastIcon />
+                                <Paper elevation={0} variant="outlined" sx={{ borderWidth: "5px", padding: "3px" }}>
+                                    {endTime.format('DD/MM/YYYY')}
+                                </Paper>
+                            </Box>
+                        </Box>
+                    </Paper>}
             </TimelineContent>
-        </TimelineItem>
+        </TimelineItem >
     );
 }
