@@ -1,14 +1,14 @@
 import mongoose, { Schema } from 'mongoose';
 
 export interface Like extends mongoose.Document {
-    email: string;
-    title: string;
+    posterEmail: string;
+    raterEmail: string;
     rate: number;
 };
 
 const Like = new Schema ({
-    title: { type: String, require: true },
-    email: { type: String, require: true },
+    posterEmail: { type: String, require: true },
+    raterEmail: { type: String, require: true },
     rate: { type: Number, require: true },
 },{ timestamps: true });
 
