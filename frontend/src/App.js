@@ -74,6 +74,8 @@ function App() {
   const editableDataRef = useRef(timelineData); // does not cause re-render when changed.
   const backupData = useState(timelineData); // re-renders when changed.
   
+  We assume the most outer level using this component wrapps it in a form. Otherwise alerts
+  are not going to be valid here.
   1. Use http request to get backpData and use it to set editableDataRef.
   2. Pass value (not the reference) of editableDataRef using .current into Timeline
   3. Create helper functions suchs as addTimline, deleteTimeline, etc into Timeline so that it
@@ -81,7 +83,7 @@ function App() {
   4. When we want to edit, pass editMode as true.
   5. When user clicks cancel, reset dataRef with backupData and pass editMode as false.
   6. When user clicks Done, send data in editableDataRef to server and reset backupData to re-render.
-     If request failed, do step 4.
+     If request failed, do step 4.`
   
   
   */

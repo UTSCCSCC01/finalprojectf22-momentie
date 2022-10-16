@@ -59,14 +59,32 @@ export default function MomentieTimelineItem(props) {
                             <Box display="flex" justifyContent="space-between" >
                                 <Button
                                     variant="outlined"
-                                    onClick={() => { setIsEditStartTime(!isEditStartTime); setIsEditEndTime(false) }}>
-                                    {startTime.format('DD/MM/YYYY')}
+                                    onClick={() => {
+                                        setIsEditStartTime(!isEditStartTime);
+                                        setIsEditEndTime(false);
+                                        if (!startTime) {
+                                            setStartTime(dayjs(timelineItem.startTime))
+                                        }
+                                        if (!endTime) {
+                                            setEndTime(dayjs(timelineItem.endTime))
+                                        }
+                                    }}>
+                                    {startTime ? startTime.format('DD/MM/YYYY') : null}
                                 </Button>
                                 <EastIcon />
                                 <Button
                                     variant="outlined"
-                                    onClick={() => { setIsEditEndTime(!isEditEndTime); setIsEditStartTime(false) }}>
-                                    {endTime.format('DD/MM/YYYY')}
+                                    onClick={() => {
+                                        setIsEditEndTime(!isEditEndTime);
+                                        setIsEditStartTime(false);
+                                        if (!startTime) {
+                                            setStartTime(dayjs(timelineItem.startTime))
+                                        }
+                                        if (!endTime) {
+                                            setEndTime(dayjs(timelineItem.endTime))
+                                        }
+                                    }}>
+                                    {endTime ? endTime.format('DD/MM/YYYY') : null}
                                 </Button>
                             </Box>
                             {isEditStartTime || isEditEndTime ?
@@ -84,7 +102,7 @@ export default function MomentieTimelineItem(props) {
                                                     setEndTime(newValue);
                                                 }
                                             }}
-                                            renderInput={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField required {...params} />}
                                         />
                                     </LocalizationProvider>
                                 </Box> : null}
