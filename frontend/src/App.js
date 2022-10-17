@@ -6,33 +6,33 @@ import SignUp from './components/pages/SignUp/SignUp.jsx';
 import MomentieTimeline from './components/Timeline/MomentieTimeline.jsx';
 const timelineData = {
   "experience": [{
-    id: "experience",
+    topic: "experience",
     title: "first",
     content: "somethingasasdddddddddddddddddddddddddddddddddddddddddddd",
     startTime: "2022-10-05T04:38:26.022Z",
     endTime: "2022-10-05T04:38:26.022Z",
   },
   {
-    id: "experience",
+    topic: "experience",
     title: "second",
     content: "something",
     startTime: "2022-10-05T04:38:26.022Z",
     endTime: "2022-10-05T04:38:26.022Z",
   }, {
-    id: "experience",
+    topic: "experience",
     title: "first",
     content: "something",
     startTime: "2022-10-05T04:38:26.022Z",
     endTime: "2022-10-05T04:38:26.022Z",
   }, {
-    id: "experience",
+    topic: "experience",
     title: "first",
     content: "something",
     startTime: "2022-10-05T04:38:26.022Z",
     endTime: "2022-10-05T04:38:26.022Z",
   }],
   "skill": [{
-    id: "skill",
+    topic: "skill",
     title: "first",
     content: "somethingas",
     startTime: "2022-10-05T04:38:26.022Z",

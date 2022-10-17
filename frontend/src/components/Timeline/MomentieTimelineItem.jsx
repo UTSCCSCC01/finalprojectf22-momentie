@@ -16,22 +16,22 @@ export default function MomentieTimelineItem(props) {
     const [isEditEndTime, setIsEditEndTime] = useState(false);
 
     const handleChangeTitle = (event) => {
-        editItem(timelineItem.id, index, "title", event.target.value);
+        editItem(timelineItem.topic, index, "title", event.target.value);
     };
     const handleChangeContent = (event) => {
-        editItem(timelineItem.id, index, "content", event.target.value);
+        editItem(timelineItem.topic, index, "content", event.target.value);
     };
     const handleChangeEndTime = (value) => {
         if (!value || !value.isValid()) {
             value = endTime;
         }
-        setEndTime(value, editItem(timelineItem.id, index, "endTime", endTime.toDate().toISOString()));
+        setEndTime(value, editItem(timelineItem.topic, index, "endTime", endTime.toDate().toISOString()));
     }
     const handleChangeStartTime = (value) => {
         if (!value) {
             value = startTime;
         }
-        setStartTime(value, editItem(timelineItem.id, index, "startTime", startTime.toDate().toISOString()));
+        setStartTime(value, editItem(timelineItem.topic, index, "startTime", startTime.toDate().toISOString()));
     }
     return (
         <TimelineItem>
@@ -45,7 +45,7 @@ export default function MomentieTimelineItem(props) {
                     <Paper sx={{ width: width, padding: "10px", position: "relative" }} elevation={3}>
                         <Button variant="outlined" startIcon={<CloseIcon />}
                             sx={{ backgroundColor: "white", height: "25px", margin: "10px" }}
-                            onClick={() => { deleteItem(timelineItem.id, index) }}>
+                            onClick={() => { deleteItem(timelineItem.topic, index) }}>
                             Delete Item
                         </Button>
                         <TextField

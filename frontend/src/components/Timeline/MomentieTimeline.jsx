@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { Typography, Paper, Button, Divider, TextField } from '@mui/material';
+import { Typography, Button, Divider, TextField } from '@mui/material';
 import { Timeline } from '@mui/lab';
 import { useState, useRef } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,7 +25,7 @@ export default function MomentieTimeline(props) {
 
         let topicObject = {};
         topicObject[finalTopicName] = [{
-            id: finalTopicName,
+            topic: finalTopicName,
             title: "Temp Title",
             content: "Temp Content",
             startTime: new Date().toDateString(),
@@ -37,26 +37,26 @@ export default function MomentieTimeline(props) {
         printData();
     }
 
-    function handleDeleteTopic(id) {
+    function handleDeleteTopic(topic) {
         let tempList = { ...timelineList };
-        delete tempList[id];
+        delete tempList[topic];
         setTimelineList(tempList);
         contentRef.current = tempList;
         printData();
     }
 
-    function handleAddItem(id) {
+    function handleAddItem(topic) {
         let tempList = { ...timelineList };
-        if (tempList[id] !== undefined && tempList[id] !== null) {
+        if (tempList[topic] !== undefined && tempList[topic] !== null) {
             let maxId = 0;
-            for (var i = 0; i < tempList[id].length; i++) {
-                if (tempList[id][i]._id >= maxId) {
-                    maxId = tempList[id][i]._id + 1;
+            for (var i = 0; i < tempList[topic].length; i++) {
+                if (tempList[topic][i]._id >= maxId) {
+                    maxId = tempList[topic][i]._id + 1;
                 };
             }
-            tempList[id].unshift({
+            tempList[topic].unshift({
                 _id: maxId,
-                id: id,
+                topic: topic,
                 title: "Temp Title",
                 content: "Temp Content",
                 startTime: new Date().toDateString(),
@@ -68,26 +68,26 @@ export default function MomentieTimeline(props) {
         }
     }
 
-    function handleTopicChange(e, id) {
-        let newId = e.target.value;
+    function handleTopicChange(e, topic) {
+        let newTopic = e.target.value;
         let tempList = { ...timelineList };
-        if (tempList[id] !== undefined && tempList[id] !== null) {
-            for (var i = 0; i < tempList[id].length; i++) {
-                tempList[id][i].id = newId;
+        if (tempList[topic] !== undefined && tempList[topic] !== null) {
+            for (var i = 0; i < tempList[topic].length; i++) {
+                tempList[topic][i].topic = newTopic;
             }
-            let tempObject = tempList[id];
-            delete tempList[id];
-            tempList[newId] = tempObject
+            let tempObject = tempList[topic];
+            delete tempList[topic];
+            tempList[newTopic] = tempObject
             setTimelineList(tempList)
             contentRef.current = tempList;
             printData();
         }
     }
-    function deleteItem(id, index) {
+    function deleteItem(topic, index) {
         let tempList = { ...timelineList };
-        if (tempList[id] !== undefined && tempList[id] !== null) {
-            if (index >= 0 && index < tempList[id].length) {
-                tempList[id].splice(index, 1);
+        if (tempList[topic] !== undefined && tempList[topic] !== null) {
+            if (index >= 0 && index < tempList[topic].length) {
+                tempList[topic].splice(index, 1);
             }
             setTimelineList(tempList);
             contentRef.current = tempList;
@@ -95,10 +95,10 @@ export default function MomentieTimeline(props) {
         }
     }
 
-    function editItem(id, index, field, value) {
-        if (timelineList[id] !== undefined && timelineList[id] !== null && field != "id" && field != "_id") {
-            if (index >= 0 && index < timelineList[id].length) {
-                timelineList[id][index][field] = value
+    function editItem(topic, index, field, value) {
+        if (timelineList[topic] !== undefined && timelineList[topic] !== null && field !== "topic" && field !== "_id") {
+            if (index >= 0 && index < timelineList[topic].length) {
+                timelineList[topic][index][field] = value
             }
             contentRef.current = timelineList;
             printData();
@@ -106,67 +106,63 @@ export default function MomentieTimeline(props) {
     }
 
     return (
-        <form ref={formRef}>
-            <Button onClick={() => formRef.current.reportValidity()}
-            >CLICK TO SUBMIT</Button>
-            <Box sx={{ display: "flex", flexDirection: "column", width: "fit-content", height: "fit-content", border: 3 }}>
-                <Button variant="outlined" startIcon={<AddCircleIcon />}
-                    sx={{ height: "20px", width: "50%", margin: "10px", alignSelf: "center" }} onClick={handleAddTopic}>
-                    Add Topic
-                </Button>
-                <Box sx={{
-                    width: "fit-content",
-                    height: "fit-content", display: "flex",
-                    flexWrap: "wrap", gap: "40px",
-                }}>
+        <Box sx={{ display: "flex", flexDirection: "column", width: "fit-content", height: "fit-content", border: 3 }}>
+            <Button variant="outlined" startIcon={<AddCircleIcon />}
+                sx={{ height: "20px", width: "50%", margin: "10px", alignSelf: "center" }} onClick={handleAddTopic}>
+                Add Topic
+            </Button>
+            <Box sx={{
+                width: "fit-content",
+                height: "fit-content", display: "flex",
+                flexWrap: "wrap", gap: "40px",
+            }}>
 
-                    {
-                        Object.keys(timelineList).sort().map((id) => (
-                            <div key={id} >
-                                <Box
-                                    sx={{
-                                        width: "fit-content", height: heightStyle, overflowY: "auto", overflowX: "hidden"
-                                        , position: "relative", display: "flex", flexDirection: "column", minWidth: "300px"
-                                    }}
-                                    key={id} >
-                                    {editMode ? <TextField
-                                        required
-                                        id="filled-required"
-                                        label="Required Topic"
-                                        defaultValue={id}
-                                        variant="filled"
-                                        sx={{ margin: "10px" }}
-                                        onBlur={(e) => handleTopicChange(e, id)}
-                                    /> : <Typography
-                                        sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}
-                                        fontSize={width / timelineList.length / 12}  >
-                                        {id}
-                                    </Typography>}
-                                    {allowTopicEdit && editMode &&
-                                        <Button variant="outlined" startIcon={<DeleteIcon />}
-                                            sx={{ backgroundColor: "white", height: "20px", width: "50%", alignSelf: "center" }}
-                                            onClick={() => { handleDeleteTopic(id) }}>
-                                            Delete Topic
-                                        </Button>}
-                                    <Divider sx={{ margin: "10px" }} />
-                                    {editMode && <Button variant="outlined" startIcon={<AddIcon />}
+                {
+                    Object.keys(timelineList).sort().map((topic) => (
+                        <div key={topic} >
+                            <Box
+                                sx={{
+                                    width: "fit-content", height: heightStyle, overflowY: "auto", overflowX: "hidden"
+                                    , position: "relative", display: "flex", flexDirection: "column", minWidth: "300px"
+                                }}
+                                key={topic} >
+                                {editMode ? <TextField
+                                    required
+                                    id="filled-required"
+                                    label="Required Topic"
+                                    defaultValue={topic}
+                                    variant="filled"
+                                    sx={{ margin: "10px" }}
+                                    onBlur={(e) => handleTopicChange(e, topic)}
+                                /> : <Typography
+                                    sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}
+                                    fontSize={width / timelineList.length / 12}  >
+                                    {topic}
+                                </Typography>}
+                                {allowTopicEdit && editMode &&
+                                    <Button variant="outlined" startIcon={<DeleteIcon />}
                                         sx={{ backgroundColor: "white", height: "20px", width: "50%", alignSelf: "center" }}
-                                        onClick={() => { handleAddItem(id) }}>
-                                        Add Item
+                                        onClick={() => { handleDeleteTopic(topic) }}>
+                                        Delete Topic
                                     </Button>}
-                                    <Timeline >
-                                        {timelineList[id].map((timelineItem, index) => (
-                                            <div key={timelineItem._id}>
-                                                <MomentieTimelineItem index={index} timelineItem={timelineItem} width={width} editMode={editMode} deleteItem={deleteItem} editItem={editItem} />
-                                            </div>
-                                        ))}
-                                    </Timeline>
-                                </Box>
-                            </div>
-                        ))
-                    }
-                </Box >
-            </Box>
-        </form >
+                                <Divider sx={{ margin: "10px" }} />
+                                {editMode && <Button variant="outlined" startIcon={<AddIcon />}
+                                    sx={{ backgroundColor: "white", height: "20px", width: "50%", alignSelf: "center" }}
+                                    onClick={() => { handleAddItem(topic) }}>
+                                    Add Item
+                                </Button>}
+                                <Timeline >
+                                    {timelineList[topic].map((timelineItem, index) => (
+                                        <div key={timelineItem._id}>
+                                            <MomentieTimelineItem index={index} timelineItem={timelineItem} width={width} editMode={editMode} deleteItem={deleteItem} editItem={editItem} />
+                                        </div>
+                                    ))}
+                                </Timeline>
+                            </Box>
+                        </div>
+                    ))
+                }
+            </Box >
+        </Box>
     );
 }
