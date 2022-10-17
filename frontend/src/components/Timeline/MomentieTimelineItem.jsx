@@ -9,20 +9,30 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 export default function MomentieTimelineItem(props) {
-    const { timelineItem, width, editMode } = props
-    const [title, setTitle] = useState(timelineItem.title);
-    const [content, setContent] = useState(timelineItem.content);
+    const { index, timelineItem, width, editMode, deleteItem, editItem } = props
     const [startTime, setStartTime] = useState(dayjs(timelineItem.startTime));
     const [endTime, setEndTime] = useState(dayjs(timelineItem.endTime));
     const [isEditStartTime, setIsEditStartTime] = useState(false);
     const [isEditEndTime, setIsEditEndTime] = useState(false);
 
     const handleChangeTitle = (event) => {
-        setTitle(event.target.value);
+        editItem(timelineItem.id, index, "title", event.target.value);
     };
     const handleChangeContent = (event) => {
-        setContent(event.target.value);
+        editItem(timelineItem.id, index, "content", event.target.value);
     };
+    const handleChangeEndTime = (value) => {
+        if (!value || !value.isValid()) {
+            value = endTime;
+        }
+        setEndTime(value, editItem(timelineItem.id, index, "endTime", endTime.toDate().toISOString()));
+    }
+    const handleChangeStartTime = (value) => {
+        if (!value) {
+            value = startTime;
+        }
+        setStartTime(value, editItem(timelineItem.id, index, "startTime", startTime.toDate().toISOString()));
+    }
     return (
         <TimelineItem>
             <TimelineOppositeContent display="none" />
@@ -34,23 +44,24 @@ export default function MomentieTimelineItem(props) {
                 {editMode ?
                     <Paper sx={{ width: width, padding: "10px", position: "relative" }} elevation={3}>
                         <Button variant="outlined" startIcon={<CloseIcon />}
-                            sx={{ backgroundColor: "white", height: "25px", margin: "10px" }}>
+                            sx={{ backgroundColor: "white", height: "25px", margin: "10px" }}
+                            onClick={() => { deleteItem(timelineItem.id, index) }}>
                             Delete Item
                         </Button>
                         <TextField
                             required
                             id="outlined-required"
                             label="Required Title"
-                            defaultValue={title}
-                            onChange={handleChangeTitle}
+                            defaultValue={timelineItem.title}
+                            onBlur={handleChangeTitle}
                             sx={{ margin: "10px" }}
                         />
                         <TextField
                             id="standard-multiline-static"
                             label="Content"
                             multiline
-                            defaultValue={content}
-                            onChange={handleChangeTitle}
+                            defaultValue={timelineItem.content}
+                            onChange={handleChangeContent}
                             variant="filled"
                             sx={{ margin: "10px", width: "90%" }}
                         />
@@ -63,10 +74,10 @@ export default function MomentieTimelineItem(props) {
                                         setIsEditStartTime(!isEditStartTime);
                                         setIsEditEndTime(false);
                                         if (!startTime) {
-                                            setStartTime(dayjs(timelineItem.startTime))
+                                            handleChangeStartTime(dayjs(timelineItem.startTime))
                                         }
                                         if (!endTime) {
-                                            setEndTime(dayjs(timelineItem.endTime))
+                                            handleChangeEndTime(dayjs(timelineItem.endTime))
                                         }
                                     }}>
                                     {startTime ? startTime.format('DD/MM/YYYY') : null}
@@ -78,12 +89,12 @@ export default function MomentieTimelineItem(props) {
                                         setIsEditEndTime(!isEditEndTime);
                                         setIsEditStartTime(false);
                                         if (!startTime) {
-                                            setStartTime(dayjs(timelineItem.startTime))
+                                            handleChangeStartTime(dayjs(timelineItem.startTime))
                                         }
-                                        if (!endTime) {
-                                            setEndTime(dayjs(timelineItem.endTime))
-                                        }
-                                    }}>
+                                        else
+                                            handleChangeEndTime(dayjs(timelineItem.endTime))
+                                    }
+                                    }>
                                     {endTime ? endTime.format('DD/MM/YYYY') : null}
                                 </Button>
                             </Box>
@@ -97,9 +108,9 @@ export default function MomentieTimelineItem(props) {
                                             value={isEditStartTime ? startTime : endTime}
                                             onChange={(newValue) => {
                                                 if (isEditStartTime) {
-                                                    setStartTime(newValue);
+                                                    handleChangeStartTime(newValue)
                                                 } else {
-                                                    setEndTime(newValue);
+                                                    handleChangeEndTime(newValue)
                                                 }
                                             }}
                                             renderInput={(params) => <TextField required {...params} />}
