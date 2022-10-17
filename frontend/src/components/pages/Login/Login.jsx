@@ -2,7 +2,7 @@ import './Login.css';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { backendHost } from '../constants';
+import { backendHost } from '../../../constants';
 import { useDispatch } from 'react-redux'
 import { changeEmail } from '../../../reduxStore/userSlice';
 

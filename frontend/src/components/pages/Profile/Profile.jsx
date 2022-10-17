@@ -1,7 +1,7 @@
 import "./profile.css";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { backendHost } from '../constants';
+import { backendHost } from '../../../constants';
 import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
