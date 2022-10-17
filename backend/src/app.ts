@@ -44,6 +44,7 @@ app.get('/', (req, res) => {
 
 app.use('/profile', require('./routes/profile'))
 app.use('/account', require('./routes/account'))
+app.use('/timeline', require('./routes/timeline'))
 
 app.listen(5000, () => console.log('Server Running...'));
 

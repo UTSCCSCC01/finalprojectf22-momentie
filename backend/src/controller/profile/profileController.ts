@@ -1,4 +1,3 @@
-import UserModel from '../../model/userModel';
 import ProfileModel from '../../model/profileModel'
 
 const retrieve_profile = async (req: any, res: any) => {
