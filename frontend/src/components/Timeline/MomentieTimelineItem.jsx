@@ -28,7 +28,7 @@ export default function MomentieTimelineItem(props) {
         setEndTime(value, editItem(timelineItem.topic, index, "endTime", endTime.toDate().toISOString()));
     }
     const handleChangeStartTime = (value) => {
-        if (!value) {
+        if (!value || !value.isValid()) {
             value = startTime;
         }
         setStartTime(value, editItem(timelineItem.topic, index, "startTime", startTime.toDate().toISOString()));
@@ -80,7 +80,7 @@ export default function MomentieTimelineItem(props) {
                                             handleChangeEndTime(dayjs(timelineItem.endTime))
                                         }
                                     }}>
-                                    {startTime ? startTime.format('DD/MM/YYYY') : null}
+                                    {startTime ? startTime.format('MM/DD/YYYY') : null}
                                 </Button>
                                 <EastIcon />
                                 <Button
@@ -95,7 +95,7 @@ export default function MomentieTimelineItem(props) {
                                             handleChangeEndTime(dayjs(timelineItem.endTime))
                                     }
                                     }>
-                                    {endTime ? endTime.format('DD/MM/YYYY') : null}
+                                    {endTime ? endTime.format('MM/DD/YYYY') : null}
                                 </Button>
                             </Box>
                             {isEditStartTime || isEditEndTime ?
