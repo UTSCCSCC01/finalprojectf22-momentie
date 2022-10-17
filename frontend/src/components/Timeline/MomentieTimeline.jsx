@@ -119,7 +119,7 @@ export default function MomentieTimeline(props) {
                 {
                     Object.keys(timelineList).sort().map((topic) => (
                         <div key={topic} >
-                            {editMode ? <TextField
+                            {editMode && allowTopicEdit ? <TextField
                                 required
                                 id="filled-required"
                                 label="Required Topic"
@@ -146,7 +146,7 @@ export default function MomentieTimeline(props) {
                                         onClick={() => { handleDeleteTopic(topic) }}>
                                         Delete Topic
                                     </Button>}
-                                {editMode && <Divider sx={{ margin: "10px" }} />}
+                                {editMode && allowTopicEdit && <Divider sx={{ margin: "10px" }} />}
                                 {editMode && <Button variant="outlined" startIcon={<AddIcon />}
                                     sx={{ backgroundColor: "white", height: "20px", width: "50%", alignSelf: "center" }}
                                     onClick={() => { handleAddItem(topic) }}>

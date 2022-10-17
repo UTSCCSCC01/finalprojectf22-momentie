@@ -72,7 +72,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={true} allowTopicEdit={true} printData={printData} />} />
+      <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} />
     </Routes>
   );
 }
