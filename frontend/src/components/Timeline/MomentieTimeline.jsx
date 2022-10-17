@@ -107,45 +107,46 @@ export default function MomentieTimeline(props) {
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", width: "fit-content", height: "fit-content", border: 3 }}>
-            <Button variant="outlined" startIcon={<AddCircleIcon />}
+            {editMode && allowTopicEdit && <Button variant="outlined" startIcon={<AddCircleIcon />}
                 sx={{ height: "20px", width: "50%", margin: "10px", alignSelf: "center" }} onClick={handleAddTopic}>
                 Add Topic
-            </Button>
+            </Button>}
             <Box sx={{
                 width: "fit-content",
                 height: "fit-content", display: "flex",
                 flexWrap: "wrap", gap: "40px",
             }}>
-
                 {
                     Object.keys(timelineList).sort().map((topic) => (
                         <div key={topic} >
+                            {editMode ? <TextField
+                                required
+                                id="filled-required"
+                                label="Required Topic"
+                                defaultValue={topic}
+                                variant="filled"
+                                sx={{ margin: "10px" }}
+                                onBlur={(e) => handleTopicChange(e, topic)}
+                            /> : <Typography
+                                sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}
+                                fontSize={width / timelineList.length / 12}  >
+                                {topic}
+                            </Typography>}
+                            <Divider sx={{ margin: "10px" }} />
                             <Box
                                 sx={{
                                     width: "fit-content", height: heightStyle, overflowY: "auto", overflowX: "hidden"
                                     , position: "relative", display: "flex", flexDirection: "column", minWidth: "300px"
                                 }}
                                 key={topic} >
-                                {editMode ? <TextField
-                                    required
-                                    id="filled-required"
-                                    label="Required Topic"
-                                    defaultValue={topic}
-                                    variant="filled"
-                                    sx={{ margin: "10px" }}
-                                    onBlur={(e) => handleTopicChange(e, topic)}
-                                /> : <Typography
-                                    sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}
-                                    fontSize={width / timelineList.length / 12}  >
-                                    {topic}
-                                </Typography>}
+
                                 {allowTopicEdit && editMode &&
                                     <Button variant="outlined" startIcon={<DeleteIcon />}
                                         sx={{ backgroundColor: "white", height: "20px", width: "50%", alignSelf: "center" }}
                                         onClick={() => { handleDeleteTopic(topic) }}>
                                         Delete Topic
                                     </Button>}
-                                <Divider sx={{ margin: "10px" }} />
+                                {editMode && <Divider sx={{ margin: "10px" }} />}
                                 {editMode && <Button variant="outlined" startIcon={<AddIcon />}
                                     sx={{ backgroundColor: "white", height: "20px", width: "50%", alignSelf: "center" }}
                                     onClick={() => { handleAddItem(topic) }}>
