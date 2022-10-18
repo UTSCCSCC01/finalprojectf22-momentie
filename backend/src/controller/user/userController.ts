@@ -37,8 +37,8 @@ const userSignUp = (req: any, res: any) => {
                 return res.status(409).send(err);
             }
             console.log(newPorfile);
+            return res.status(200).send("user registered");
         });
-        return res.status(200).send("user registered");
     });
 };
 

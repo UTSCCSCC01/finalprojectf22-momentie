@@ -37,8 +37,8 @@ const timelineCreate = (req: any, res: any) => {
             return res.status(409).send(err);
         }
         console.log(newTimeline);
+        return res.status(200).send("timeline created");
     });
-    return res.status(200).send("timeline created");
 }
 
 module.exports = { timelineCreate }
