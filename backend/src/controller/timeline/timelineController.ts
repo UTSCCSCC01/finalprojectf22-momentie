@@ -41,4 +41,27 @@ const timelineCreate = (req: any, res: any) => {
     });
 }
 
-module.exports = { timelineCreate }
+const timelineRetri = (req: any, res: any) => {
+  const email = req.params.email;
+  if (email) {
+    TimelineModel.find({email: email}, null, {sort: {'startTime': 1}}, function(err: any, timelines: any) {
+      if (err) return res.status(500).end(err);
+      console.log(timelines)
+      const topics: any[] = [];
+      const sortedTimelines = timelines.reduce((userTimeline: any, timeline: any) => {
+        const topic = timeline.topic;
+        if (!(topics.includes(topic))) {
+          topics.push(topic);
+          userTimeline[topic] = [];
+        }
+        userTimeline[topic].push(timeline);
+        return userTimeline
+      }, {});
+      sortedTimelines.topics = topics;
+      return res.status(200).json(sortedTimelines);
+    })
+  } else {
+      return res.status(500).end('uesr email is missing');
+  }
+}
+module.exports = { timelineCreate, timelineRetri };
