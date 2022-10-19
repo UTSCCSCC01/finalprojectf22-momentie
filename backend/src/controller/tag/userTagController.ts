@@ -15,25 +15,24 @@ const userTagCreate = async (req: any, res: any) => {
     return res.status(401).end("email is missing");
   }
 
-  UserModel.find({email: email}, function (err: any, user: any) {
+  UserModel.findOne({email: email}, function (err: any, user: any) {
     if (err) return res.status(500).end(err);
-    if (user.length !== 0) {
+    if (!user) {
       return res.status(404).end("user is not exist")
     } else {
-      UserTagModel.find({type: type, title: title, email: email}, function(err: any, userTag: any) {
+      UserTagModel.findOne({type: type, title: title, email: email}, function(err: any, userTag: any) {
         if (err) return res.status(500).end(err);
-        else if (userTag.length > 0) {
-          console.log(userTag)
+        else if (userTag) {
           return res.status(403).end('userTag already exist')
         } else {
-          TagModel.find({type: type, title: title}, function(err: any, tag: any) {
+          TagModel.findOne({type: type, title: title}, function(err: any, tag: any) {
             const newUserTag = new UserTagModel({
               email: email,
               title: title,
               type: type,
             })
             if (err) return res.status(500).end(err);
-            else if (tag.length === 0) {
+            else if (tag) {
               const newTag = new UserTagModel({
                 title: title,
                 type: type,
