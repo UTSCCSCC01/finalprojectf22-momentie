@@ -32,7 +32,7 @@ const userTagCreate = async (req: any, res: any) => {
               type: type,
             })
             if (err) return res.status(500).end(err);
-            else if (tag) {
+            else if (!tag) {
               const newTag = new UserTagModel({
                 title: title,
                 type: type,
