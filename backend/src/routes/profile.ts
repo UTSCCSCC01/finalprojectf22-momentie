@@ -6,6 +6,6 @@ const { retrieve_profile,
 
 router.get('/', retrieve_profile);
 router.patch('/', edit_profile)
-router.get('/like', rate_profile)
+router.patch('/like', rate_profile)
 
 export = router
