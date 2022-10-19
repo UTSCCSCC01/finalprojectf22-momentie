@@ -2,14 +2,10 @@ const express = require('express');
 var router = express.Router();
 
 const { retrieve_profile,
-  edit_profile } = require('../controller/profile/profileController');
+  edit_profile, rate_profile } = require('../controller/profile/profileController')
 
-const { timelineRetri } = require('../controller/timeline/timelineController');
-
-router.get('/', retrieve_profile);
-
-router.patch('/', edit_profile);
-
-router.get('/:email/timeline/', timelineRetri);
+router.get('/', retrieve_profile)
+router.patch('/', edit_profile)
+router.patch('/like', rate_profile)
 
 export = router;
