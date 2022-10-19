@@ -50,4 +50,20 @@ const edit_profile = async (req: any, res: any) => {
 
 }
 
-module.exports = { retrieve_profile, edit_profile }
+const likeRetri = (req: any, res: any) => {
+  const email = req.query.email;
+  if (email) {
+    ProfileModel.findOne({email: email}, function(err: any, profile: any) {
+      if (err) return res.status(500).end(err);
+      if (profile) {
+        return res.status(200).json(profile.like)
+      } else {
+        return res.status(404).end('user is not exist')
+      }
+    })
+  } else {
+    return res.status(401).end('email is missing')
+  }
+}
+
+module.exports = { retrieve_profile, edit_profile, likeRetri }
