@@ -18,6 +18,7 @@ const ListItem = styled('li')(({ theme }) => ({
 export default function ChipsArray(props) {
   const { contentRef, edit } = props;
   const [tagList, setTagList] = useState(contentRef.current);
+  const tagName = useRef('');
 
   const handleDelete = (tagToDelete) => {
     let newList = tagList.filter((tag) => tag.title !== tagToDelete.title);
@@ -27,28 +28,42 @@ export default function ChipsArray(props) {
 
   const handleAdd = () => {
     let newList = [...tagList];
-    let tag = "Tag";
-    let finalTag = tag;
-    let index = 1;
-    while (tagList.filter((tag) => tag.title === finalTag).length != 0) {
-        finalTag = tag + index.toString();
-        index += 1;
+    //let tag = "Tag";
+    //let finalTag = tag;
+    //let index = 1;
+    // while (tagList.filter((tag) => tag.title === finalTag).length != 0) {
+    //     finalTag = tag + index.toString();
+    //     index += 1;
+    // }
+    if(tagName.current !== undefined && tagName.current !== null && tagName.current !== '' && 
+    tagList.filter((tag) => tag.title === tagName.current).length == 0){
+      newList.push({title: tagName.current});
+      setTagList(newList);
+      tagList.current = newList; 
     }
-    newList.push({title: finalTag});
-    setTagList(newList);
-    tagList.current = newList; 
+
+  }
+
+  const handleAddTagName = (e) => {
+    tagName.current = e.target.value;
+    //console.log(tagName.current);
   }
 
   return (
     <Box>
-      {edit ?<TextField
-        required
-        id="outlined-required"
-        label="Required Tag"
-        sx={{ margin: "10px"}}
-      /> : null}
-      {edit ?
-      <Button variant="contained" onClick={handleAdd}>Add Tag</Button>: null}
+      <Box sx={{display: "flex",alignItems:'center'}}>
+        
+        {edit ?<TextField
+          required
+          id="outlined-required"
+          label="Required Tag"
+          sx={{ margin: "10px"}}
+          onChange={(e)=>{handleAddTagName(e)}}
+        /> : null}
+        {edit ?
+        <Button variant="contained" onClick={handleAdd} >Add Tag</Button>: null}
+      </Box>
+
       
       <Paper
       sx={{
@@ -66,11 +81,15 @@ export default function ChipsArray(props) {
         let icon;
         return (
           <ListItem key={tag.title}>
-            <Chip
+            {edit ? <Chip
               icon={icon}
               label={tag.title}
               onDelete={() => {handleDelete(tag)}}
-            />
+              /> : <Chip
+              icon={icon}
+              label={tag.title}
+            />}
+
           </ListItem>
         );
       })}
