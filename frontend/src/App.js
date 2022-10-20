@@ -5,48 +5,7 @@ import Profile from '../src/components/pages/Profile/Profile.jsx'
 import SignUp from './components/pages/SignUp/SignUp.jsx';
 import MomentieTimeline from './components/Timeline/MomentieTimeline.jsx';
 import MomentieTag from './components/Tag/MomentieTag.jsx';
-const timelineData = {
-  "experience": [{
-    topic: "experience",
-    title: "first",
-    content: "somethingasasdddddddddddddddddddddddddddddddddddddddddddd",
-    startTime: "2022-10-05T04:38:26.022Z",
-    endTime: "2022-10-05T04:38:26.022Z",
-  },
-  {
-    topic: "experience",
-    title: "second",
-    content: "something",
-    startTime: "2022-10-05T04:38:26.022Z",
-    endTime: "2022-10-05T04:38:26.022Z",
-  }, {
-    topic: "experience",
-    title: "first",
-    content: "something",
-    startTime: "2022-10-05T04:38:26.022Z",
-    endTime: "2022-10-05T04:38:26.022Z",
-  }, {
-    topic: "experience",
-    title: "first",
-    content: "something",
-    startTime: "2022-10-05T04:38:26.022Z",
-    endTime: "2022-10-05T04:38:26.022Z",
-  }],
-  "skill": [{
-    topic: "skill",
-    title: "first",
-    content: "somethingas",
-    startTime: "2022-10-05T04:38:26.022Z",
-    endTime: "2022-10-05T04:38:26.022Z",
-  },]
-}
-const TagData=[{title: "apple"},{title: "banana"}]
-
-for (const property in timelineData) {
-  for (var i = 0; i < timelineData[property].length; i++) {
-    timelineData[property][i]._id = i;
-  }
-}
+const TagData = [{ title: "apple" }, { title: "banana" }]
 function App() {
   /*
   const editableDataRef = useRef(timelineData); // does not cause re-render when changed.
@@ -65,19 +24,19 @@ function App() {
   
   
   */
-  const editableDataRef = useRef(timelineData);
+  // const editableDataRef = useRef(timelineData);
   const editTagData = useRef(TagData);
-  function printData() {
-    console.log(editableDataRef);
-  }
+  // function printData() {
+  //   console.log(editableDataRef);
+  // }
   return (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} />
-      <Route path="/tag" element={<MomentieTag contentRef={editTagData} width={100} height={30} edit={false}/> }   /> 
+      {/* <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} /> */}
+      <Route path="/tag" element={<MomentieTag contentRef={editTagData} width={100} height={30} edit={false} />} />
     </Routes>
   );
 }
