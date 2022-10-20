@@ -9,6 +9,7 @@ import { useState, useRef } from "react";
 import { Button, TextField, Box } from '@mui/material'
 import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
+import MomentieTag from "../../Tag/MomentieTag";
 
 const secondary = brown['A400']
 const timelineData = {
@@ -39,7 +40,7 @@ const timelineData = {
         endTime: "2022-10-05T04:38:26.022Z",
     }]
 }
-
+const TagData = [{ title: "apple" }, { title: "banana" }]
 
 for (const property in timelineData) {
     for (var i = 0; i < timelineData[property].length; i++) {
@@ -53,6 +54,9 @@ export default function Profile() {
     const [username, setUserName] = useState("");
     const timelineRef = useRef(timelineData);
     const [timelineBackup, setTimeLineBackup] = useState(timelineRef.current);
+
+    const editTagData = useRef(TagData);
+
     // changing values
     const descriptionRef = useRef("");
     // saved value
@@ -235,15 +239,19 @@ export default function Profile() {
 
                 <div class="description">
                     <Box>
-                        <p>description/tagline</p>
-                        {edit ? <TextField
-                            required
-                            id="filled-required"
-                            label="Required Description"
-                            defaultValue={descriptionRef.current}
-                            variant="filled"
-                            onChange={(e) => { handleEditDescription(e) }}
-                        /> : <p>{descriptionRef.current}</p>}
+                        <Box>
+                            <p>description/tagline</p>
+                            {edit ? <TextField
+                                required
+                                id="filled-required"
+                                label="Required Description"
+                                defaultValue={descriptionRef.current}
+                                variant="filled"
+                                onChange={(e) => { handleEditDescription(e) }}
+                            /> : <p>{descriptionRef.current}</p>}
+                        </Box>
+                        {/* Put the tag here */}
+                        <MomentieTag contentRef={editTagData} width={100} height={30} edit={edit} />
                     </Box>
                 </div>
 
@@ -265,6 +273,7 @@ export default function Profile() {
             <Box class="right">
                 {/* <!-- time line starts here--> */}
                 <MomentieTimeline contentRef={timelineRef} width="300px" editMode={edit} allowTopicEdit={true} />
+                
 
             </Box>
 
