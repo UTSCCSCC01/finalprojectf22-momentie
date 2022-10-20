@@ -5,6 +5,7 @@ import { backendHost } from '../../../constants';
 import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
+import Rate from '../../components/Rating/Rate.jsx';
 
 export default function Profile() {
 

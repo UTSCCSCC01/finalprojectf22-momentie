@@ -4,6 +4,8 @@ import Login from '../src/components/pages/Login/Login.jsx'
 import Profile from '../src/components/pages/Profile/Profile.jsx'
 import SignUp from './components/pages/SignUp/SignUp.jsx';
 import MomentieTimeline from './components/Timeline/MomentieTimeline.jsx';
+import Rate from './components/Rating/Rate.jsx';
+
 const timelineData = {
   "experience": [{
     topic: "experience",
@@ -73,6 +75,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} />
+      <Route path="/rate" element={<Rate />} />
     </Routes>
   );
 }
