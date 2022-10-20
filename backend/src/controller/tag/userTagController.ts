@@ -3,7 +3,7 @@ import UserModel from "../../model/userModel";
 import TagModel from "../../model/tagModel";
 
 const userTagCreate = async (req: any, res: any) => {
-  const email = req.query.email;
+  const email = req.user.email;
   const type = req.body.type;
   const title = req.body.title;
 
