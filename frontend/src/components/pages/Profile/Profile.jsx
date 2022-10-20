@@ -7,7 +7,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
 import {Button, TextField, Box} from '@mui/material'
+import { brown } from '@mui/material/colors';
 
+const secondary = brown['A400']
+    
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
@@ -19,7 +22,7 @@ export default function Profile() {
 
     const currentUserEmail = useSelector((state) => state.email);
     
-    
+    //customize color
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -153,10 +156,26 @@ export default function Profile() {
                     <div>
                         <Button 
                             variant="contained"
-                            onClick={handleSave}>Done</Button>
+                            onClick={handleSave}
+                            color = "secondary"
+                            size = "small"
+                            sx={{m: 2, p: 0}}
+                            style={{
+                                borderRadius: 3,
+                                backgroundColor: "#BEACAC",
+                                fontSize: "14px"
+                            }}>Done</Button>
                         <Button 
                             variant="outlined"
-                            onClick={handleCancel}>Cancel</Button>
+                            onClick={handleCancel}
+                            color = "secondary"
+                            size = "small"
+                            sx={{m: 1, p: 0}}
+                            style={{
+                                borderRadius: 3,
+                                color: "#BEACAC",
+                                fontSize: "14px"
+                            }}>Cancel</Button>
                     </div> : null}
                 </div>
             </header>
