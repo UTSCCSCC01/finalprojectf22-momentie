@@ -5,12 +5,83 @@ import { backendHost } from '../../../constants';
 import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
+import { useState, useRef } from "react";
+import {Button, TextField, Box} from '@mui/material'
 
 export default function Profile() {
 
-    const currentUserEmail = useSelector((state) => state.email)
+    const [edit, setEdit] = useState(false);
+    const [username, setUserName] = useState("");
+    // changing values
+    const descriptionRef = useRef("");
+    // saved value
+    const [description, setDescription] = useState(descriptionRef.current);
+
+    const currentUserEmail = useSelector((state) => state.email);
+    
+    
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    async function handleSave(){
+        try {
+            await editProfileAPI(currentUserEmail, descriptionRef.current);
+            setDescription(descriptionRef.current);
+            setEdit(false);
+        }
+        catch(e) {
+            handleCancel();
+        }
+        
+    }
+
+    function handleCancel(){
+        descriptionRef.current = description;
+        setEdit(false)
+    }
+
+    function handleEditDescription(e){
+        descriptionRef.current = e.target.value;
+    }
+    
+    async function editProfileAPI(email, description) {
+        axios.defaults.withCredentials = true;
+        try {
+            await axios.patch(backendHost + `/profile/`,
+            { description: description },
+            {
+                params: {email: email},
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': backendHost,
+                },
+            }
+            );
+        } catch (e) {
+            alert(e);
+        }
+        
+    }
+
+    async function getProfile(email) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/profile/`,
+            {},
+            {params: {email: email}, 
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': backendHost,
+                },
+            }
+            );
+            setDescription(res.data[0].description);
+            descriptionRef.current = res.data[0].description;
+        } catch (e) {
+            alert(e);
+        }
+        
+    }
 
     function logoutUser() {
         axios.defaults.withCredentials = true;
@@ -27,14 +98,17 @@ export default function Profile() {
             navigate("/login");
         }).catch(function () {
             alert('Somethingwent wrong with the logout process.');
+            navigate("/login");
         });
     }
 
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
+        }else {
+            getProfile(currentUserEmail);
         }
-    });
+    }, [edit]);
 
     return (
 
@@ -72,9 +146,18 @@ export default function Profile() {
                             {/* <!--
                             <button type="button" onclick="logoutUser()">Logout</button> --> */}
                             <a href="#">Setting</a>
-                            <a href="#">Edit Profile</a>
+                            {!edit ? <a href="#" onClick={()=>{setEdit(true)}}>Edit Profile</a> : null}
                         </div>
                     </div>
+                    {edit ? 
+                    <div>
+                        <Button 
+                            variant="contained"
+                            onClick={handleSave}>Done</Button>
+                        <Button 
+                            variant="outlined"
+                            onClick={handleCancel}>Cancel</Button>
+                    </div> : null}
                 </div>
             </header>
 
@@ -86,12 +169,23 @@ export default function Profile() {
                         <img src="../random.png" alt="to be changed" width="30" height="30">
                     </div>
                 --> */}
+                    {currentUserEmail}
                     <li><a href="#">follower|following</a></li>
                     {/* <!-- color change based on profile photo, to be added later--> */}
                 </div>
 
                 <div class="description">
-                    description/tagline
+                    <Box>
+                        <p>description/tagline</p>
+                        {edit ? <TextField
+                                    required
+                                    id="filled-required"
+                                    label="Required Description"
+                                    defaultValue={descriptionRef.current}
+                                    variant="filled"
+                                    onChange={(e) => {handleEditDescription(e)}}
+                                    /> : <p>{descriptionRef.current}</p>}
+                    </Box>
                 </div>
 
                 <div class="profile-photo">

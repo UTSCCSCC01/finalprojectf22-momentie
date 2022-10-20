@@ -37,6 +37,7 @@ const edit_profile = async (req: any, res: any) => {
   /** Default empty content */
   if (!description) {
     let Profile = await ProfileModel.findOne({ email: email })
+    console.log("1");
     return res.status(200).json(Profile)
   }
 
@@ -47,7 +48,7 @@ const edit_profile = async (req: any, res: any) => {
   /** Update user profile */
   let newProfile = await ProfileModel.findOneAndUpdate({ email: email },
     { description: description }, { new: true })
-
+  console.log("2");
   return res.status(200).json(newProfile)
 
 }
