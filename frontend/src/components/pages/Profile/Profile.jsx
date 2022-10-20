@@ -110,17 +110,16 @@ export default function Profile() {
         axios.defaults.withCredentials = true;
         try {
             let res = await axios.get(backendHost + `/profile/`,
-                {},
-                {
-                    params: { email: email },
-                    headers: {
-                        'Access-Control-Allow-Credentials': true,
-                        'Access-Control-Allow-Origin': backendHost,
-                    },
-                }
+            {params: {email}},
+            {
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Origin': backendHost,
+                },
+            }
             );
-            setDescription(res.data[0].description);
-            descriptionRef.current = res.data[0].description;
+            setDescription(res.data.description);
+            descriptionRef.current = res.data.description;
         } catch (e) {
             alert(e);
         }
