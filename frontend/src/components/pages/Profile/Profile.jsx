@@ -12,53 +12,15 @@ import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
 
-const secondary = brown['A400']
-const timelineData = {
-    "experience": [{
-        topic: "experience",
-        title: "first",
-        content: "somethingasasdddddddddddddddddddddddddddddddddddddddddddd",
-        startTime: "2022-10-05T04:38:26.022Z",
-        endTime: "2022-10-05T04:38:26.022Z",
-    },
-    {
-        topic: "experience",
-        title: "second",
-        content: "something",
-        startTime: "2022-10-05T04:38:26.022Z",
-        endTime: "2022-10-05T04:38:26.022Z",
-    }, {
-        topic: "experience",
-        title: "first",
-        content: "something",
-        startTime: "2022-10-05T04:38:26.022Z",
-        endTime: "2022-10-05T04:38:26.022Z",
-    }, {
-        topic: "experience",
-        title: "first",
-        content: "something",
-        startTime: "2022-10-05T04:38:26.022Z",
-        endTime: "2022-10-05T04:38:26.022Z",
-    }]
-}
-const TagData = [{ title: "apple" }, { title: "banana" }]
-
-for (const property in timelineData) {
-    for (var i = 0; i < timelineData[property].length; i++) {
-        timelineData[property][i]._id = i;
-    }
-}
-
-
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
     const [username, setUserName] = useState("");
 
-    const [timelineList, setTimelineList] = useState(timelineData);
+    const [timelineList, setTimelineList] = useState({});
     const timelineBackup = useRef(JSON.parse(JSON.stringify(timelineList)));
 
-    const [tagList, setTagList] = useState(TagData);
+    const [tagList, setTagList] = useState([]);
     const tagListBackup = useRef(JSON.parse(JSON.stringify(tagList)));
 
     const [description, setDescription] = useState("");
@@ -75,6 +37,7 @@ export default function Profile() {
         try {
             await editProfileAPI(currentUserEmail, description);
             await changeTags();
+            await changeTimeline()
             descriptionBackup.current = JSON.parse(JSON.stringify(description));
             timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
             tagListBackup.current = JSON.parse(JSON.stringify(tagList));
@@ -155,9 +118,9 @@ export default function Profile() {
         }
     }
 
-    async function changeTags(){
-        for (let i of tagList){
-            if (tagListBackup.current.filter((tag) => tag.title === i.title).length === 0){
+    async function changeTags() {
+        for (let i of tagList) {
+            if (tagListBackup.current.filter((tag) => tag.title === i.title).length === 0) {
                 axios.defaults.withCredentials = true;
                 try {
                     await axios.post(backendHost + `/tag`,
@@ -174,12 +137,12 @@ export default function Profile() {
                 }
             }
         }
-        for (let i of tagListBackup.current){
-            if (tagList.filter((tag) => tag.title === i.title).length == 0){
+        for (let i of tagListBackup.current) {
+            if (tagList.filter((tag) => tag.title === i.title).length == 0) {
                 axios.defaults.withCredentials = true;
                 try {
                     await axios.delete(backendHost + `/tag`,
-                        { data: {type: "profession", title: i.title} },
+                        { data: { type: "profession", title: i.title } },
                         {
                             headers: {
                                 'Access-Control-Allow-Credentials': true,
@@ -213,35 +176,97 @@ export default function Profile() {
         });
     }
 
-
-
     async function getRating(email) {
+        axios.defaults.withCredentials = true;
         try {
             //send get http request to database to get rating data
             let response = await axios.get(backendHost + '/profile/like?email', {
-                params: { email }
-            })
+                params: { email },
+
+            },
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                });
             setRating(response.data);
         }
         catch (e) {
             alert(e);
         }
     }
-    
+
+    async function getTimeline(email) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/profile/` + email + `/timeline`,
+                {},
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            if (res.data !== undefined || res.data !== null || res.data.length === 0) {
+                if (res.data["experience"] === undefined) {
+                    setTimelineList({ experience: [] });
+                    timelineBackup.current = { experience: [] };
+                } else {
+                    let timelineData = { experience: res.data["experience"] };
+                    for (const property in timelineData) {
+                        for (var i = 0; i < timelineData[property].length; i++) {
+                            timelineData[property][i]._id = i;
+                        }
+                    }
+                    setTimelineList(timelineData);
+                    timelineBackup.current = timelineData;
+                }
+
+            }
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    async function changeTimeline() {
+        axios.defaults.withCredentials = true;
+        try {
+            let body = [];
+            for (const key of Object.keys(timelineList)) {
+                for (const item of timelineList[key]) {
+                    body.push(item);
+                }
+            }
+            body = body.map(({ _id, ...keepAttrs }) => keepAttrs)
+            console.log(body);
+            await axios.patch(backendHost + `/profile/` + currentUserEmail + `/timeline`,
+                { timelineList: body },
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+        } catch (e) {
+            alert(e);
+        }
+    }
+
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
         } else {
             getProfile(currentUserEmail);
             getTags(currentUserEmail);
-
+            getTimeline(currentUserEmail);
             getRating(currentUserEmail);
         }
     }, [edit]);
 
     return (
-
-        // < !--Page box(100 %)-- >
         <div class="page">
             {/* <!-- header of the page --> */}
             <header>
@@ -290,7 +315,8 @@ export default function Profile() {
                                     borderRadius: 3,
                                     backgroundColor: "#BEACAC",
                                     fontSize: "14px"
-                                }}>Done</Button>
+                                }}
+                                type="submit" form="myform">Done</Button>
                             <Button
                                 variant="outlined"
                                 onClick={handleCancel}
@@ -304,7 +330,7 @@ export default function Profile() {
                                 }}>Cancel</Button>
                         </div> : null}
                 </div>
-            </header>
+            </header >
 
             <div class="left">
 
@@ -315,13 +341,13 @@ export default function Profile() {
                     </div>
                 --> */}
                     {currentUserEmail}
-
-                    <li><a href="#">follower|following</a></li>
-                    {/* <!-- color change based on profile photo, to be added later--> */}
-                    <Box class="rate">
+                    <Box>
                         {/* Put the Rating here */}
                         <Rate rating={rating} setRating={setRating} />
                     </Box>
+                    <li><a href="#">follower|following</a></li>
+                    {/* <!-- color change based on profile photo, to be added later--> */}
+
 
                 </div>
 
@@ -359,15 +385,13 @@ export default function Profile() {
 
             </div>
 
-            <Box class="right">
-                {/* <!-- time line starts here--> */}
-                <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" editMode={edit} allowTopicEdit={true} />
-            </Box>
+            <form id="myform" onSubmit={(e) => { e.preventDefault() }}>
+                <Box class="right">
+                    {/* <!-- time line starts here--> */}
+                    <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" height="70vh" editMode={edit} allowTopicEdit={false} />
+                </Box>
+            </form>
 
-            <div class="footer">
-                {/* <!-- 留出来，以后想加footer就加--> */}
-                <h2>{currentUserEmail}</h2>
-            </div>
-
-        </div>);
+        </div >
+    );
 }
