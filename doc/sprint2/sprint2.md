@@ -12,7 +12,8 @@ Documentation:
 ## User Stories to be Completed, and Task BreakDown
 
 Refer to Trello Board for the User Story ID
-MOM-9: As Steph Delly (a career expert) or Jialin Shang (a career seeker), I want to edit the basic information on my profile page, so that I can update my current situation.
+
+#### MOM-9: As Steph Delly (a career expert) or Jialin Shang (a career seeker), I want to edit the basic information on my profile page, so that I can update my current situation.
 Story Points: 8
  - Frontend
    - Have edit button.
@@ -25,8 +26,9 @@ Story Points: 8
    - Finally, send 200 signal back to the frontend (View) on success. Otherwise, send 401 signal on failure.
   Testing
    - Postman
-   - Manual Testing on webpage
-MOM-21:As Steph Delly (a career expert), I should have a timeline of my experiences, so that users can better visualize my progression.
+   - Manual Testing on webpage 
+
+#### MOM-21:As Steph Delly (a career expert), I should have a timeline of my experiences, so that users can better visualize my progression.
 Story Points: 21
  - Frontend
    - Use timeline component in the profile component to display the user timeline
@@ -39,7 +41,8 @@ Story Points: 21
  - Testing
    - Manual Testing on webpage
    - Postman backend
-MOM-24: As Steph Delly (a career expert), I want to edit tags of myself, so that I can update my most recent situation.
+
+#### MOM-24: As Steph Delly (a career expert), I want to edit tags of myself, so that I can update my most recent situation.
 Story Points: 8
  - Frontend
    - Make a form so that the user create new task	
@@ -55,7 +58,8 @@ Story Points: 8
  - Testing
    - Manual Testing on webpage
    - Postman backend
-MOM-13: As Steph Delly (a career expert), I should be able to give a development timeline to my skills, so that viewers have a clear idea on how to reach a certain level of competency.
+
+#### MOM-13: As Steph Delly (a career expert), I should be able to give a development timeline to my skills, so that viewers have a clear idea on how to reach a certain level of competency.
 Story Points: 21
  - Frontend
    - Use the same component to create a horizontal timeline for skills.
@@ -67,7 +71,8 @@ Story Points: 21
  - Testing
    - Postman backend
    - Manual testing on webpage
-MOM-15: As a general user, I should be able to see my profile ratings, so that I can know how well my profile presents to others.
+
+#### MOM-15: As a general user, I should be able to see my profile ratings, so that I can know how well my profile presents to others.
 Story Points: 5
  - Frontend
    - Updates the profile UI, so there is an rating component that users can see their profile rating.
@@ -86,7 +91,7 @@ MOM-38: Sprint1 Retrospective
 Team Capacity
 TOTAL STORY POINTS: 76
 
-## Details About Tasks Per Member
+#### Details About Tasks Per Member
 All
  - Everyone is assigned a particular position from <frontend, controller, backend>. We think frontend would take more time and effort to complete than the backend, so everybody might switch to full-stack during the last few days of the sprint.
  - At least one task done by each member.
