@@ -46,7 +46,6 @@ for (const property in timelineData) {
         timelineData[property][i]._id = i;
     }
 }
-import Rate from '../../components/Rating/Rate.jsx';
 
 export default function Profile() {
 
