@@ -1,4 +1,3 @@
-import { ListFormat } from 'typescript';
 import TimelineModel from '../../model/timelineModel'
 import UserModel from '../../model/userModel';
 
