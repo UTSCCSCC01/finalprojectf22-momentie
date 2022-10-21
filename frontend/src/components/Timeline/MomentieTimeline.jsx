@@ -193,7 +193,14 @@ export default function MomentieTimeline(props) {
                                             borderColor: "#BEACAC"
                                         }}
                                         onClick={() => { handleDeleteTopic(topic) }}>
-                                        Delete Topic
+                                        <ThemeProvider theme={theme}>
+                                        {noItemLeft ? 
+
+                                            <Typography variant="smaller">Delete Topic</Typography>:
+                                            <Typography variant="bigger">Delete Topic</Typography>
+                                        
+                                        }
+                                        </ThemeProvider>
                                     </Button>}
                                 {editMode && allowTopicEdit && <Divider sx={{ margin: "10px" }} />}
                                 {editMode &&

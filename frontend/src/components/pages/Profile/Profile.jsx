@@ -276,8 +276,6 @@ export default function Profile() {
             <Box class="right">
                 {/* <!-- time line starts here--> */}
                 <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" editMode={edit} allowTopicEdit={true} />
-
-
             </Box>
 
             <div class="footer">
