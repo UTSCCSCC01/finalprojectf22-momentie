@@ -4,7 +4,7 @@ import Login from '../src/components/pages/Login/Login.jsx'
 import Profile from '../src/components/pages/Profile/Profile.jsx'
 import SignUp from './components/pages/SignUp/SignUp.jsx';
 import MomentieTimeline from './components/Timeline/MomentieTimeline.jsx';
-import Rate from './components/Rating/Rate.jsx';
+// import Rate from './components/Rating/Rate.jsx';
 
 import MomentieTag from './components/Tag/MomentieTag.jsx';
 const TagData = [{ title: "apple" }, { title: "banana" }]
@@ -39,7 +39,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       {/* <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} /> */}
       <Route path="/tag" element={<MomentieTag contentRef={editTagData} width={100} height={30} edit={false} />} />
-      <Route path="/rate" element={<Rate />} />
+      {/* <Route path="/rate" element={<Rate />} /> */}
     </Routes>
   );
 }

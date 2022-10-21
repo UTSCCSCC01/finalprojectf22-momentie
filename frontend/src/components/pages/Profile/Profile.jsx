@@ -10,6 +10,7 @@ import { Button, TextField, Box, getTablePaginationUtilityClass } from '@mui/mat
 import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
+import Rate from '../../Rating/Rate.jsx';
 
 const secondary = brown['A400']
 const timelineData = {
@@ -63,6 +64,7 @@ export default function Profile() {
     const [description, setDescription] = useState("");
     const descriptionBackup = useRef(JSON.parse(JSON.stringify(description)));
 
+    const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
 
     //customize color
@@ -213,13 +215,27 @@ export default function Profile() {
 
 
 
-
+    async function getRating(email) {
+        try {
+            //send get http request to database to get rating data
+            let response = await axios.get(backendHost + '/profile/like?email', {
+                params: { email }
+            })
+            setRating(response.data);
+        }
+        catch (e) {
+            alert(e);
+        }
+    }
+    
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
         } else {
             getProfile(currentUserEmail);
             getTags(currentUserEmail);
+
+            getRating(currentUserEmail);
         }
     }, [edit]);
 
@@ -299,8 +315,14 @@ export default function Profile() {
                     </div>
                 --> */}
                     {currentUserEmail}
+
                     <li><a href="#">follower|following</a></li>
                     {/* <!-- color change based on profile photo, to be added later--> */}
+                    <Box class="rate">
+                        {/* Put the Rating here */}
+                        <Rate rating={rating} setRating={setRating} />
+                    </Box>
+
                 </div>
 
                 <div class="description">
