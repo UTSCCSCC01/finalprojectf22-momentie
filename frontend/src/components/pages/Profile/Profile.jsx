@@ -9,6 +9,7 @@ import { useState, useRef } from "react";
 import { Button, TextField, Box } from '@mui/material'
 import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
+import MomentieTag from "../../Tag/MomentieTag";
 
 const secondary = brown['A400']
 const timelineData = {
@@ -39,7 +40,7 @@ const timelineData = {
         endTime: "2022-10-05T04:38:26.022Z",
     }]
 }
-
+const TagData = [{ title: "apple" }, { title: "banana" }]
 
 for (const property in timelineData) {
     for (var i = 0; i < timelineData[property].length; i++) {
@@ -53,6 +54,10 @@ export default function Profile() {
     const [username, setUserName] = useState("");
     const timelineRef = useRef(timelineData);
     const [timelineBackup, setTimeLineBackup] = useState(timelineRef.current);
+
+    const tagDataRef = useRef(TagData);
+    const [tagBackup, setTagBackup] = useState(tagDataRef.current);
+
     // changing values
     const descriptionRef = useRef("");
     // saved value
@@ -69,6 +74,7 @@ export default function Profile() {
             await editProfileAPI(currentUserEmail, descriptionRef.current);
             setDescription(descriptionRef.current);
             setTimeLineBackup(timelineRef.current);
+            setTagBackup(tagDataRef.current);
             setEdit(false);
         }
         catch (e) {
@@ -78,6 +84,7 @@ export default function Profile() {
     }
 
     function handleCancel() {
+        tagDataRef.current = tagBackup;
         timelineRef.current = timelineBackup;
         descriptionRef.current = description;
         setEdit(false)
@@ -235,15 +242,20 @@ export default function Profile() {
 
                 <div class="description">
                     <Box>
-                        <p>description/tagline</p>
-                        {edit ? <TextField
-                            required
-                            id="filled-required"
-                            label="Required Description"
-                            defaultValue={descriptionRef.current}
-                            variant="filled"
-                            onChange={(e) => { handleEditDescription(e) }}
-                        /> : <p>{descriptionRef.current}</p>}
+                        <Box sx={{marginBottom: "20px"}}>
+                            <p>Description</p>
+                            {edit ? <TextField
+                                required
+                                id="filled-required"
+                                label="Required Description"
+                                defaultValue={descriptionRef.current}
+                                variant="filled"
+                                onChange={(e) => { handleEditDescription(e) }}
+                            /> : <p>{descriptionRef.current}</p>}
+                        </Box>
+                        {/* Put the tag here */}
+                        <p>Tag</p>
+                        <MomentieTag contentRef={tagDataRef} width={100} height={30} edit={edit} />
                     </Box>
                 </div>
 
@@ -269,9 +281,8 @@ export default function Profile() {
                         width="300px" 
                         padding = "3px"
                         editMode={edit} 
-                        allowTopicEdit={true} />
+                        allowTopicEdit={false} />
                 </div>
-
             </Box>
 
             <div class="footer">
