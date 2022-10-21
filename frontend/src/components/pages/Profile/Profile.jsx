@@ -264,7 +264,13 @@ export default function Profile() {
 
             <Box class="right">
                 {/* <!-- time line starts here--> */}
-                <MomentieTimeline contentRef={timelineRef} width="300px" editMode={edit} allowTopicEdit={true} />
+                <div class = "timeline">
+                    <MomentieTimeline contentRef={timelineRef} 
+                        width="300px" 
+                        padding = "3px"
+                        editMode={edit} 
+                        allowTopicEdit={true} />
+                </div>
 
             </Box>
 

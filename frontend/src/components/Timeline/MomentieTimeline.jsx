@@ -106,15 +106,33 @@ export default function MomentieTimeline(props) {
     }
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", width: "fit-content", height: "fit-content", border: 3 }}>
-            {editMode && allowTopicEdit && <Button variant="outlined" startIcon={<AddCircleIcon />}
-                sx={{ height: "20px", width: "50%", margin: "10px", alignSelf: "center" }} onClick={handleAddTopic}>
+        <Box sx={{ display: "flex", 
+            flexDirection: "column", 
+            width: "fit-content", 
+            height: "fit-content", 
+            justifyContent: "center",
+            color: '#BEACAC',
+            borderRadius: '6%',
+            border: 3 
+            }}>
+            {editMode && allowTopicEdit && 
+            <Button variant="outlined" startIcon={<AddCircleIcon />}
+                sx={{ height: "20px", 
+                    width: "50%", 
+                    margin: "10px", 
+                    alignSelf: "center",
+                    borderRadius: "6%",
+                    backgroundColor: "#BEACAC", 
+                    color: '#F5F5F5',
+                    borderColor: "#BEACAC"
+                }} onClick={handleAddTopic}>
                 Add Topic
             </Button>}
             <Box sx={{
                 width: "fit-content",
                 height: "fit-content", display: "flex",
                 flexWrap: "wrap", gap: "40px",
+                justifyContent: "center"
             }}>
                 {
                     Object.keys(timelineList).sort().map((topic) => (
@@ -125,10 +143,12 @@ export default function MomentieTimeline(props) {
                                 label="Required Topic"
                                 defaultValue={topic}
                                 variant="filled"
-                                sx={{ margin: "10px" }}
+                                sx={{ margin: "10px",
+                                    alignSelf: "center"
+                                }}
                                 onBlur={(e) => handleTopicChange(e, topic)}
                             /> : <Typography
-                                sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}
+                                sx={{ fontWeight: 'bold', textTransform: 'uppercase', padding: "10px"}}
                                 fontSize={width / timelineList.length / 12}  >
                                 {topic}
                             </Typography>}
@@ -142,16 +162,34 @@ export default function MomentieTimeline(props) {
 
                                 {allowTopicEdit && editMode &&
                                     <Button variant="outlined" startIcon={<DeleteIcon />}
-                                        sx={{ backgroundColor: "white", height: "20px", width: "50%", alignSelf: "center" }}
+                                        sx={{ backgroundColor: "white", 
+                                            height: "20px", 
+                                            width: "50%", 
+                                            alignSelf: "center",
+                                            borderRadius: "6%",
+                                            backgroundColor: "#BEACAC", 
+                                            color: '#F5F5F5',
+                                            borderColor: "#BEACAC"
+                                        }}
                                         onClick={() => { handleDeleteTopic(topic) }}>
                                         Delete Topic
                                     </Button>}
                                 {editMode && allowTopicEdit && <Divider sx={{ margin: "10px" }} />}
-                                {editMode && <Button variant="outlined" startIcon={<AddIcon />}
-                                    sx={{ backgroundColor: "white", height: "20px", width: "50%", alignSelf: "center" }}
-                                    onClick={() => { handleAddItem(topic) }}>
-                                    Add Item
-                                </Button>}
+                                {editMode && 
+                                    <Button variant="outlined" startIcon={<AddIcon />}
+                                        sx={{ backgroundColor: "white", 
+                                            height: "20px", 
+                                            width: "50%", 
+                                            alignSelf: "center",
+                                            borderRadius: "6%",
+                                            backgroundColor: "#BEACAC", 
+                                            color: '#F5F5F5',
+                                            borderColor: "#BEACAC"
+                                         }}
+                                        onClick={() => { handleAddItem(topic) }}>
+                                        Add Item
+                                    </Button>
+                                }
                                 <Timeline >
                                     {timelineList[topic].map((timelineItem, index) => (
                                         <div key={timelineItem._id}>
