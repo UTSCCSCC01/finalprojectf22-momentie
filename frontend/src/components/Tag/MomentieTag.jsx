@@ -28,13 +28,6 @@ export default function ChipsArray(props) {
 
   const handleAdd = () => {
     let newList = [...tagList];
-    //let tag = "Tag";
-    //let finalTag = tag;
-    //let index = 1;
-    // while (tagList.filter((tag) => tag.title === finalTag).length != 0) {
-    //     finalTag = tag + index.toString();
-    //     index += 1;
-    // }
     if(tagName.current !== undefined && tagName.current !== null && tagName.current !== '' && 
     tagList.filter((tag) => tag.title === tagName.current).length == 0){
       newList.push({title: tagName.current});
@@ -46,7 +39,6 @@ export default function ChipsArray(props) {
 
   const handleAddTagName = (e) => {
     tagName.current = e.target.value;
-    //console.log(tagName.current);
   }
 
   return (

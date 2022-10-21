@@ -239,8 +239,8 @@ export default function Profile() {
 
                 <div class="description">
                     <Box>
-                        <Box>
-                            <p>description/tagline</p>
+                        <Box sx={{marginBottom: "20px"}}>
+                            <p>Description</p>
                             {edit ? <TextField
                                 required
                                 id="filled-required"
@@ -251,6 +251,7 @@ export default function Profile() {
                             /> : <p>{descriptionRef.current}</p>}
                         </Box>
                         {/* Put the tag here */}
+                        <p>Tag</p>
                         <MomentieTag contentRef={editTagData} width={100} height={30} edit={edit} />
                     </Box>
                 </div>
