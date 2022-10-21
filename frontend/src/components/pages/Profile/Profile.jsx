@@ -53,16 +53,15 @@ export default function Profile() {
 
     const [edit, setEdit] = useState(false);
     const [username, setUserName] = useState("");
-    const timelineRef = useRef(timelineData);
-    const [timelineBackup, setTimeLineBackup] = useState(timelineRef.current);
 
-    const tagDataRef = useRef(TagData);
-    const [tagBackup, setTagBackup] = useState(tagDataRef.current);
+    const [timelineList, setTimelineList] = useState(timelineData);
+    const timelineBackup = useRef(JSON.parse(JSON.stringify(timelineList)));
 
-    // changing values
-    const descriptionRef = useRef("");
-    // saved value
-    const [description, setDescription] = useState(descriptionRef.current);
+    const [tagList, setTagList] = useState(TagData);
+    const tagListBackup = useRef(JSON.parse(JSON.stringify(tagList)));
+
+    const [description, setDescription] = useState("");
+    const descriptionBackup = useRef(JSON.parse(JSON.stringify(description)));
 
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
@@ -73,10 +72,10 @@ export default function Profile() {
 
     async function handleSave() {
         try {
-            await editProfileAPI(currentUserEmail, descriptionRef.current);
-            setDescription(descriptionRef.current);
-            setTimeLineBackup(timelineRef.current);
-            setTagBackup(tagDataRef.current);
+            await editProfileAPI(currentUserEmail, description);
+            descriptionBackup.current = JSON.parse(JSON.stringify(description));
+            timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
+            tagListBackup.current = JSON.parse(JSON.stringify(tagList));
             setEdit(false);
         }
         catch (e) {
@@ -86,14 +85,14 @@ export default function Profile() {
     }
 
     function handleCancel() {
-        tagDataRef.current = tagBackup;
-        timelineRef.current = timelineBackup;
-        descriptionRef.current = description;
-        setEdit(false)
+        setTagList(JSON.parse(JSON.stringify(tagListBackup.current)));
+        setTimelineList(JSON.parse(JSON.stringify(timelineBackup.current)));
+        setDescription(JSON.parse(JSON.stringify(descriptionBackup.current)));
+        setEdit(false);
     }
 
     function handleEditDescription(e) {
-        descriptionRef.current = e.target.value;
+        setDescription(e.target.value);
     }
 
     async function editProfileAPI(email, description) {
@@ -128,7 +127,7 @@ export default function Profile() {
                 }
             );
             setDescription(res.data.description);
-            descriptionRef.current = res.data.description;
+            descriptionBackup.current = res.data.description;
         } catch (e) {
             alert(e);
         }
@@ -269,14 +268,14 @@ export default function Profile() {
                                 required
                                 id="filled-required"
                                 label="Required Description"
-                                defaultValue={descriptionRef.current}
+                                defaultValue={description}
                                 variant="filled"
                                 onChange={(e) => { handleEditDescription(e) }}
-                            /> : <p>{descriptionRef.current}</p>}
+                            /> : <p>{description}</p>}
                         </Box>
                         {/* Put the tag here */}
                         <p>Tag</p>
-                        <MomentieTag contentRef={tagDataRef} width={100} height={30} edit={edit} />
+                        <MomentieTag tagList={tagList} setTagList={setTagList} width={100} height={30} edit={edit} />
                     </Box>
                 </div>
 
@@ -297,9 +296,7 @@ export default function Profile() {
 
             <Box class="right">
                 {/* <!-- time line starts here--> */}
-                <MomentieTimeline contentRef={timelineRef} width="300px" editMode={edit} allowTopicEdit={true} />
-
-
+                <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" editMode={edit} allowTopicEdit={true} />
             </Box>
 
             <div class="footer">

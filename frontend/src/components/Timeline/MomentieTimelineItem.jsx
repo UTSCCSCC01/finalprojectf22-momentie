@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useEffect } from 'react';
 
 export default function MomentieTimelineItem(props) {
     const { index, timelineItem, width, editMode, deleteItem, editItem } = props
@@ -15,6 +16,10 @@ export default function MomentieTimelineItem(props) {
     const [isEditStartTime, setIsEditStartTime] = useState(false);
     const [isEditEndTime, setIsEditEndTime] = useState(false);
 
+    useEffect(() => {
+        setStartTime(dayjs(timelineItem.startTime));
+        setEndTime(dayjs(timelineItem.endTime));
+    }, [timelineItem])
     const handleChangeTitle = (event) => {
         editItem(timelineItem.topic, index, "title", event.target.value);
     };
@@ -42,9 +47,20 @@ export default function MomentieTimelineItem(props) {
             </TimelineSeparator>
             <TimelineContent sx={{ textAlign: "center" }}>
                 {editMode ?
-                    <Paper sx={{ width: width, padding: "10px", position: "relative" }} elevation={3}>
+                    <Paper sx={{ width: width, 
+                            padding: "10px", 
+                            position: "relative",
+                            backgroundColor: "#D9D9D9" 
+                        }} 
+                        elevation={3}>
                         <Button variant="outlined" startIcon={<CloseIcon />}
-                            sx={{ backgroundColor: "white", height: "25px", margin: "10px" }}
+                            sx={{ borderRadius: "6%",
+                                backgroundColor: "#BEACAC", 
+                                color: '#F5F5F5',
+                                borderColor: "#BEACAC",
+                                height: "25px", 
+                                margin: "10px" 
+                            }}
                             onClick={() => { deleteItem(timelineItem.topic, index) }}>
                             Delete Item
                         </Button>
@@ -54,7 +70,7 @@ export default function MomentieTimelineItem(props) {
                             label="Required Title"
                             defaultValue={timelineItem.title}
                             onBlur={handleChangeTitle}
-                            sx={{ margin: "10px" }}
+                            sx={{ margin: "10px", backgroundColor: "#D9D9D9" }}
                         />
                         <TextField
                             id="standard-multiline-static"
@@ -63,10 +79,16 @@ export default function MomentieTimelineItem(props) {
                             defaultValue={timelineItem.content}
                             onChange={handleChangeContent}
                             variant="filled"
-                            sx={{ margin: "10px", width: "90%" }}
+                            sx={{ margin: "10px", 
+                                width: "90%", 
+                                borderRadius: "6%",
+                                backgroundColor: "#D9D9D9", 
+                                color: '#F5F5F5',
+                                borderColor: "#BEACAC" 
+                            }}
                         />
 
-                        <Box sx={{ padding: "10px" }}>
+                        <Box sx={{ padding: "10px", color: 'secondary.main', backgroundColor: "#D9D9D9" }}>
                             <Box display="flex" justifyContent="space-between" >
                                 <Button
                                     variant="outlined"
@@ -122,7 +144,7 @@ export default function MomentieTimelineItem(props) {
 
                     :
 
-                    <Paper sx={{ width: width, padding: "10px" }} elevation={3}>
+                    <Paper sx={{ width: width, padding: "10px", backgroundColor: "#D9D9D9", color: '#897a7a' }} elevation={3}>
                         <Typography
                             sx={{ fontWeight: 'bold', textTransform: 'uppercase', wordBreak: "break-word" }}>
                             {timelineItem.title}
@@ -130,11 +152,29 @@ export default function MomentieTimelineItem(props) {
                         <Typography sx={{ wordBreak: "break-word" }}>{timelineItem.content}</Typography>
                         <Box sx={{ padding: "10px" }}>
                             <Box display="flex" justifyContent="space-between" >
-                                <Paper elevation={0} variant="outlined" sx={{ borderWidth: "5px", padding: "3px" }}>
+                                <Paper elevation={0} 
+                                    variant="outlined" 
+                                    sx={{ borderWidth: "5px", 
+                                        padding: "3px", 
+                                        borderRadius: "6%",
+                                        borderColor: "#BEACAC",
+                                        backgroundColor: '#F5F5F5',
+                                        color: '#897a7a' 
+                                    }}
+                                >
                                     {startTime.format('DD/MM/YYYY')}
                                 </Paper>
                                 <EastIcon />
-                                <Paper elevation={0} variant="outlined" sx={{ borderWidth: "5px", padding: "3px" }}>
+                                <Paper elevation={0} 
+                                    variant="outlined" 
+                                    sx={{ borderWidth: "5px", 
+                                        borderRadius: "6%",
+                                        borderColor: "#BEACAC",
+                                        backgroundColor: '#F5F5F5',
+                                        color: '#897a7a',
+                                        padding: "3px" 
+                                    }}
+                                >
                                     {endTime.format('DD/MM/YYYY')}
                                 </Paper>
                             </Box>
