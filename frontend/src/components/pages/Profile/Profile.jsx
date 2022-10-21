@@ -55,7 +55,8 @@ export default function Profile() {
     const timelineRef = useRef(timelineData);
     const [timelineBackup, setTimeLineBackup] = useState(timelineRef.current);
 
-    const editTagData = useRef(TagData);
+    const tagDataRef = useRef(TagData);
+    const [tagBackup, setTagBackup] = useState(tagDataRef.current);
 
     // changing values
     const descriptionRef = useRef("");
@@ -73,6 +74,7 @@ export default function Profile() {
             await editProfileAPI(currentUserEmail, descriptionRef.current);
             setDescription(descriptionRef.current);
             setTimeLineBackup(timelineRef.current);
+            setTagBackup(tagDataRef.current);
             setEdit(false);
         }
         catch (e) {
@@ -82,6 +84,7 @@ export default function Profile() {
     }
 
     function handleCancel() {
+        tagDataRef.current = tagBackup;
         timelineRef.current = timelineBackup;
         descriptionRef.current = description;
         setEdit(false)
@@ -252,7 +255,7 @@ export default function Profile() {
                         </Box>
                         {/* Put the tag here */}
                         <p>Tag</p>
-                        <MomentieTag contentRef={editTagData} width={100} height={30} edit={edit} />
+                        <MomentieTag contentRef={tagDataRef} width={100} height={30} edit={edit} />
                     </Box>
                 </div>
 
