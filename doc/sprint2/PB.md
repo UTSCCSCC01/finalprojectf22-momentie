@@ -34,7 +34,7 @@ Choice are: 0, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89
 
 
 
-Sprint2:
+## Sprint2:
 
 1. As Steph Delly (a career expert) or Jialin Shang (a career seeker), I want to edit the basic information on my profile page, so that I can update my current situation. P: HP. D: 8 MOM-9
 
@@ -46,7 +46,7 @@ Sprint2:
 
 5. As a general user, I should be able to see my profile ratings, so that I can know how well my profile presents to others. P: MP. D: 5 MOM-15
 
-Unmapped User stories:
+## Unmapped User stories:
 
 (the first link is on Jira and the second link is for Trello)
 
@@ -92,12 +92,12 @@ Unmapped User stories:
 
 
 
-Left-over Tasks and Bugs:
+## Left-over Tasks and Bugs:
 
-Backend:
+ - Backend:
 
 None
 
-Frontend:
+ - Frontend:
 
 None
