@@ -16,23 +16,20 @@ const ListItem = styled('li')(({ theme }) => ({
 
 
 export default function ChipsArray(props) {
-  const { contentRef, edit } = props;
-  const [tagList, setTagList] = useState(contentRef.current);
+  const { tagList, setTagList, edit } = props;
   const tagName = useRef('');
 
   const handleDelete = (tagToDelete) => {
     let newList = tagList.filter((tag) => tag.title !== tagToDelete.title);
     setTagList(newList);
-    tagList.current = newList; 
   };
 
   const handleAdd = () => {
     let newList = [...tagList];
-    if(tagName.current !== undefined && tagName.current !== null && tagName.current !== '' && 
-    tagList.filter((tag) => tag.title === tagName.current).length == 0){
-      newList.push({title: tagName.current});
+    if (tagName.current !== undefined && tagName.current !== null && tagName.current !== '' &&
+      tagList.filter((tag) => tag.title === tagName.current).length == 0) {
+      newList.push({ title: tagName.current });
       setTagList(newList);
-      tagList.current = newList; 
     }
 
   }
@@ -43,50 +40,50 @@ export default function ChipsArray(props) {
 
   return (
     <Box>
-      <Box sx={{display: "flex",alignItems:'center'}}>
-        
-        {edit ?<TextField
+      <Box sx={{ display: "flex", alignItems: 'center' }}>
+
+        {edit ? <TextField
           required
           id="outlined-required"
           label="Required Tag"
-          sx={{ margin: "10px"}}
-          onChange={(e)=>{handleAddTagName(e)}}
+          sx={{ margin: "10px" }}
+          onChange={(e) => { handleAddTagName(e) }}
         /> : null}
         {edit ?
-        <Button variant="contained" onClick={handleAdd} >Add Tag</Button>: null}
+          <Button variant="contained" onClick={handleAdd} >Add Tag</Button> : null}
       </Box>
 
-      
-      <Paper
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        listStyle: 'none',
-        p: 0.5,
-        m: 0,
-      }}
-      component="ul"
-    >
-      
-      {tagList.map((tag) => {
-        let icon;
-        return (
-          <ListItem key={tag.title}>
-            {edit ? <Chip
-              icon={icon}
-              label={tag.title}
-              onDelete={() => {handleDelete(tag)}}
-              /> : <Chip
-              icon={icon}
-              label={tag.title}
-            />}
 
-          </ListItem>
-        );
-      })}
-    </Paper>
-  </Box>
-    
+      <Paper
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          listStyle: 'none',
+          p: 0.5,
+          m: 0,
+        }}
+        component="ul"
+      >
+
+        {tagList.map((tag) => {
+          let icon;
+          return (
+            <ListItem key={tag.title}>
+              {edit ? <Chip
+                icon={icon}
+                label={tag.title}
+                onDelete={() => { handleDelete(tag) }}
+              /> : <Chip
+                icon={icon}
+                label={tag.title}
+              />}
+
+            </ListItem>
+          );
+        })}
+      </Paper>
+    </Box>
+
   );
 }

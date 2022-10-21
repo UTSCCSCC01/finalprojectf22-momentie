@@ -9,25 +9,23 @@ import MomentieTimelineItem from './MomentieTimelineItem';
 
 /* Todo edit  */
 export default function MomentieTimeline(props) {
-    const { contentRef, width, height, editMode, allowTopicEdit, printData } = props;
-    const formRef = useRef();
-    const [timelineList, setTimelineList] = useState(contentRef.current);
+    const { timelineList, setTimelineList, width, height, editMode, allowTopicEdit, printData } = props;
     const [noItemLeft, setNoItemLeft] = useState(false)
     const heightStyle = height === undefined ? "50vh" : height;
 
     //styling
     const theme = createTheme({
         typography: {
-          bigger: {
-            fontSize: "70%",
-            color: "white",
-            lineHeight: 2.75,
-          },
-          smaller: {
-            fontSize: "70%",
-            color: "white",
-            lineHeight: 1.5,
-          },
+            bigger: {
+                fontSize: "70%",
+                color: "white",
+                lineHeight: 2.75,
+            },
+            smaller: {
+                fontSize: "70%",
+                color: "white",
+                lineHeight: 2.125,
+            },
         },
     });
 
@@ -50,23 +48,17 @@ export default function MomentieTimeline(props) {
         }];
         let finalObject = { ...timelineList, ...topicObject }
         setTimelineList(finalObject);
-        contentRef.current = finalObject;
-        printData();
     }
 
     function handleDeleteTopic(topic) {
         let tempList = { ...timelineList };
         delete tempList[topic];
-        if(tempList.length != 0){
+        if (tempList.length != 0) {
             setTimelineList(tempList);
-            contentRef.current = tempList;
-            printData();
         }
-        else{
+        else {
             setNoItemLeft(true);
             setTimelineList(tempList);
-            contentRef.current = tempList;
-            printData();
         }
     }
 
@@ -88,8 +80,6 @@ export default function MomentieTimeline(props) {
                 endTime: new Date().toDateString(),
             })
             setTimelineList(tempList);
-            contentRef.current = tempList;
-            printData();
         }
     }
 
@@ -104,8 +94,6 @@ export default function MomentieTimeline(props) {
             delete tempList[topic];
             tempList[newTopic] = tempObject
             setTimelineList(tempList)
-            contentRef.current = tempList;
-            printData();
         }
     }
     function deleteItem(topic, index) {
@@ -115,8 +103,6 @@ export default function MomentieTimeline(props) {
                 tempList[topic].splice(index, 1);
             }
             setTimelineList(tempList);
-            contentRef.current = tempList;
-            printData();
         }
     }
 
@@ -125,41 +111,41 @@ export default function MomentieTimeline(props) {
             if (index >= 0 && index < timelineList[topic].length) {
                 timelineList[topic][index][field] = value
             }
-            contentRef.current = timelineList;
-            printData();
         }
     }
 
     return (
-        <Box sx={{ display: "flex", 
-            flexDirection: "column", 
-            width: "fit-content", 
-            height: "fit-content", 
+        <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "fit-content",
+            height: "fit-content",
             justifyContent: "center",
             color: '#BEACAC',
             borderRadius: '6%',
-            border: 3 
-            }}>
-            {editMode && allowTopicEdit && 
-            <Button variant="outlined" startIcon={<AddCircleIcon />}
-                sx={{ height: "20px", 
-                    width: "fit-content", 
-                    margin: "10px", 
-                    alignSelf: "center",
-                    borderRadius: "6%",
-                    backgroundColor: "#BEACAC", 
-                    color: '#F5F5F5',
-                    borderColor: "#BEACAC"
-                }} onClick={handleAddTopic}>
-                <ThemeProvider theme={theme}>
-                {noItemLeft ? 
+            border: 3
+        }}>
+            {editMode && allowTopicEdit &&
+                <Button variant="outlined" startIcon={<AddCircleIcon />}
+                    sx={{
+                        height: "20px",
+                        width: "50%",
+                        margin: "10px",
+                        alignSelf: "center",
+                        borderRadius: "6%",
+                        backgroundColor: "#BEACAC",
+                        color: '#F5F5F5',
+                        borderColor: "#BEACAC"
+                    }} onClick={handleAddTopic}>
+                    <ThemeProvider theme={theme}>
+                        {noItemLeft ?
 
-                    <Typography variant="smaller">Add Topic</Typography>:
-                    <Typography variant="bigger">Add Topic</Typography>
-                
-                }
-                </ThemeProvider>
-            </Button>}
+                            <Typography variant="smaller">Add Topic</Typography> :
+                            <Typography variant="bigger">Add Topic</Typography>
+
+                        }
+                    </ThemeProvider>
+                </Button>}
             <Box sx={{
                 width: "fit-content",
                 height: "fit-content", display: "flex",
@@ -175,12 +161,13 @@ export default function MomentieTimeline(props) {
                                 label="Required Topic"
                                 defaultValue={topic}
                                 variant="filled"
-                                sx={{ margin: "10px",
+                                sx={{
+                                    margin: "10px",
                                     alignSelf: "center"
                                 }}
                                 onBlur={(e) => handleTopicChange(e, topic)}
                             /> : <Typography
-                                sx={{ fontWeight: 'bold', textTransform: 'uppercase', padding: "10px"}}
+                                sx={{ fontWeight: 'bold', textTransform: 'uppercase', padding: "10px" }}
                                 fontSize={width / timelineList.length / 12}  >
                                 {topic}
                             </Typography>}
@@ -194,13 +181,14 @@ export default function MomentieTimeline(props) {
 
                                 {allowTopicEdit && editMode &&
                                     <Button variant="outlined" startIcon={<DeleteIcon />}
-                                        sx={{ backgroundColor: "white", 
-                                            height: "20px", 
-                                            width: "50%", 
-                                            p:0,
+                                        sx={{
+                                            backgroundColor: "white",
+                                            height: "20px",
+                                            width: "50%",
+                                            p: 0,
                                             alignSelf: "center",
                                             borderRadius: "6%",
-                                            backgroundColor: "#BEACAC", 
+                                            backgroundColor: "#BEACAC",
                                             color: '#F5F5F5',
                                             borderColor: "#BEACAC"
                                         }}
@@ -215,17 +203,18 @@ export default function MomentieTimeline(props) {
                                         </ThemeProvider>
                                     </Button>}
                                 {editMode && allowTopicEdit && <Divider sx={{ margin: "10px" }} />}
-                                {editMode && 
+                                {editMode &&
                                     <Button variant="outlined" startIcon={<AddIcon />}
-                                        sx={{ backgroundColor: "white", 
-                                            height: "20px", 
-                                            width: "50%", 
+                                        sx={{
+                                            backgroundColor: "white",
+                                            height: "20px",
+                                            width: "50%",
                                             alignSelf: "center",
                                             borderRadius: "6%",
-                                            backgroundColor: "#BEACAC", 
+                                            backgroundColor: "#BEACAC",
                                             color: '#F5F5F5',
                                             borderColor: "#BEACAC"
-                                         }}
+                                        }}
                                         onClick={() => { handleAddItem(topic) }}>
                                         Add Item
                                     </Button>

@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { useEffect } from 'react';
 
 export default function MomentieTimelineItem(props) {
     const { index, timelineItem, width, editMode, deleteItem, editItem } = props
@@ -15,6 +16,10 @@ export default function MomentieTimelineItem(props) {
     const [isEditStartTime, setIsEditStartTime] = useState(false);
     const [isEditEndTime, setIsEditEndTime] = useState(false);
 
+    useEffect(() => {
+        setStartTime(dayjs(timelineItem.startTime));
+        setEndTime(dayjs(timelineItem.endTime));
+    }, [timelineItem])
     const handleChangeTitle = (event) => {
         editItem(timelineItem.topic, index, "title", event.target.value);
     };
