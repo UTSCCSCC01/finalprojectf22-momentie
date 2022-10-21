@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { Typography, Button, Divider, TextField } from '@mui/material';
+import { Typography, Button, Divider, TextField, createTheme } from '@mui/material';
 import { Timeline } from '@mui/lab';
 import { useState, useRef } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,7 +12,20 @@ export default function MomentieTimeline(props) {
     const { contentRef, width, height, editMode, allowTopicEdit, printData } = props;
     const formRef = useRef();
     const [timelineList, setTimelineList] = useState(contentRef.current);
+    const [noItemLeft, setNoItemLeft] = useState(false)
     const heightStyle = height === undefined ? "50vh" : height;
+
+    //styling
+    const theme = createTheme({
+        typography: {
+          bigger: {
+            fontSize: 12,
+          },
+          smaller: {
+            fontSize: 6,
+          },
+        },
+    });
 
     function handleAddTopic() {
         let topic = "Topic";
@@ -40,9 +53,17 @@ export default function MomentieTimeline(props) {
     function handleDeleteTopic(topic) {
         let tempList = { ...timelineList };
         delete tempList[topic];
-        setTimelineList(tempList);
-        contentRef.current = tempList;
-        printData();
+        if(tempList.length != 0){
+            setTimelineList(tempList);
+            contentRef.current = tempList;
+            printData();
+        }
+        else{
+            setNoItemLeft(true);
+            setTimelineList(tempList);
+            contentRef.current = tempList;
+            printData();
+        }
     }
 
     function handleAddItem(topic) {
@@ -126,7 +147,10 @@ export default function MomentieTimeline(props) {
                     color: '#F5F5F5',
                     borderColor: "#BEACAC"
                 }} onClick={handleAddTopic}>
-                Add Topic
+            {noItemLeft ? 
+            <Typography variant="smaller">Add Topic</Typography>:
+            <Typography variant="bigger">Add Topic</Typography>
+            }
             </Button>}
             <Box sx={{
                 width: "fit-content",
@@ -165,6 +189,7 @@ export default function MomentieTimeline(props) {
                                         sx={{ backgroundColor: "white", 
                                             height: "20px", 
                                             width: "50%", 
+                                            p:0,
                                             alignSelf: "center",
                                             borderRadius: "6%",
                                             backgroundColor: "#BEACAC", 
