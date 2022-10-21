@@ -225,9 +225,14 @@ nav a:hover::before {
   
     transition: all ease-in-out 250ms;
   }
-  
 
-
+.rate{
+  float: left;
+  align-self: flex-end;
+  display: flex;
+  margin-Left: 150px;
+  position: relative;
+}
 
 .profile-photo{
     position: absolute;

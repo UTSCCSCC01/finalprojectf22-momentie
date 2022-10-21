@@ -10,6 +10,7 @@ import { Button, TextField, Box } from '@mui/material'
 import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
+import Rate from '../../Rating/Rate.jsx';
 
 const secondary = brown['A400']
 const timelineData = {
@@ -236,8 +237,14 @@ export default function Profile() {
                     </div>
                 --> */}
                     {currentUserEmail}
+
                     <li><a href="#">follower|following</a></li>
                     {/* <!-- color change based on profile photo, to be added later--> */}
+                    <Box class="rate">
+                        {/* Put the Rating here */}
+                        <Rate />
+                    </Box>
+
                 </div>
 
                 <div class="description">

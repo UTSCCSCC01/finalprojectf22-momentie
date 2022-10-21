@@ -2,34 +2,47 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
+import { useState, useRef } from "react";
+import {useSelector, useDispatch} from 'react-redux';
+import axios from 'axios';
 
 export default function BasicRating() {
-    // create a new XMLHttpRequest
-    // var xhr = new XMLHttpRequest()
-    // var data = null;
-    // // get a callback when the server responds
+    //get the current user email
+    const email = useSelector((state) => state.email);
+    // changing values
+    const data = useRef(0);
+    // saved value for rating
+    const [value, setValue] = React.useState(data.current);
 
-    // // open the request with the verb and the url
-    // var email = 'candy@gmail.com'
-    // xhr.open('GET', `http://localhost:5000/profile/like?email=${email}`)
-    // // send the request
-    // xhr.send()
-    // xhr.onload = function() {
-    //     if (xhr.status === 200) {
-    //         //parse JSON datax`x
-    //         data = JSON.parse(xhr.responseText)
-    //         console.log(data)
-    //     } 
-    //     else if (xhr.status === 404) {
-    //         console.log("No records found")
+    //send get http request to database to get rating data
+    axios.get('http://localhost:5000/profile/like?email', {
+        params: {email}
+    })
+    .then(function (response) {
+        setValue(response.data);
+        data.current = response.data;
+    })
+
+    // async function getRating(email) {
+    //     try {
+    //         let response = await axios.get(`http://localhost:5000/profile/like?email`, 
+    //         {params: {email}}
+    //         );
+    //         setValue(response.data);
+    //         data.current = JSON.parse(response.data);
+    //         console.log(data);
+            
+    //     }
+    //     catch (error) {
+    //         alert(error);
     //     }
     // }
-
-    const [value, setValue] = React.useState(2);
+    
+    // console.log(data)
 
     return (
         <Box sx={{ display: "flex", alignItems:'center'}}>
-            <Rating name="rate" value={value} readOnly sx={{margin: "200px", alignSelf: "center"}} />
+            <Rating name="rate" value={value} readOnly precision={0.5} size="large" sx={{margin: "50px", alignSelf: "center"}} />
         </Box>
     );
 }
