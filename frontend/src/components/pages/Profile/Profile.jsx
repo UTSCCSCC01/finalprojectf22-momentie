@@ -6,7 +6,7 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box } from '@mui/material'
+import { Button, TextField, Box, getTablePaginationUtilityClass } from '@mui/material'
 import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
@@ -49,6 +49,7 @@ for (const property in timelineData) {
     }
 }
 
+
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
@@ -73,6 +74,7 @@ export default function Profile() {
     async function handleSave() {
         try {
             await editProfileAPI(currentUserEmail, description);
+            await changeTags();
             descriptionBackup.current = JSON.parse(JSON.stringify(description));
             timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
             tagListBackup.current = JSON.parse(JSON.stringify(tagList));
@@ -134,6 +136,64 @@ export default function Profile() {
 
     }
 
+    async function getTags(email) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/tag`,
+                { params: { email } },
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setTagList(res.data);
+            tagListBackup.current = res.data;
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    async function changeTags(){
+        for (let i of tagList){
+            if (tagListBackup.current.filter((tag) => tag.title === i.title).length === 0){
+                axios.defaults.withCredentials = true;
+                try {
+                    await axios.post(backendHost + `/tag`,
+                        { title: i.title, type: "profession" },
+                        {
+                            headers: {
+                                'Access-Control-Allow-Credentials': true,
+                                'Access-Control-Allow-Origin': backendHost,
+                            },
+                        }
+                    );
+                } catch (e) {
+                    alert(e);
+                }
+            }
+        }
+        for (let i of tagListBackup.current){
+            if (tagList.filter((tag) => tag.title === i.title).length == 0){
+                axios.defaults.withCredentials = true;
+                try {
+                    await axios.delete(backendHost + `/tag`,
+                        { data: {type: "profession", title: i.title} },
+                        {
+                            headers: {
+                                'Access-Control-Allow-Credentials': true,
+                                'Access-Control-Allow-Origin': backendHost,
+                            },
+                        }
+                    );
+                } catch (e) {
+                    alert(e);
+                }
+            }
+        }
+    }
+
     function logoutUser() {
         axios.defaults.withCredentials = true;
         axios.post(backendHost + `/account/logout`,
@@ -153,6 +213,8 @@ export default function Profile() {
         });
     }
 
+
+
     async function getRating(email) {
         try {
             //send get http request to database to get rating data
@@ -165,11 +227,14 @@ export default function Profile() {
             alert(e);
         }
     }
+    
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
         } else {
             getProfile(currentUserEmail);
+            getTags(currentUserEmail);
+
             getRating(currentUserEmail);
         }
     }, [edit]);
