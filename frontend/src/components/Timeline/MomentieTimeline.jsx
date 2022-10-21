@@ -143,7 +143,7 @@ export default function MomentieTimeline(props) {
             {editMode && allowTopicEdit && 
             <Button variant="outlined" startIcon={<AddCircleIcon />}
                 sx={{ height: "20px", 
-                    width: "50%", 
+                    width: "fit-content", 
                     margin: "10px", 
                     alignSelf: "center",
                     borderRadius: "6%",
