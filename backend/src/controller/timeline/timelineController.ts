@@ -1,9 +1,14 @@
+import { ListFormat } from 'typescript';
 import TimelineModel from '../../model/timelineModel'
 import UserModel from '../../model/userModel';
 
 const timelineCreate = (req: any, res: any) => {
     //validation
-    const email = req.params.email;
+    if (req.user === undefined) {
+        return res.status(404).end("user does not exist");
+    }
+
+    const email = req.user.email;
     if (email === "" || email === undefined) {
         return res.status(401).send("Email missing");
     }
@@ -72,4 +77,28 @@ const timelineRetri = (req: any, res: any) => {
       return res.status(500).end('uesr email is missing');
   }
 }
-module.exports = { timelineCreate, timelineRetri };
+
+const timelineEdit = (req: any, res: any) => {
+    if (req.user === undefined) {
+        return res.status(404).end("user does not exist");
+    }
+    const email = req.user.email;
+    if (email) {
+        //delete previous timeline data of this user
+        TimelineModel.deleteMany({email: email}, (err: any) => {
+            if (err) return res.status(500).end(err);
+            console.log("previous timeline deleted successfully");
+            //update new information
+            TimelineModel.insertMany(req.body.map((obj: any) => ({ ...obj, email: email })),
+            (err: any, timelines: any) => {
+                if (err) return res.status(500).end(err);
+                console.log(timelines);
+                return res.status(200).send("timeline edit successfully");
+            })
+        });
+    } else {
+        return res.status(500).end('uesr email is missing');
+    }
+}
+
+module.exports = { timelineCreate, timelineRetri, timelineEdit };
