@@ -11,6 +11,7 @@ export default function BasicRating(props) {
 
     return (
         <Box sx={{ display: "flex", alignItems: 'center' }}>
+            <Typography>Rating</Typography>
             <Rating name="rate" value={rating} readOnly precision={0.5} size="large" sx={{ margin: "50px", alignSelf: "center" }} />
         </Box>
     );

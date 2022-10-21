@@ -30,13 +30,13 @@ export default function MomentieTimelineItem(props) {
         if (!value || !value.isValid()) {
             value = endTime;
         }
-        setEndTime(value, editItem(timelineItem.topic, index, "endTime", endTime.toDate().toISOString()));
+        setEndTime(value, editItem(timelineItem.topic, index, "endTime", value.toDate().toISOString()));
     }
     const handleChangeStartTime = (value) => {
         if (!value || !value.isValid()) {
             value = startTime;
         }
-        setStartTime(value, editItem(timelineItem.topic, index, "startTime", startTime.toDate().toISOString()));
+        setStartTime(value, editItem(timelineItem.topic, index, "startTime", value.toDate().toISOString()));
     }
     return (
         <TimelineItem>
@@ -47,19 +47,21 @@ export default function MomentieTimelineItem(props) {
             </TimelineSeparator>
             <TimelineContent sx={{ textAlign: "center" }}>
                 {editMode ?
-                    <Paper sx={{ width: width, 
-                            padding: "10px", 
-                            position: "relative",
-                            backgroundColor: "#D9D9D9" 
-                        }} 
+                    <Paper sx={{
+                        width: width,
+                        padding: "10px",
+                        position: "relative",
+                        backgroundColor: "#D9D9D9"
+                    }}
                         elevation={3}>
                         <Button variant="outlined" startIcon={<CloseIcon />}
-                            sx={{ borderRadius: "6%",
-                                backgroundColor: "#BEACAC", 
+                            sx={{
+                                borderRadius: "6%",
+                                backgroundColor: "#BEACAC",
                                 color: '#F5F5F5',
                                 borderColor: "#BEACAC",
-                                height: "25px", 
-                                margin: "10px" 
+                                height: "25px",
+                                margin: "10px"
                             }}
                             onClick={() => { deleteItem(timelineItem.topic, index) }}>
                             Delete Item
@@ -79,12 +81,13 @@ export default function MomentieTimelineItem(props) {
                             defaultValue={timelineItem.content}
                             onChange={handleChangeContent}
                             variant="filled"
-                            sx={{ margin: "10px", 
-                                width: "90%", 
+                            sx={{
+                                margin: "10px",
+                                width: "90%",
                                 borderRadius: "6%",
-                                backgroundColor: "#D9D9D9", 
+                                backgroundColor: "#D9D9D9",
                                 color: '#F5F5F5',
-                                borderColor: "#BEACAC" 
+                                borderColor: "#BEACAC"
                             }}
                         />
 
@@ -152,27 +155,29 @@ export default function MomentieTimelineItem(props) {
                         <Typography sx={{ wordBreak: "break-word" }}>{timelineItem.content}</Typography>
                         <Box sx={{ padding: "10px" }}>
                             <Box display="flex" justifyContent="space-between" >
-                                <Paper elevation={0} 
-                                    variant="outlined" 
-                                    sx={{ borderWidth: "5px", 
-                                        padding: "3px", 
+                                <Paper elevation={0}
+                                    variant="outlined"
+                                    sx={{
+                                        borderWidth: "5px",
+                                        padding: "3px",
                                         borderRadius: "6%",
                                         borderColor: "#BEACAC",
                                         backgroundColor: '#F5F5F5',
-                                        color: '#897a7a' 
+                                        color: '#897a7a'
                                     }}
                                 >
                                     {startTime.format('DD/MM/YYYY')}
                                 </Paper>
                                 <EastIcon />
-                                <Paper elevation={0} 
-                                    variant="outlined" 
-                                    sx={{ borderWidth: "5px", 
+                                <Paper elevation={0}
+                                    variant="outlined"
+                                    sx={{
+                                        borderWidth: "5px",
                                         borderRadius: "6%",
                                         borderColor: "#BEACAC",
                                         backgroundColor: '#F5F5F5',
                                         color: '#897a7a',
-                                        padding: "3px" 
+                                        padding: "3px"
                                     }}
                                 >
                                     {endTime.format('DD/MM/YYYY')}

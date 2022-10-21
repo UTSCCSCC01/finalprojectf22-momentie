@@ -3,6 +3,9 @@ import UserModel from "../../model/userModel";
 import TagModel from "../../model/tagModel";
 
 const userTagCreate = async (req: any, res: any) => {
+  if (!req.user) {
+    return res.status(404).end("user not loggedin");
+  }
   const email = req.user.email;
   const type = req.body.type;
   const title = req.body.title;

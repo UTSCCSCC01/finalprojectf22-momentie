@@ -27,7 +27,7 @@ const timelineCreate = (req: any, res: any) => {
         return res.status(401).send("endTime is required");
     }
 
-    UserModel.findOne({ email: email }, function (err: any, user: any){
+    UserModel.findOne({ email: email }, function (err: any, user: any) {
         if (err) return res.status(500).end(err);
         if (!user) {
             return res.status(404).end("user does not exist");
@@ -41,7 +41,7 @@ const timelineCreate = (req: any, res: any) => {
             endTime: req.body.endTime,
             //image not implemented yet
         });
-    
+
         TimelineModel.create(newTimeline, (err: any) => {
             if (err) {
                 console.log(err);
@@ -50,31 +50,31 @@ const timelineCreate = (req: any, res: any) => {
             console.log(newTimeline);
             return res.status(200).send("timeline created");
         });
-    })   
+    })
 }
 
 const timelineRetri = (req: any, res: any) => {
-  const email = req.params.email;
-  if (email) {
-    TimelineModel.find({email: email}, null, {sort: {'startTime': 1}}, function(err: any, timelines: any) {
-      if (err) return res.status(500).end(err);
-      console.log(timelines)
-      const topics: any[] = [];
-      const sortedTimelines = timelines.reduce((userTimeline: any, timeline: any) => {
-        const topic = timeline.topic;
-        if (!(topics.includes(topic))) {
-          topics.push(topic);
-          userTimeline[topic] = [];
-        }
-        userTimeline[topic].push(timeline);
-        return userTimeline
-      }, {});
-      sortedTimelines.topics = topics;
-      return res.status(200).json(sortedTimelines);
-    })
-  } else {
-      return res.status(500).end('uesr email is missing');
-  }
+    const email = req.params.email;
+    if (email) {
+        TimelineModel.find({ email: email }, null, { sort: { 'startTime': 1 } }, function (err: any, timelines: any) {
+            if (err) return res.status(500).end(err);
+            console.log(timelines)
+            const topics: any[] = [];
+            const sortedTimelines = timelines.reduce((userTimeline: any, timeline: any) => {
+                const topic = timeline.topic;
+                if (!(topics.includes(topic))) {
+                    topics.push(topic);
+                    userTimeline[topic] = [];
+                }
+                userTimeline[topic].push(timeline);
+                return userTimeline
+            }, {});
+            sortedTimelines.topics = topics;
+            return res.status(200).json(sortedTimelines);
+        })
+    } else {
+        return res.status(500).end('uesr email is missing');
+    }
 }
 
 const timelineEdit = (req: any, res: any) => {
@@ -82,18 +82,23 @@ const timelineEdit = (req: any, res: any) => {
         return res.status(404).end("user does not exist");
     }
     const email = req.user.email;
+    const timelineList = req.body.timelineList;
+    if (timelineList === undefined) {
+        return res.status(500).end('list is missing');
+    }
     if (email) {
         //delete previous timeline data of this user
-        TimelineModel.deleteMany({email: email}, (err: any) => {
-            if (err) return res.status(500).end(err);
+        TimelineModel.deleteMany({ email: email }, (err: any) => {
+            if (err) return res.status(500).send(err);
             console.log("previous timeline deleted successfully");
             //update new information
-            TimelineModel.insertMany(req.body.map((obj: any) => ({ ...obj, email: email })),
-            (err: any, timelines: any) => {
-                if (err) return res.status(500).end(err);
-                console.log(timelines);
-                return res.status(200).send("timeline edit successfully");
-            })
+            TimelineModel.insertMany(timelineList.map((obj: any) => ({ ...obj, email: email })),
+                (err: any, timelines: any) => {
+                    console.log(err);
+                    if (err) return res.status(500).send(err);
+
+                    return res.status(200).send("timeline edit successfully");
+                })
         });
     } else {
         return res.status(500).end('uesr email is missing');

@@ -107,9 +107,12 @@ export default function MomentieTimeline(props) {
     }
 
     function editItem(topic, index, field, value) {
-        if (timelineList[topic] !== undefined && timelineList[topic] !== null && field !== "topic" && field !== "_id") {
-            if (index >= 0 && index < timelineList[topic].length) {
-                timelineList[topic][index][field] = value
+        let tempList = { ...timelineList };
+        if (tempList[topic] !== undefined && tempList[topic] !== null && field !== "topic" && field !== "_id") {
+            if (index >= 0 && index < tempList[topic].length) {
+                tempList[topic][index][field] = value
+                setTimelineList(tempList);
+                console.log(tempList);
             }
         }
     }
@@ -194,12 +197,12 @@ export default function MomentieTimeline(props) {
                                         }}
                                         onClick={() => { handleDeleteTopic(topic) }}>
                                         <ThemeProvider theme={theme}>
-                                        {noItemLeft ? 
+                                            {noItemLeft ?
 
-                                            <Typography variant="smaller">Delete Topic</Typography>:
-                                            <Typography variant="bigger">Delete Topic</Typography>
-                                        
-                                        }
+                                                <Typography variant="smaller">Delete Topic</Typography> :
+                                                <Typography variant="bigger">Delete Topic</Typography>
+
+                                            }
                                         </ThemeProvider>
                                     </Button>}
                                 {editMode && allowTopicEdit && <Divider sx={{ margin: "10px" }} />}
