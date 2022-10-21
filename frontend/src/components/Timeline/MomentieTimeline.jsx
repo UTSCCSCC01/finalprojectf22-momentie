@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { Typography, Button, Divider, TextField, createTheme } from '@mui/material';
+import { Typography, Button, Divider, TextField, createTheme, ThemeProvider, withTheme } from '@mui/material';
 import { Timeline } from '@mui/lab';
 import { useState, useRef } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -19,10 +19,14 @@ export default function MomentieTimeline(props) {
     const theme = createTheme({
         typography: {
           bigger: {
-            fontSize: 12,
+            fontSize: "70%",
+            color: "white",
+            lineHeight: 2.75,
           },
           smaller: {
-            fontSize: 6,
+            fontSize: "70%",
+            color: "white",
+            lineHeight: 2.125,
           },
         },
     });
@@ -147,10 +151,14 @@ export default function MomentieTimeline(props) {
                     color: '#F5F5F5',
                     borderColor: "#BEACAC"
                 }} onClick={handleAddTopic}>
-            {noItemLeft ? 
-            <Typography variant="smaller">Add Topic</Typography>:
-            <Typography variant="bigger">Add Topic</Typography>
-            }
+                <ThemeProvider theme={theme}>
+                {noItemLeft ? 
+
+                    <Typography variant="smaller">Add Topic</Typography>:
+                    <Typography variant="bigger">Add Topic</Typography>
+                
+                }
+                </ThemeProvider>
             </Button>}
             <Box sx={{
                 width: "fit-content",
