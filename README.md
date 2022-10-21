@@ -30,7 +30,7 @@ With the emergence of an overwhelming number of new tools and techniques, as wel
 4. Start frontend (go to finalprojectf22-momentie/frontend/src/LoginPage/Login.html)
 
    ```
-   #right click and click "Open in Default Browsers (Alt + B)
+   npm run start
    ```
 
 ## Contribution
