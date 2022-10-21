@@ -19,6 +19,8 @@ export default function Profile() {
 
     const [timelineList, setTimelineList] = useState({});
     const timelineBackup = useRef(JSON.parse(JSON.stringify(timelineList)));
+    const [skillTimeline, setSkillTimeline] = useState({});
+    const skillTimelineBackup = useRef(JSON.parse(JSON.stringify(skillTimeline)));
 
     const [tagList, setTagList] = useState([]);
     const tagListBackup = useRef(JSON.parse(JSON.stringify(tagList)));
@@ -39,6 +41,7 @@ export default function Profile() {
             await changeTags();
             await changeTimeline()
             descriptionBackup.current = JSON.parse(JSON.stringify(description));
+            skillTimelineBackup.current = JSON.parse(JSON.stringify(skillTimeline));
             timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
             tagListBackup.current = JSON.parse(JSON.stringify(tagList));
             setEdit(false);
@@ -52,6 +55,7 @@ export default function Profile() {
     function handleCancel() {
         setTagList(JSON.parse(JSON.stringify(tagListBackup.current)));
         setTimelineList(JSON.parse(JSON.stringify(timelineBackup.current)));
+        setSkillTimeline(JSON.parse(JSON.stringify(skillTimelineBackup.current)));
         setDescription(JSON.parse(JSON.stringify(descriptionBackup.current)));
         setEdit(false);
     }
@@ -223,6 +227,15 @@ export default function Profile() {
                     setTimelineList(timelineData);
                     timelineBackup.current = timelineData;
                 }
+                let skillTimelineData = { ...res.data };
+                delete skillTimelineData.experience;
+                for (const property in skillTimelineData) {
+                    for (var i = 0; i < skillTimelineData[property].length; i++) {
+                        skillTimelineData[property][i]._id = i;
+                    }
+                }
+                setSkillTimeline(skillTimelineData);
+                skillTimelineBackup.current = skillTimelineData;
 
             }
         } catch (e) {
@@ -239,8 +252,12 @@ export default function Profile() {
                     body.push(item);
                 }
             }
+            for (const key of Object.keys(skillTimeline)) {
+                for (const item of skillTimeline[key]) {
+                    body.push(item);
+                }
+            }
             body = body.map(({ _id, ...keepAttrs }) => keepAttrs)
-            console.log(body);
             await axios.patch(backendHost + `/profile/` + currentUserEmail + `/timeline`,
                 { timelineList: body },
                 {
@@ -379,8 +396,7 @@ export default function Profile() {
                 </div>
 
                 <div class="posts">
-                    {/* <!-- -->
-                    additional information and posts */}
+                    <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" editMode={edit} allowTopicEdit={true} section="Skills" />
                 </div>
 
             </div>
@@ -388,7 +404,7 @@ export default function Profile() {
             <form id="myform" onSubmit={(e) => { e.preventDefault() }}>
                 <Box class="right">
                     {/* <!-- time line starts here--> */}
-                    <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" height="70vh" editMode={edit} allowTopicEdit={false} />
+                    <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" height="70vh" editMode={edit} allowTopicEdit={false} section="Experiences" />
                 </Box>
             </form>
 
