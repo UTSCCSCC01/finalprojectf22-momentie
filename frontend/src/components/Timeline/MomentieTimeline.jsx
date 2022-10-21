@@ -6,10 +6,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AddIcon from '@mui/icons-material/Add';
 import MomentieTimelineItem from './MomentieTimelineItem';
+import { fontSize } from '@mui/system';
 
 /* Todo edit  */
 export default function MomentieTimeline(props) {
-    const { timelineList, setTimelineList, width, height, editMode, allowTopicEdit, printData } = props;
+    const { timelineList, setTimelineList, width, height, editMode, allowTopicEdit, section } = props;
     const [noItemLeft, setNoItemLeft] = useState(false)
     const heightStyle = height === undefined ? "50vh" : height;
 
@@ -112,7 +113,6 @@ export default function MomentieTimeline(props) {
             if (index >= 0 && index < tempList[topic].length) {
                 tempList[topic][index][field] = value
                 setTimelineList(tempList);
-                console.log(tempList);
             }
         }
     }
@@ -128,11 +128,12 @@ export default function MomentieTimeline(props) {
             borderRadius: '6%',
             border: 3
         }}>
+            <Typography sx={{ margin: "20px", fontSize: "16pt" }}>{section}</Typography>
             {editMode && allowTopicEdit &&
                 <Button variant="outlined" startIcon={<AddCircleIcon />}
                     sx={{
                         height: "20px",
-                        width: "50%",
+                        width: "fit-content",
                         margin: "10px",
                         alignSelf: "center",
                         borderRadius: "6%",
@@ -153,11 +154,15 @@ export default function MomentieTimeline(props) {
                 width: "fit-content",
                 height: "fit-content", display: "flex",
                 flexWrap: "wrap", gap: "40px",
-                justifyContent: "center"
+                justifyContent: "center",
             }}>
                 {
                     Object.keys(timelineList).sort().map((topic) => (
-                        <div key={topic} >
+                        <Box key={topic} sx={allowTopicEdit ? {
+                            color: '#BEACAC',
+                            borderRadius: '6%',
+                            border: 3
+                        } : null}>
                             {editMode && allowTopicEdit ? <TextField
                                 required
                                 id="filled-required"
@@ -172,13 +177,13 @@ export default function MomentieTimeline(props) {
                             /> : <Typography
                                 sx={{ fontWeight: 'bold', textTransform: 'uppercase', padding: "10px" }}
                                 fontSize={width / timelineList.length / 12}  >
-                                {topic}
+                                {allowTopicEdit ? topic : ""}
                             </Typography>}
                             <Divider sx={{ margin: "10px" }} />
                             <Box
                                 sx={{
                                     width: "fit-content", height: heightStyle, overflowY: "auto", overflowX: "hidden"
-                                    , position: "relative", display: "flex", flexDirection: "column", minWidth: "300px"
+                                    , position: "relative", display: "flex", flexDirection: "column", minWidth: "300px",
                                 }}
                                 key={topic} >
 
@@ -222,7 +227,7 @@ export default function MomentieTimeline(props) {
                                         Add Item
                                     </Button>
                                 }
-                                <Timeline >
+                                <Timeline>
                                     {timelineList[topic].map((timelineItem, index) => (
                                         <div key={timelineItem._id}>
                                             <MomentieTimelineItem index={index} timelineItem={timelineItem} width={width} editMode={editMode} deleteItem={deleteItem} editItem={editItem} />
@@ -230,7 +235,7 @@ export default function MomentieTimeline(props) {
                                     ))}
                                 </Timeline>
                             </Box>
-                        </div>
+                        </Box>
                     ))
                 }
             </Box >

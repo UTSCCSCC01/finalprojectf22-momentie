@@ -69,7 +69,6 @@ const timelineRetri = (req: any, res: any) => {
                 userTimeline[topic].push(timeline);
                 return userTimeline
             }, {});
-            sortedTimelines.topics = topics;
             return res.status(200).json(sortedTimelines);
         })
     } else {
