@@ -64,6 +64,7 @@ export default function Profile() {
     // saved value
     const [description, setDescription] = useState(descriptionRef.current);
 
+    const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
 
     //customize color
@@ -118,13 +119,13 @@ export default function Profile() {
         axios.defaults.withCredentials = true;
         try {
             let res = await axios.get(backendHost + `/profile/`,
-            {params: {email}},
-            {
-                headers: {
-                    'Access-Control-Allow-Credentials': true,
-                    'Access-Control-Allow-Origin': backendHost,
-                },
-            }
+                { params: { email } },
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
             );
             setDescription(res.data.description);
             descriptionRef.current = res.data.description;
@@ -153,11 +154,24 @@ export default function Profile() {
         });
     }
 
+    async function getRating(email) {
+        try {
+            //send get http request to database to get rating data
+            let response = await axios.get(backendHost + '/profile/like?email', {
+                params: { email }
+            })
+            setRating(response.data);
+        }
+        catch (e) {
+            alert(e);
+        }
+    }
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
         } else {
             getProfile(currentUserEmail);
+            getRating(currentUserEmail);
         }
     }, [edit]);
 
@@ -242,14 +256,14 @@ export default function Profile() {
                     {/* <!-- color change based on profile photo, to be added later--> */}
                     <Box class="rate">
                         {/* Put the Rating here */}
-                        <Rate />
+                        <Rate rating={rating} setRating={setRating} />
                     </Box>
 
                 </div>
 
                 <div class="description">
                     <Box>
-                        <Box sx={{marginBottom: "20px"}}>
+                        <Box sx={{ marginBottom: "20px" }}>
                             <p>Description</p>
                             {edit ? <TextField
                                 required
@@ -284,7 +298,7 @@ export default function Profile() {
             <Box class="right">
                 {/* <!-- time line starts here--> */}
                 <MomentieTimeline contentRef={timelineRef} width="300px" editMode={edit} allowTopicEdit={true} />
-                
+
 
             </Box>
 
