@@ -50,7 +50,10 @@ export default function ChipsArray(props) {
           onChange={(e) => { handleAddTagName(e) }}
         /> : null}
         {edit ?
-          <Button variant="contained" onClick={handleAdd} >Add Tag</Button> : null}
+          <Button variant="contained" onClick={handleAdd} 
+          sx={{backgroundColor: "#BEACAC",
+          color: '#F5F5F5',
+          borderColor: "#BEACAC"}}>Add Tag</Button> : null}
       </Box>
 
 
