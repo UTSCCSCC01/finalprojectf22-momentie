@@ -4,8 +4,17 @@ const passport = require('passport');
 
 const { userLogin, userSignUp, userLogout } = require('../controller/user/userController');
 
-router.get('/', (req: any, res: any) => {
-  res.status(200).send('login page')
+function isAuthenticated(req: any, res: any, next: any) {
+  if (req.user)
+    return next();
+  else
+    return res.status(401).json({
+      error: 'User not authenticated'
+    })
+
+}
+router.get('/checkAuth', isAuthenticated, function (req: any, res: any) {
+  res.status(200).json(req.user);
 });
 
 router.post('/login', passport.authenticate('local'), userLogin);
