@@ -10,7 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useEffect } from 'react';
 
 export default function MomentieTimelineItem(props) {
-    const { index, timelineItem, width, editMode, deleteItem, editItem } = props
+    const { index, timelineItem, width, editMode, deleteItem, editItem, isSkill } = props
     const [startTime, setStartTime] = useState(dayjs(timelineItem.startTime));
     const [endTime, setEndTime] = useState(dayjs(timelineItem.endTime));
     const [isEditStartTime, setIsEditStartTime] = useState(false);
@@ -66,14 +66,14 @@ export default function MomentieTimelineItem(props) {
                             onClick={() => { deleteItem(timelineItem.topic, index) }}>
                             Delete Item
                         </Button>
-                        <TextField
+                        {isSkill ? null : <TextField
                             required
                             id="outlined-required"
                             label="Required Title"
                             defaultValue={timelineItem.title}
                             onBlur={handleChangeTitle}
                             sx={{ margin: "10px", backgroundColor: "#D9D9D9" }}
-                        />
+                        />}
                         <TextField
                             id="standard-multiline-static"
                             label="Content"
@@ -148,10 +148,10 @@ export default function MomentieTimelineItem(props) {
                     :
 
                     <Paper sx={{ width: width, padding: "10px", backgroundColor: "#D9D9D9", color: '#897a7a' }} elevation={3}>
-                        <Typography
+                        {isSkill ? null : <Typography
                             sx={{ fontWeight: 'bold', textTransform: 'uppercase', wordBreak: "break-word" }}>
                             {timelineItem.title}
-                        </Typography>
+                        </Typography>}
                         <Typography sx={{ wordBreak: "break-word" }}>{timelineItem.content}</Typography>
                         <Box sx={{ padding: "10px" }}>
                             <Box display="flex" justifyContent="space-between" >

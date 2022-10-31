@@ -396,7 +396,7 @@ export default function Profile() {
                 </div>
 
                 <div class="posts">
-                    <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" editMode={edit} allowTopicEdit={true} section="Skills" />
+                    <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" height="40vh" editMode={edit} isSkill={true} section="Skills" />
                 </div>
 
             </div>
@@ -404,7 +404,7 @@ export default function Profile() {
             <form id="myform" onSubmit={(e) => { e.preventDefault() }}>
                 <Box class="right">
                     {/* <!-- time line starts here--> */}
-                    <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" height="70vh" editMode={edit} allowTopicEdit={false} section="Experiences" />
+                    <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" height="70vh" editMode={edit} isSkill={false} section="Experiences" />
                 </Box>
             </form>
 

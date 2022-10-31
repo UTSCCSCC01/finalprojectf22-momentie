@@ -10,7 +10,7 @@ import { fontSize } from '@mui/system';
 
 /* Todo edit  */
 export default function MomentieTimeline(props) {
-    const { timelineList, setTimelineList, width, height, editMode, allowTopicEdit, section } = props;
+    const { timelineList, setTimelineList, width, height, editMode, isSkill, section } = props;
     const [noItemLeft, setNoItemLeft] = useState(false)
     const heightStyle = height === undefined ? "50vh" : height;
 
@@ -129,7 +129,7 @@ export default function MomentieTimeline(props) {
             border: 3
         }}>
             <Typography sx={{ margin: "20px", fontSize: "16pt" }}>{section}</Typography>
-            {editMode && allowTopicEdit &&
+            {editMode && isSkill &&
                 <Button variant="outlined" startIcon={<AddCircleIcon />}
                     sx={{
                         height: "20px",
@@ -158,12 +158,12 @@ export default function MomentieTimeline(props) {
             }}>
                 {
                     Object.keys(timelineList).sort().map((topic) => (
-                        <Box key={topic} sx={allowTopicEdit ? {
+                        <Box key={topic} sx={isSkill ? {
                             color: '#BEACAC',
                             borderRadius: '6%',
                             border: 3
                         } : null}>
-                            {editMode && allowTopicEdit ? <TextField
+                            {editMode && isSkill ? <TextField
                                 required
                                 id="filled-required"
                                 label="Required Topic"
@@ -177,7 +177,7 @@ export default function MomentieTimeline(props) {
                             /> : <Typography
                                 sx={{ fontWeight: 'bold', textTransform: 'uppercase', padding: "10px" }}
                                 fontSize={width / timelineList.length / 12}  >
-                                {allowTopicEdit ? topic : ""}
+                                {isSkill ? topic : ""}
                             </Typography>}
                             <Divider sx={{ margin: "10px" }} />
                             <Box
@@ -187,7 +187,7 @@ export default function MomentieTimeline(props) {
                                 }}
                                 key={topic} >
 
-                                {allowTopicEdit && editMode &&
+                                {isSkill && editMode &&
                                     <Button variant="outlined" startIcon={<DeleteIcon />}
                                         sx={{
                                             backgroundColor: "white",
@@ -210,7 +210,7 @@ export default function MomentieTimeline(props) {
                                             }
                                         </ThemeProvider>
                                     </Button>}
-                                {editMode && allowTopicEdit && <Divider sx={{ margin: "10px" }} />}
+                                {editMode && isSkill && <Divider sx={{ margin: "10px" }} />}
                                 {editMode &&
                                     <Button variant="outlined" startIcon={<AddIcon />}
                                         sx={{
@@ -230,7 +230,7 @@ export default function MomentieTimeline(props) {
                                 <Timeline>
                                     {timelineList[topic].map((timelineItem, index) => (
                                         <div key={timelineItem._id}>
-                                            <MomentieTimelineItem index={index} timelineItem={timelineItem} width={width} editMode={editMode} deleteItem={deleteItem} editItem={editItem} />
+                                            <MomentieTimelineItem index={index} timelineItem={timelineItem} width={width} editMode={editMode} isSkill={isSkill} deleteItem={deleteItem} editItem={editItem} />
                                         </div>
                                     ))}
                                 </Timeline>
