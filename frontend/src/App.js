@@ -7,6 +7,7 @@ import MomentieTimeline from './components/Timeline/MomentieTimeline.jsx';
 // import Rate from './components/Rating/Rate.jsx';
 
 import MomentieTag from './components/Tag/MomentieTag.jsx';
+import Home from './components/pages/Home/Home.jsx';
 const TagData = [{ title: "apple" }, { title: "banana" }]
 function App() {
   /*
@@ -37,6 +38,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/home" element={<Home />} />
       {/* <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} /> */}
       <Route path="/tag" element={<MomentieTag contentRef={editTagData} width={100} height={30} edit={false} />} />
       {/* <Route path="/rate" element={<Rate />} /> */}
