@@ -13,6 +13,14 @@ import { countries, employementTypes } from './helperData'
 
 export default function MomentieTimelineItem(props) {
     const { index, timelineItem, width, editMode, deleteItem, editItem, isSkill } = props
+    function parseTimelineContent(str) {
+        try {
+            return JSON.parse(str);
+        } catch (e) {
+            return { content: str, companyName: "Unknown Company", employmentType: "", location: "", isCurrent: false }
+        }
+    }
+    const [contentJson, setContentJson] = useState(parseTimelineContent(timelineItem.content));
     const [startTime, setStartTime] = useState(dayjs(timelineItem.startTime));
     const [endTime, setEndTime] = useState(dayjs(timelineItem.endTime));
     const [isEditStartTime, setIsEditStartTime] = useState(false);
@@ -25,8 +33,10 @@ export default function MomentieTimelineItem(props) {
     const handleChangeTitle = (event) => {
         editItem(timelineItem.topic, index, "title", event.target.value);
     };
-    const handleChangeContent = (event) => {
-        editItem(timelineItem.topic, index, "content", event.target.value);
+    const handleChangeContent = (value, namespace) => {
+        contentJson[namespace] = value;
+        console.log(value)
+        editItem(timelineItem.topic, index, "content", JSON.stringify(contentJson));
     };
     const handleChangeEndTime = (value) => {
         if (!value || !value.isValid()) {
@@ -89,11 +99,15 @@ export default function MomentieTimelineItem(props) {
                                     id="outlined"
                                     label="Company/Institution"
                                     sx={{ margin: "10px 0px 0px 0px", backgroundColor: "#D9D9D9" }}
+                                    defaultValue={contentJson.companyName}
+                                    onBlur={(e) => { handleChangeContent(e.target.value, "companyName") }}
                                 />
                                 <Autocomplete
                                     disablePortal
                                     id="combo-box-demo"
                                     options={employementTypes}
+                                    value={contentJson.employmentType}
+                                    onChange={(_, v) => { handleChangeContent(v, "employmentType") }}
                                     sx={{ width: 300, margin: "10px 0px 0px 0px" }}
                                     renderInput={(params) => <TextField {...params} label="Employment Type" />}
                                 />
@@ -102,6 +116,8 @@ export default function MomentieTimelineItem(props) {
                                     options={countries}
                                     autoHighlight
                                     getOptionLabel={(option) => option.label}
+                                    onChange={(_, v) => { handleChangeContent(v ? v : "", "location") }}
+                                    value={contentJson.location ? contentJson.location : null}
                                     renderOption={(props, option) => (
                                         <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                                             <img
@@ -126,7 +142,9 @@ export default function MomentieTimelineItem(props) {
                                     )}
                                 />
                                 <FormControlLabel control={
-                                    <Checkbox sx={{
+                                    <Checkbox defaultChecked={contentJson.isChecked} onChange={(e) => {
+                                        handleChangeContent(e.target.checked, "isChecked")
+                                    }} sx={{
                                         color: "#BEACAC",
                                         '&.Mui-checked': {
                                             color: "#BEACAC",
@@ -140,8 +158,8 @@ export default function MomentieTimelineItem(props) {
                             id="standard-multiline-static"
                             label="Content"
                             multiline
-                            defaultValue={timelineItem.content}
-                            onChange={handleChangeContent}
+                            defaultValue={contentJson.content}
+                            onChange={(e) => { handleChangeContent(e.target.value, "content") }}
                             variant="filled"
                             sx={{
                                 margin: "0px 0px 10px 0px",
@@ -217,13 +235,15 @@ export default function MomentieTimelineItem(props) {
                                 sx={{ fontSize: 'h6.fontSize', fontWeight: 'bold', textTransform: 'uppercase', wordBreak: "break-word", textAlign: "left" }}>
                                 {timelineItem.title}
                             </Typography>
-                            <Typography sx={{ wordBreak: "break-word", textAlign: "left", fontWeight: 'bold' }}>{"Company Name/Institution name • employment type"}</Typography>
-                            <Typography sx={{ wordBreak: "break-word", textAlign: "left" }}>{"Unknown Location"}</Typography>
+                            <Typography sx={{ wordBreak: "break-word", textAlign: "left", fontWeight: 'bold' }}>{contentJson.employmentType ?
+                                contentJson.companyName + " • " + contentJson.employmentType
+                                : contentJson.companyName + " • " + "Unknown Employment"}</Typography>
+                            <Typography sx={{ wordBreak: "break-word", textAlign: "left" }}>{contentJson.location ? contentJson.location.label : "Unknown Location"}</Typography>
 
                         </div>
                         }
 
-                        <Typography sx={{ wordBreak: "break-word", textAlign: "left" }}>{timelineItem.content}</Typography>
+                        <Typography sx={{ wordBreak: "break-word", textAlign: "left" }}>{contentJson.content}</Typography>
                         <Box sx={{ padding: "10px 0px 10px 0px" }}>
                             <Box display="flex" alignItems="flex-start" >
                                 <Paper elevation={0}
@@ -253,7 +273,7 @@ export default function MomentieTimelineItem(props) {
                                         margin: "10px 0px 10px 0px"
                                     }}
                                 >
-                                    {endTime.format('DD/MM/YYYY')}
+                                    {contentJson.isChecked ? "Present" : endTime.format('DD/MM/YYYY')}
                                 </Paper>
                             </Box>
                         </Box>
