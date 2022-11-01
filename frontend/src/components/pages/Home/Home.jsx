@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useState, useRef } from "react";
 import { Button, TextField, Box, getTablePaginationUtilityClass } from '@mui/material'
 
-export default function Profile() {
+export default function Home() {
 
     const [username, setUserName] = useState("");
     const currentUserEmail = useSelector((state) => state.email);
