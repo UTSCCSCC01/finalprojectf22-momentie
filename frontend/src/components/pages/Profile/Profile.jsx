@@ -192,7 +192,7 @@ export default function Profile() {
                 },
             }
         ).then(() => {
-            dispatch(changeEmail({currentUserEmail}));
+            dispatch(changeEmail({ currentUserEmail }));
             navigate("/home");
         }).catch(function () {
             alert('Somethingwent wrong with the navigate process.');
@@ -368,7 +368,7 @@ export default function Profile() {
                 </div>
             </header >
 
-            <div class="left">
+            <div class="profileLeft">
 
                 <div class="profile-upper">
                     {/* <!--
@@ -421,10 +421,10 @@ export default function Profile() {
             </div>
 
             <form id="myform" onSubmit={(e) => { e.preventDefault() }}>
-                <Box class="right">
+                <div class="profileRight">
                     {/* <!-- time line starts here--> */}
                     <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" height="40vh" editMode={edit} isSkill={true} section="Skills" />
-                </Box>
+                </div>
             </form>
 
         </div >

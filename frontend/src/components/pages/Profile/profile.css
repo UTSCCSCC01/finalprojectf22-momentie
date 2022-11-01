@@ -175,7 +175,7 @@ nav a:hover::before {
 /*end of head bar*/
 
 /* left side */
-.left{
+.profileLeft{
     float: left;
     width: 70%;
     height: 100%;
@@ -314,10 +314,11 @@ nav a:hover::before {
 /* left ends */
 
 /* right start */
-.right{
+.profileRight{
     float: left;
     width: 30%;
-    height: 100%;
+    height: 100vh;
+    overflow: auto;
     background-color: #F5F5F5;
 }
 

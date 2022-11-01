@@ -5,6 +5,7 @@ import axios from 'axios';
 import { backendHost } from '../../../constants';
 import { useDispatch } from 'react-redux'
 import { changeEmail } from '../../../reduxStore/userSlice';
+import { Button, Link } from '@mui/material';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -108,24 +109,39 @@ export default function Login() {
 
                 {/* <!-- Login button Box: Store the login Button --> */}
                 <div class="loginButtonBox">
-                    <button class="loginButton" id="login" onClick={check}>
-                        Log In
-                    </button>
+                    <Button sx={{
+                        color: "#BEACAC", background: "#D9D9D9", textAlign: "center", alignSelf: "center", width: "150px",
+                        height: "40px", fontFamily: 'Inter',
+                        fontStyle: "normal",
+                        fontWeight: 600,
+                        fontSize: "30px",
+                        lineHeight: "20px",
+                        marginLeft: "40%",
+                        marginTop: "5vh"
+                    }} id="login" onClick={check} variant="contained">Log In</Button>
                 </div>
 
                 {/* <!-- Link Box: Store the link redirect to signup page --> */}
                 <div class="linkBox">
-                    <a class="signuplink" onClick={swicthToSignup}>
-                        don't have an account? register here
-                    </a>
+                    <Link sx={{
+                        marginTop: "5vh",
+                        marginLeft: "40%",
+                        fontFamily: 'Inter',
+                        fontStyle: "normal",
+                        fontWeight: 600,
+                        fontSize: "15px",
+                        color: "#BEACAC",
+                    }} underline="hover" onClick={swicthToSignup}>
+                        {"Don't have an account? Register here"}
+                    </Link>
                 </div>
             </div>
 
             {/* <!-- right part of the webpage(60%) --> */}
-            <div class="right">
+            <div class="loginRight">
                 {/* <!-- The image showing in the login page --> */}
                 <img src={require("./LoginPic.png")} class="image" alt="Login Picture" />
             </div>
-        </div>
+        </div >
     );
 }
