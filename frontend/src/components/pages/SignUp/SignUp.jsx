@@ -3,7 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { backendHost } from '../../../constants';
-
+import { Link, Button } from "@mui/material";
 export default function SignUp() {
     // Get the user input
     const [email, setEmail] = useState('');
@@ -149,18 +149,30 @@ export default function SignUp() {
 
             {/* <!-- Sign up button --> */}
             <div class="butBox">
-                <button class="but" id="submit" onClick={handleSignup}>
-                    SIGN UP
-                </button>
+                <Button sx={{
+                    color: "#BEACAC", background: "#D9D9D9", textAlign: "center", alignSelf: "center", width: "170px",
+                    height: "40px", fontFamily: 'Inter', marginLeft: "100px",
+                    fontStyle: "normal",
+                    fontWeight: 600,
+                    fontSize: "30px",
+                    lineHeight: "20px",
+                }} id="submit" onClick={handleSignup} variant="contained">Sign Up</Button>
             </div>
 
             {/* <!-- Link box --> */}
             <div class="linkBox">
-                <a class="link" onClick={switchToLogin}>
-                    already have an account? login here
-                </a>
+                <Link sx={{
+                    marginLeft: "100px",
+                    fontFamily: 'Inter',
+                    fontStyle: "normal",
+                    fontWeight: 600,
+                    fontSize: "15px",
+                    color: "#BEACAC",
+                }} underline="hover" onClick={switchToLogin}>
+                    {"Already have an account? Login here"}
+                </Link>
             </div>
 
-        </div>
+        </div >
     );
 }

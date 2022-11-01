@@ -125,8 +125,6 @@ export default function MomentieTimeline(props) {
             height: "fit-content",
             justifyContent: "center",
             color: '#BEACAC',
-            borderRadius: '6%',
-            border: 3
         }}>
             <Typography sx={{ margin: "20px", fontSize: "16pt" }}>{section}</Typography>
             {editMode && isSkill &&

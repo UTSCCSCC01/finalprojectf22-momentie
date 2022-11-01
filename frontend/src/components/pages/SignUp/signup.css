@@ -40,8 +40,9 @@
 .titleBox{
     display: flex;
     justify-content: flex-start;
+    flex-direction: column;
     width: 100%;
-    height: 230px;
+    height: fit-content;
     /* background-color: #008c8c; */
 }
 
@@ -72,14 +73,14 @@
     text-align: center;
     color: #BEACAC;
     margin-top: 30px;
-    margin-left: 400px;
+    margin-bottom: 30px;
+    margin-left: 100px;
 }
 
 /* There are two information box, details write in the .html. Directly under the titleBox*/
 .informationBox{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
     width: 100%;
     height: 100px;
     /* background-color: pink; */
@@ -93,7 +94,7 @@
 }
 
 .inforLeft {
-    margin-left: 200px;
+    margin-left: 100px;
     margin-right: 200px;
 }
 
@@ -124,7 +125,7 @@
 /* Button box, directly under two infor box */
 .butBox {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin-top: 30px;
 }
 
