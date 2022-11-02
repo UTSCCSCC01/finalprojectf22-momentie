@@ -5,11 +5,13 @@ import axios from 'axios';
 import { backendHost } from '../../../constants';
 import { useDispatch } from 'react-redux'
 import { changeEmail } from '../../../reduxStore/userSlice';
-import { Button, Link } from '@mui/material';
+import { Button, Link, Alert, AlertTitle, CircularProgress } from '@mui/material';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loggingIn, setLoggingIn] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -28,6 +30,8 @@ export default function Login() {
             return alert("Please fill in your email and password!");
         }
         else {    //send http request if no field is empty
+            setLoggingIn(true);
+            setErrorMessage("");
             request();
         }
     }
@@ -44,10 +48,12 @@ export default function Login() {
                 },
             }
         ).then((response) => {
-            dispatch(changeEmail(response.data.email))
+            dispatch(changeEmail(response.data.email));
+            setLoggingIn(false);
             navigate("/profile");
         }).catch(() => {
-            alert("Incorrect username/password, or user doesn't exist");
+            setLoggingIn(false);
+            setErrorMessage("Incorrect username/password, or user doesn't exist");
         });
     }
 
@@ -106,7 +112,11 @@ export default function Login() {
                         id="password"
                         onChange={e => setPassword(e.target.value)} />
                 </div>
-
+                {loggingIn && <CircularProgress sx={{ marginTop: "5vh", marginLeft: "40%" }} color="secondary" />}
+                {errorMessage && <Alert severity="error" variant="filled" sx={{ marginTop: "5vh", marginLeft: "40%", width: "300px" }}>
+                    <AlertTitle>Error</AlertTitle>
+                    An error Occured — <strong>{errorMessage}</strong>
+                </Alert>}
                 {/* <!-- Login button Box: Store the login Button --> */}
                 <div class="loginButtonBox">
                     <Button sx={{
@@ -122,7 +132,7 @@ export default function Login() {
                 </div>
 
                 {/* <!-- Link Box: Store the link redirect to signup page --> */}
-                <div class="linkBox">
+                <div class="loginLinkBoxs">
                     <Link sx={{
                         marginTop: "5vh",
                         marginLeft: "40%",

@@ -6,7 +6,7 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass } from '@mui/material'
+import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress } from '@mui/material'
 import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
@@ -16,6 +16,8 @@ export default function Profile() {
 
     const [edit, setEdit] = useState(false);
     const [username, setUserName] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [timelineList, setTimelineList] = useState({});
     const timelineBackup = useRef(JSON.parse(JSON.stringify(timelineList)));
@@ -36,19 +38,21 @@ export default function Profile() {
     const dispatch = useDispatch();
 
     async function handleSave() {
-        try {
-            await editProfileAPI(currentUserEmail, description);
-            await changeTags();
-            await changeTimeline()
-            descriptionBackup.current = JSON.parse(JSON.stringify(description));
-            skillTimelineBackup.current = JSON.parse(JSON.stringify(skillTimeline));
-            timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
-            tagListBackup.current = JSON.parse(JSON.stringify(tagList));
-            setEdit(false);
-        }
-        catch (e) {
+        setLoading(true);
+        if (!await editProfileAPI(currentUserEmail, description) ||
+            !await changeTags() || !await changeTimeline()) {
+            setLoading(false);
+            setErrorMessage("Some save failed.");
             handleCancel();
         }
+
+        descriptionBackup.current = JSON.parse(JSON.stringify(description));
+        skillTimelineBackup.current = JSON.parse(JSON.stringify(skillTimeline));
+        timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
+        tagListBackup.current = JSON.parse(JSON.stringify(tagList));
+        setLoading(false);
+        setEdit(false);
+
 
     }
 
@@ -77,8 +81,9 @@ export default function Profile() {
                     },
                 }
             );
+            return true;
         } catch (e) {
-            alert(e);
+            return false;
         }
 
     }
@@ -98,7 +103,7 @@ export default function Profile() {
             setDescription(res.data.description);
             descriptionBackup.current = res.data.description;
         } catch (e) {
-            alert(e);
+            setErrorMessage("Profile retrieve failed.")
         }
 
     }
@@ -118,7 +123,7 @@ export default function Profile() {
             setTagList(res.data);
             tagListBackup.current = res.data;
         } catch (e) {
-            alert(e);
+            setErrorMessage("Profile retrieve failed.")
         }
     }
 
@@ -137,7 +142,7 @@ export default function Profile() {
                         }
                     );
                 } catch (e) {
-                    alert(e);
+                    return false;
                 }
             }
         }
@@ -155,10 +160,11 @@ export default function Profile() {
                         }
                     );
                 } catch (e) {
-                    alert(e);
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     function logoutUser() {
@@ -175,7 +181,6 @@ export default function Profile() {
             dispatch(changeEmail(""));
             navigate("/login");
         }).catch(function () {
-            alert('Somethingwent wrong with the logout process.');
             navigate("/login");
         });
     }
@@ -195,7 +200,7 @@ export default function Profile() {
             dispatch(changeEmail({ currentUserEmail }));
             navigate("/home");
         }).catch(function () {
-            alert('Somethingwent wrong with the navigate process.');
+            navigate("/home");
         });
     }
 
@@ -216,7 +221,7 @@ export default function Profile() {
             setRating(response.data);
         }
         catch (e) {
-            alert(e);
+            setErrorMessage("Profile retrieve failed.")
         }
     }
 
@@ -258,7 +263,7 @@ export default function Profile() {
 
             }
         } catch (e) {
-            alert(e);
+            setErrorMessage("Profile retrieve failed.")
         }
     }
 
@@ -286,8 +291,9 @@ export default function Profile() {
                     },
                 }
             );
+            return true;
         } catch (e) {
-            alert(e);
+            return false;
         }
     }
 
@@ -365,6 +371,10 @@ export default function Profile() {
                                     fontSize: "14px"
                                 }}>Cancel</Button>
                         </div> : null}
+                    {loading && <CircularProgress size={30} sx={{ marginLeft: "20px" }} color="secondary" />}
+                    {errorMessage && <Alert severity="error" variant="filled" sx={{ marginLeft: "10px", width: "400px", height: "40px" }}>
+                        An error Occured — <strong>{errorMessage}</strong>
+                    </Alert>}
                 </div>
             </header >
 
