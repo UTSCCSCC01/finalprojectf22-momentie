@@ -30,7 +30,7 @@ export default function Home() {
             dispatch(changeEmail(""));
             navigate("/login");
         }).catch(function () {
-            alert('Somethingwent wrong with the logout process.');
+            alert('Something went wrong with the logout process.');
             navigate("/login");
         });
     }
@@ -38,8 +38,8 @@ export default function Home() {
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
-        } else {}
-    }, );
+        } else { }
+    },);
 
     return (
         <div class="page">
@@ -81,33 +81,33 @@ export default function Home() {
             </header >
 
             <div class="left">
-            <div class="mainpost">
-                <div class="post">
-                    {currentUserEmail}
+                <div class="mainpost">
+                    <div class="post">
+                        {currentUserEmail}
 
+                    </div>
+
+                </div>
+                <div class="otherpost">
+                    <div class="post">
+                        other recomand post
+                    </div>
+                </div>
+            </div>
+
+            <div class="middle">
+                {/* <!-- other recomand users --> */}
+                <div class="post">
+                    recomand users
                 </div>
 
             </div>
-            <div class="otherpost">
+            <div class="right">
                 <div class="post">
-                    other recomand post
+                    tags
                 </div>
-            </div>
-        </div>
 
-        <div class="middle">
-            {/* <!-- other recomand users --> */}
-            <div class="post">
-                recomand users
             </div>
-
-        </div>
-        <div class="right">
-            <div class="post">
-                tags
-            </div>
-
-        </div>
 
         </div >
     );

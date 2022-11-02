@@ -135,9 +135,10 @@
 }
 
 /* set the position of Box stores the link redirect to the signup page */
-.linkBox{
+.loginLinkBox{
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     width: 100%;
     height: 100px;
     /* background-color: pink; */
