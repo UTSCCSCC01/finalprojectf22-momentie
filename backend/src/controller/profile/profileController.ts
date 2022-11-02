@@ -3,7 +3,7 @@ import LikeModel from '../../model/likeModel';
 import { json } from 'body-parser';
 
 const retrieve_profile = async (req: any, res: any) => {
-  const { page, email } = req.query;
+  const { page, email, popularity } = req.query;
   /** email provided */
   if (email) {
 
@@ -14,6 +14,14 @@ const retrieve_profile = async (req: any, res: any) => {
       return res.status(501).json({ err: 'Profile Not Found' })
 
     return res.status(200).json(profile)
+  } else if (popularity === "true") {
+      const numOfProfile = 5;
+      const profile = await ProfileModel.find({}).sort({ like: -1}).limit(numOfProfile);
+      if (profile) 
+        return res.status(200).json(profile);
+      else {
+        return res.status(501).json({ err: 'Failed to find profiles' })
+      }
   }
 
   /** Retrieve all profile data */
