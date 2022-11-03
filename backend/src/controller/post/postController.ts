@@ -33,4 +33,8 @@ const postCreate = (req: any, res: any) => {
     })
 }
 
-module.exports = { postCreate };
+const postRetriByUser = (req: any, res: any) => {
+    
+}
+
+module.exports = { postCreate, postRetriByUser };
