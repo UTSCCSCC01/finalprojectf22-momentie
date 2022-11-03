@@ -1,6 +1,5 @@
 import ProfileModel from '../../model/profileModel'
 import LikeModel from '../../model/likeModel';
-import { json } from 'body-parser';
 
 const retrieve_profile = async (req: any, res: any) => {
   const { page, email, popularity } = req.query;

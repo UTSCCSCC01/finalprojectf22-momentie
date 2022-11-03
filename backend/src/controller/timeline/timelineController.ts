@@ -4,7 +4,7 @@ import UserModel from '../../model/userModel';
 const timelineCreate = (req: any, res: any) => {
     //validation
     if (req.user === undefined) {
-        return res.status(404).end("user does not exist");
+        return res.status(404).end("please login first");
     }
 
     const email = req.user.email;
