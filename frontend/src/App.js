@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import Login from '../src/components/pages/Login/Login.jsx'
 import Profile from '../src/components/pages/Profile/Profile.jsx'
 import SignUp from './components/pages/SignUp/SignUp.jsx';
+import MomentiePost from './components/post/MomentiePost.jsx';
 import MomentieTimeline from './components/Timeline/MomentieTimeline.jsx';
 // import Rate from './components/Rating/Rate.jsx';
 
@@ -28,10 +29,11 @@ function App() {
   
   */
   // const editableDataRef = useRef(timelineData);
-  const editTagData = useRef(TagData);
+  // const editTagData = useRef(TagData);
   // function printData() {
   //   console.log(editableDataRef);
   // }
+  const postList = [{content: "johiwuehrfiau hewiruhwqiaeurhqw ieurh iqwuerh iqwuehriquwhe riuhqweiruh qiweurh qiuwerh iuqwhe rgiuwhretoi tuhwer iouuthweoiruthl kj", email: "okok"},{content: "shabic01", email: "nihao"}];
   return (
     <Routes>
       <Route path="/" element={<Login />} />
@@ -40,8 +42,9 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/home" element={<Home />} />
       {/* <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} /> */}
-      <Route path="/tag" element={<MomentieTag contentRef={editTagData} width={100} height={30} edit={false} />} />
+      {/* <Route path="/tag" element={<MomentieTag contentRef={editTagData} width={100} height={30} edit={false} />} /> */}
       {/* <Route path="/rate" element={<Rate />} /> */}
+      <Route path="/post"  element={<MomentiePost postList={postList}/>} />
     </Routes>
   );
 }
