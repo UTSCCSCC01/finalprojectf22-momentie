@@ -33,6 +33,20 @@ const postCreate = (req: any, res: any) => {
     })
 }
 
+const postGetByUser = (req: any, res: any) => {
+    var email = req.params["email"];
+    if(!email) {
+        return res.status(400).end("Please provide email");
+    }
+    //get all posts of the user
+    PostModel.find({"email": email}).sort({createdAt: 'desc'}).exec((err: any, posts: any) => {
+        if(err){
+            return res.status(500).end(err);
+        }
+        return res.status(200).json(posts);
+    });
+}
+
 const postGetById = async (req: any, res: any) => {
 
     const postId = req.params["postId"]
@@ -50,4 +64,5 @@ const postGetById = async (req: any, res: any) => {
     return res.status(200).json(postObj)
 }
 
-module.exports = { postCreate, postGetById };
+module.exports = { postCreate, postGetById, postGetByUser };
+
