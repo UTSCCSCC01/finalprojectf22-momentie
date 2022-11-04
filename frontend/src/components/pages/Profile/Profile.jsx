@@ -210,13 +210,13 @@ export default function Profile() {
         }
     }
 
-    function handleEditPost(e){
+    function handleEditPost(e) {
         setPostContent(e.target.value);
     }
 
-    async function handleAddPostContent(email){
+    async function handleAddPostContent(email) {
         let newList = [...postList];
-        if (postContent !== undefined && postContent !== null && postContent !== ''){
+        if (postContent !== undefined && postContent !== null && postContent !== '') {
             axios.defaults.withCredentials = true;
             try {
                 await axios.post(backendHost + `/post/`,
@@ -228,7 +228,7 @@ export default function Profile() {
                         },
                     }
                 );
-                newList.push({content: postContent, email: email})
+                newList.push({ content: postContent, email: email })
                 setPostList(newList);
                 return true;
             } catch (e) {
@@ -521,29 +521,31 @@ export default function Profile() {
                     <div class="skillRight">
                         <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" height="40vh" editMode={edit} isSkill={true} section="Skills" />
                     </div>
-                    
+
                     <div className="userPost">
                         <Box>
-                            <Typography sx={{ marginBottom: "20px", fontSize: "16pt", color: '#BEACAC'}}>Posts</Typography>
-                            <Box sx={{ display: "flex", alignItems: 'center' }}>
+                            <Typography sx={{ marginBottom: "20px", fontSize: "16pt", color: '#BEACAC' }}>Posts</Typography>
+                            {match && <Box sx={{ display: "flex", alignItems: 'center' }}>
                                 <TextField
-                                required
-                                id="outlined-required"
-                                label="Post Content"
-                                sx={{ margin: "px" }}
-                                onChange={(e) => { handleEditPost(e) }}
+                                    required
+                                    id="outlined-required"
+                                    label="Post Content"
+                                    sx={{ margin: "px" }}
+                                    onChange={(e) => { handleEditPost(e) }}
                                 />
-                                <Button variant="contained" onClick={(e) => {handleAddPostContent(currentUserEmail)}}
-                                sx={{backgroundColor: "#BEACAC",
-                                marginLeft: "20px",
-                                color: '#F5F5F5',
-                                borderColor: "#BEACAC"}}>Make Post</Button>
-                            </Box>
+                                <Button variant="contained" onClick={(e) => { handleAddPostContent(currentUserEmail) }}
+                                    sx={{
+                                        backgroundColor: "#BEACAC",
+                                        marginLeft: "20px",
+                                        color: '#F5F5F5',
+                                        borderColor: "#BEACAC"
+                                    }}>Make Post</Button>
+                            </Box>}
                         </Box>
-                        <MomentiePost postList={postList} setPostList={setPostList}/>
+                        <MomentiePost postList={postList} setPostList={setPostList} />
                     </div>
                 </div>
-                
+
             </form>
 
 
