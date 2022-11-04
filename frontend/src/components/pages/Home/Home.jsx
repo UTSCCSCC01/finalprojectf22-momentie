@@ -11,6 +11,8 @@ import { Button, TextField, Box, getTablePaginationUtilityClass } from '@mui/mat
 export default function Home() {
 
     const [username, setUserName] = useState("");
+    const [email, setEmail] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
     const currentUserEmail = useSelector((state) => state.email);
 
     const navigate = useNavigate();
@@ -35,11 +37,36 @@ export default function Home() {
         });
     }
 
+    async function getHome(email) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/profile/`,
+                { params: { email } },
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            //set favourite post
+        } catch (e) {
+            setErrorMessage("Home retrieve failed.")
+        }
+
+    }
+
+    function gotoProfilePage() {
+        navigate("/profile");
+    }
+
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
-        } else { }
-    },);
+        } else {
+            getHome(currentUserEmail);
+        }
+    }, );
 
     return (
         <div class="page">
@@ -60,7 +87,7 @@ export default function Home() {
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
-                            <li><a href="#">Home</a></li>
+                            <li><a href="#" onClick={gotoProfilePage}>Profile</a></li>
                             <li><a href="#">About</a></li>
                             <li><a href="#">Moment</a></li>
                             <li><a href="#">Contact</a></li>

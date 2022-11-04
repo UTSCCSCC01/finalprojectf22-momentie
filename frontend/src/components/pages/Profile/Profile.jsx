@@ -186,22 +186,7 @@ export default function Profile() {
     }
 
     function gotoHomePage() {
-        axios.defaults.withCredentials = true;
-        // 没找到home的api，只有post的，以后再改下
-        axios.post(backendHost + `/account/home`,
-            {},
-            {
-                headers: {
-                    'Access-Control-Allow-Credentials': true,
-                    'Access-Control-Allow-Origin': backendHost,
-                },
-            }
-        ).then(() => {
-            dispatch(changeEmail({ currentUserEmail }));
-            navigate("/home");
-        }).catch(function () {
-            navigate("/home");
-        });
+        navigate("/home");
     }
 
     async function getRating(email) {
