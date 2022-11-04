@@ -4,18 +4,18 @@ import TagModel from "../../model/tagModel";
 
 const userTagCreate = async (req: any, res: any) => {
   if (!req.user) {
-    return res.status(404).end("user not loggedin");
+    return res.status(401).end("User is not authorized");
   }
   const email = req.user.email;
   const type = req.body.type;
   const title = req.body.title;
 
   if (type === "" || !type) {
-    return res.status(401).end("type is missing");
+    return res.status(400).end("type is missing");
   } else if (title === "" || !title) {
-    return res.status(401).end("title is missing");
+    return res.status(400).end("title is missing");
   } else if (email === "" || !email) {
-    return res.status(401).end("email is missing");
+    return res.status(400).end("email is missing");
   }
 
   UserModel.findOne({ email: email }, function (err: any, user: any) {
@@ -77,12 +77,12 @@ const userTagDelete = async (req: any, res: any) => {
   }
   /** Not provide required body data */
   if (!type || !title) {
-    return res.status(403).end('Required info is not provided...')
+    return res.status(400).end('Required info is not provided...')
   }
   /** Not allowed: Delete a tag that doesn't exist */
   let userTag = await UserTagModel.findOne({ email: user.email, type: type, title: title })
   if (!userTag) {
-    return res.status(403).end('You should not be able to delete this tag...')
+    return res.status(404).end('You should not be able to delete this tag...')
   }
   /** Delete the tag */
   await userTag.deleteOne()

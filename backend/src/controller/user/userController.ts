@@ -11,10 +11,10 @@ const userLogin = (req: any, res: any) => {
 
 const userSignUp = (req: any, res: any) => {
     if (req.body.email === "" || req.body.email === undefined) {
-        return res.status(401).send("Please fill in email");
+        return res.status(400).send("Please fill in email");
     }
     if (req.body.password === "" || req.body.password === undefined) {
-        return res.status(401).send("Please fill in password");
+        return res.status(400).send("Please fill in password");
     }
     const newUser = new UserModel({
         email: req.body.email,

@@ -4,39 +4,37 @@ import UserModel from '../../model/userModel';
 const timelineCreate = (req: any, res: any) => {
     //validation
     if (req.user === undefined) {
-        return res.status(404).end("please login first");
+        return res.status(401).end("User is not authorized");
     }
 
     const email = req.user.email;
     if (email === "" || email === undefined) {
-        return res.status(401).send("Email missing");
+        return res.status(400).send("Email missing");
     }
     if (req.body.topic === "" || req.body.topic === undefined) {
-        return res.status(401).send("topic is required");
+        return res.status(400).send("topic is required");
     }
     if (req.body.title === "" || req.body.title === undefined) {
-        return res.status(401).send("title is required");
+        return res.status(400).send("title is required");
     }
     if (req.body.content === "" || req.body.content === undefined) {
-        return res.status(401).send("content is required");
+        return res.status(400).send("content is required");
     }
     if (req.body.startTime === "" || req.body.startTime === undefined) {
-        return res.status(401).send("startTime is required");
+        return res.status(400).send("startTime is required");
     }
     if (req.body.endTime === "" || req.body.endTime === undefined) {
-        return res.status(401).send("endTime is required");
+        return res.status(400).send("endTime is required");
     }
 
     //make sure the begin time is smaller than the end date
     if (new Date(req.body.startTime).getTime() > new Date(req.body.endTime).getTime()) {
-        return res.status(401).send("invalid time period: startTime should not be later than endTime");
+        return res.status(422).send("invalid time period: startTime should not be later than endTime");
     }
 
     UserModel.findOne({ email: email }, function (err: any, user: any) {
         if (err) return res.status(500).end(err);
-        if (!user) {
-            return res.status(404).end("user does not exist");
-        }
+
         const newTimeline = new TimelineModel({
             email: req.params.email,
             topic: req.body.topic,
@@ -83,7 +81,7 @@ const timelineRetri = (req: any, res: any) => {
 
 const timelineEdit = (req: any, res: any) => {
     if (req.user === undefined) {
-        return res.status(404).end("user does not exist");
+        return res.status(401).end("User is not authorized");
     }
     const email = req.user.email;
     const timelineList = req.body.timelineList;
@@ -100,23 +98,23 @@ const timelineEdit = (req: any, res: any) => {
             for(let i of tlMap.values()){
                 console.log(i);
                 if (i.topic === "" || i.topic === undefined) {
-                    return res.status(401).send("topic is required");
+                    return res.status(400).send("topic is required");
                 }
                 if (i.title === "" || i.title === undefined) {
-                    return res.status(401).send("title is required");
+                    return res.status(400).send("title is required");
                 }
                 if (i.content === "" || i.content === undefined) {
-                    return res.status(401).send("content is required");
+                    return res.status(400).send("content is required");
                 }
                 if (i.startTime === "" || i.startTime === undefined) {
-                    return res.status(401).send("startTime is required");
+                    return res.status(400).send("startTime is required");
                 }
                 if (i.endTime === "" || i.endTime === undefined) {
-                    return res.status(401).send("endTime is required");
+                    return res.status(400).send("endTime is required");
                 }
                 //make sure the begin time is smaller than the end date
                 if (new Date(i.startTime).getTime() > new Date(i.endTime).getTime()) {
-                    return res.status(401).send("invalid time period: startTime should not be later than endTime");
+                    return res.status(400).send("invalid time period: startTime should not be later than endTime");
                 }
             }
             //update new information
