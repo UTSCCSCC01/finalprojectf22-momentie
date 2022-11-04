@@ -10,17 +10,17 @@ const retrieve_profile = async (req: any, res: any) => {
     let profile = await ProfileModel.findOne({ email: email })
 
     if (!profile)
-      return res.status(501).json({ err: 'Profile Not Found' })
+      return res.status(404).json({ err: 'Profile Not Found' })
 
     return res.status(200).json(profile)
   } else if (popularity === "true") {
-    const numOfProfile = 5;
-    const profile = await ProfileModel.find({}).sort({ like: -1 }).limit(numOfProfile);
-    if (profile)
-      return res.status(200).json(profile);
-    else {
-      return res.status(501).json({ err: 'Failed to find profiles' })
-    }
+      const numOfProfile = 5;
+      const profile = await ProfileModel.find({}).sort({ like: -1}).limit(numOfProfile);
+      if (profile) 
+        return res.status(200).json(profile);
+      else {
+        return res.status(404).json({ err: 'Failed to find profiles' })
+      }
   }
 
   /** Retrieve all profile data */
@@ -49,7 +49,7 @@ const edit_profile = async (req: any, res: any) => {
 
   /** Identity is not authenticated */
   if (req.user === undefined || !req.user.email == email)
-    return res.status(501).json({ err: 'Identity is not authenticated' })
+    return res.status(401).json({ err: 'user is not authorized' })
 
   /** Update user profile */
   let newProfile = await ProfileModel.findOneAndUpdate({ email: email },
@@ -71,7 +71,7 @@ const likeRetri = (req: any, res: any) => {
       }
     })
   } else {
-    return res.status(401).end('email is missing')
+    return res.status(400).end('email is missing')
   }
 }
 

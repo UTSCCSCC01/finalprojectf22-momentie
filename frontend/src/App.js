@@ -33,7 +33,7 @@ function App() {
   // function printData() {
   //   console.log(editableDataRef);
   // }
-  const postList = [{content: "johiwuehrfiau hewiruhwqiaeurhqw ieurh iqwuerh iqwuehriquwhe riuhqweiruh qiweurh qiuwerh iuqwhe rgiuwhretoi tuhwer iouuthweoiruthl kj", email: "okok"},{content: "shabic01", email: "nihao"}];
+  const postList = [{content: "iuwhreruthl kj", email: "okok"},{content: "shabic01", email: "nihao"}];
   return (
     <Routes>
       <Route path="/" element={<Login />} />

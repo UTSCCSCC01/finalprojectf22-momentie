@@ -315,11 +315,24 @@ nav a:hover::before {
 
 /* right start */
 .profileRight{
+    display: flex;
+    flex-direction: column;
     float: left;
     width: 30%;
-    height: 100vh;
-    overflow: auto;
     background-color: #F5F5F5;
+}
+
+.skillRight{
+  height: 100vh;
+  overflow: auto;
+
+}
+
+.userPost{
+  margin-top: 30px;
+  margin-left: 30px;
+  height: 50vh;
+  overflow: auto;
 }
 
 .timeline{
