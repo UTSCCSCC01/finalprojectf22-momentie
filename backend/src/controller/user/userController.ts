@@ -16,6 +16,9 @@ const userSignUp = (req: any, res: any) => {
     if (req.body.password === "" || req.body.password === undefined) {
         return res.status(401).send("Please fill in password");
     }
+    if (req.body.username === "" || req.body.username === undefined) {
+        return res.status(401).send("Please fill in username");
+    }
     const newUser = new UserModel({
         email: req.body.email,
         username: req.body.username,
@@ -30,6 +33,7 @@ const userSignUp = (req: any, res: any) => {
         let newPorfile = new ProfileModel({
             description: "",
             email: req.body.email,
+            username: req.body.username,
         });
         ProfileModel.create(newPorfile, (err: any) => {
             if (err) {
