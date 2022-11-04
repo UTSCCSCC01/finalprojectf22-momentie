@@ -135,7 +135,7 @@
 }
 
 /* set the position of Box stores the link redirect to the signup page */
-.linkBox{
+.loginLinkBox{
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -156,7 +156,7 @@
 }
 
 /* divide the webpage into (left pard) and right part and stores the image */
-.right{
+.loginRight{
     float: left;
     width: 40%;
 }

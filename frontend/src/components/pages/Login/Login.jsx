@@ -5,10 +5,13 @@ import axios from 'axios';
 import { backendHost } from '../../../constants';
 import { useDispatch } from 'react-redux'
 import { changeEmail } from '../../../reduxStore/userSlice';
+import { Button, Link, Alert, AlertTitle, CircularProgress } from '@mui/material';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loggingIn, setLoggingIn] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -27,6 +30,8 @@ export default function Login() {
             return alert("Please fill in your email and password!");
         }
         else {    //send http request if no field is empty
+            setLoggingIn(true);
+            setErrorMessage("");
             request();
         }
     }
@@ -43,10 +48,12 @@ export default function Login() {
                 },
             }
         ).then((response) => {
-            dispatch(changeEmail(response.data.email))
+            dispatch(changeEmail(response.data.email));
+            setLoggingIn(false);
             navigate("/profile");
         }).catch(() => {
-            alert("Incorrect username/password, or user doesn't exist");
+            setLoggingIn(false);
+            setErrorMessage("Incorrect username/password, or user doesn't exist");
         });
     }
 
@@ -105,27 +112,46 @@ export default function Login() {
                         id="password"
                         onChange={e => setPassword(e.target.value)} />
                 </div>
-
+                {loggingIn && <CircularProgress sx={{ marginTop: "5vh", marginLeft: "40%" }} color="secondary" />}
+                {errorMessage && <Alert severity="error" variant="filled" sx={{ marginTop: "5vh", marginLeft: "40%", width: "300px" }}>
+                    <AlertTitle>Error</AlertTitle>
+                    An error Occured — <strong>{errorMessage}</strong>
+                </Alert>}
                 {/* <!-- Login button Box: Store the login Button --> */}
                 <div class="loginButtonBox">
-                    <button class="loginButton" id="login" onClick={check}>
-                        Log In
-                    </button>
+                    <Button sx={{
+                        color: "#BEACAC", background: "#D9D9D9", textAlign: "center", alignSelf: "center", width: "150px",
+                        height: "40px", fontFamily: 'Inter',
+                        fontStyle: "normal",
+                        fontWeight: 600,
+                        fontSize: "30px",
+                        lineHeight: "20px",
+                        marginLeft: "40%",
+                        marginTop: "5vh"
+                    }} id="login" onClick={check} variant="contained">Log In</Button>
                 </div>
 
                 {/* <!-- Link Box: Store the link redirect to signup page --> */}
-                <div class="linkBox">
-                    <a class="signuplink" onClick={swicthToSignup}>
-                        don't have an account? register here
-                    </a>
+                <div class="loginLinkBoxs">
+                    <Link sx={{
+                        marginTop: "5vh",
+                        marginLeft: "40%",
+                        fontFamily: 'Inter',
+                        fontStyle: "normal",
+                        fontWeight: 600,
+                        fontSize: "15px",
+                        color: "#BEACAC",
+                    }} underline="hover" onClick={swicthToSignup}>
+                        {"Don't have an account? Register here"}
+                    </Link>
                 </div>
             </div>
 
             {/* <!-- right part of the webpage(60%) --> */}
-            <div class="right">
+            <div class="loginRight">
                 {/* <!-- The image showing in the login page --> */}
                 <img src={require("./LoginPic.png")} class="image" alt="Login Picture" />
             </div>
-        </div>
+        </div >
     );
 }

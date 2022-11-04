@@ -3,12 +3,14 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { backendHost } from '../../../constants';
-
+import { Link, Button, Alert, AlertTitle, CircularProgress } from "@mui/material";
 export default function SignUp() {
     // Get the user input
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [errorMessage, setErrorMessage] = useState("");
+    const [signingUp, setSigningUp] = useState(false);
     const navigate = useNavigate();
 
     function switchToLogin(e) {
@@ -17,6 +19,8 @@ export default function SignUp() {
 
     // Please do not write like this, so stupid:)
     function handleSignup(e) {
+        setSigningUp(true);
+        setErrorMessage("");
         if (email === '') {
             return alert('please enter the email address')
         }
@@ -42,7 +46,8 @@ export default function SignUp() {
         ).then(() => {
             navigate("/login");
         }).catch(function () {
-            alert('Registration failed!(User already exist) Please do it again!!!');
+            setSigningUp(false);
+            setErrorMessage("Registration failed!(User might already exist) Please do it again!!!");
         });
     };
 
@@ -146,21 +151,37 @@ export default function SignUp() {
 
                 </div>
             </div>
-
+            {signingUp && <CircularProgress sx={{ marginLeft: "100px" }} color="secondary" />}
+            {errorMessage && <Alert severity="error" variant="filled" sx={{ marginLeft: "100px", width: "300px" }}>
+                <AlertTitle>Error</AlertTitle>
+                An error Occured — <strong>{errorMessage}</strong>
+            </Alert>}
             {/* <!-- Sign up button --> */}
             <div class="butBox">
-                <button class="but" id="submit" onClick={handleSignup}>
-                    SIGN UP
-                </button>
+                <Button sx={{
+                    color: "#BEACAC", background: "#D9D9D9", textAlign: "center", alignSelf: "center", width: "170px",
+                    height: "40px", fontFamily: 'Inter', marginLeft: "100px",
+                    fontStyle: "normal",
+                    fontWeight: 600,
+                    fontSize: "30px",
+                    lineHeight: "20px",
+                }} id="submit" onClick={handleSignup} variant="contained">Sign Up</Button>
             </div>
 
             {/* <!-- Link box --> */}
-            <div class="linkBox">
-                <a class="link" onClick={switchToLogin}>
-                    already have an account? login here
-                </a>
+            <div class="signUpLinkBox">
+                <Link sx={{
+                    marginLeft: "100px",
+                    fontFamily: 'Inter',
+                    fontStyle: "normal",
+                    fontWeight: 600,
+                    fontSize: "15px",
+                    color: "#BEACAC",
+                }} underline="hover" onClick={switchToLogin}>
+                    {"Already have an account? Login here"}
+                </Link>
             </div>
 
-        </div>
+        </div >
     );
 }

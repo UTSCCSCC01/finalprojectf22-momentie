@@ -1,21 +1,26 @@
 import "./profile.css";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { backendHost } from '../../../constants';
 import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass } from '@mui/material'
+import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Typography } from '@mui/material'
 import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
+import MomentiePost from "../../post/MomentiePost";
+
 
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
+    const [addPost, setaddPost] = useState(false);
     const [username, setUserName] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [timelineList, setTimelineList] = useState({});
     const timelineBackup = useRef(JSON.parse(JSON.stringify(timelineList)));
@@ -28,28 +33,41 @@ export default function Profile() {
     const [description, setDescription] = useState("");
     const descriptionBackup = useRef(JSON.parse(JSON.stringify(description)));
 
+    const [postContent, setPostContent] = useState("");
+
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
+
+    var currentEmail = currentUserEmail;
+    var match = true;
+
+    const profileEmail = useParams().email;
+
+    // check if the currentLoginUser email matches the profile user email that routes to
+    checkEmailMatch();
+
+    const [postList, setPostList] = useState([]);
+    const postListBackup = useRef(JSON.parse(JSON.stringify(postList)));
 
     //customize color
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     async function handleSave() {
-        try {
-            await editProfileAPI(currentUserEmail, description);
-            await changeTags();
-            await changeTimeline()
-            descriptionBackup.current = JSON.parse(JSON.stringify(description));
-            skillTimelineBackup.current = JSON.parse(JSON.stringify(skillTimeline));
-            timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
-            tagListBackup.current = JSON.parse(JSON.stringify(tagList));
-            setEdit(false);
-        }
-        catch (e) {
+        setLoading(true);
+        if (!await editProfileAPI(currentUserEmail, description) ||
+            !await changeTags() || !await changeTimeline()) {
+            setLoading(false);
+            setErrorMessage("Some save failed.");
             handleCancel();
         }
 
+        descriptionBackup.current = JSON.parse(JSON.stringify(description));
+        skillTimelineBackup.current = JSON.parse(JSON.stringify(skillTimeline));
+        timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
+        tagListBackup.current = JSON.parse(JSON.stringify(tagList));
+        setLoading(false);
+        setEdit(false);
     }
 
     function handleCancel() {
@@ -62,6 +80,13 @@ export default function Profile() {
 
     function handleEditDescription(e) {
         setDescription(e.target.value);
+    }
+
+    function checkEmailMatch() {
+        if (profileEmail != null && profileEmail != currentUserEmail) {
+            match = false;
+            currentEmail = profileEmail;
+        }
     }
 
     async function editProfileAPI(email, description) {
@@ -77,8 +102,9 @@ export default function Profile() {
                     },
                 }
             );
+            return true;
         } catch (e) {
-            alert(e);
+            return false;
         }
 
     }
@@ -97,8 +123,9 @@ export default function Profile() {
             );
             setDescription(res.data.description);
             descriptionBackup.current = res.data.description;
+            setUserName(res.data.username);
         } catch (e) {
-            alert(e);
+            setErrorMessage("Profile retrieve failed.")
         }
 
     }
@@ -117,8 +144,9 @@ export default function Profile() {
             );
             setTagList(res.data);
             tagListBackup.current = res.data;
+            console.log(res.data);
         } catch (e) {
-            alert(e);
+            setErrorMessage("Profile retrieve failed.")
         }
     }
 
@@ -137,7 +165,7 @@ export default function Profile() {
                         }
                     );
                 } catch (e) {
-                    alert(e);
+                    return false;
                 }
             }
         }
@@ -155,8 +183,56 @@ export default function Profile() {
                         }
                     );
                 } catch (e) {
-                    alert(e);
+                    return false;
                 }
+            }
+        }
+        return true;
+    }
+
+
+    async function getPosts(email) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/post/user/` + email,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setPostList(res.data);
+            postListBackup.current = res.data;
+            console.log(res.data);
+        } catch (e) {
+            setErrorMessage("Profile retrieve failed.")
+        }
+    }
+
+    function handleEditPost(e) {
+        setPostContent(e.target.value);
+    }
+
+    async function handleAddPostContent(email) {
+        let newList = [...postList];
+        if (postContent !== undefined && postContent !== null && postContent !== '') {
+            axios.defaults.withCredentials = true;
+            try {
+                await axios.post(backendHost + `/post/`,
+                    { content: postContent, email: email },
+                    {
+                        headers: {
+                            'Access-Control-Allow-Credentials': true,
+                            'Access-Control-Allow-Origin': backendHost,
+                        },
+                    }
+                );
+                newList.push({ content: postContent, email: email })
+                setPostList(newList);
+                return true;
+            } catch (e) {
+                return false;
             }
         }
     }
@@ -175,11 +251,33 @@ export default function Profile() {
             dispatch(changeEmail(""));
             navigate("/login");
         }).catch(function () {
-            alert('Somethingwent wrong with the logout process.');
             navigate("/login");
         });
     }
 
+    function gotoHomePage() {
+        navigate("/home");
+    }
+
+    async function addRating(email, like) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.patch(backendHost + `/profile/like`,
+                { like: like },
+                {
+                    params: { email: email },
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setRating(res.data.like);
+        } catch (e) {
+            setErrorMessage("Rating profile failed.")
+        }
+
+    }
     async function getRating(email) {
         axios.defaults.withCredentials = true;
         try {
@@ -197,7 +295,7 @@ export default function Profile() {
             setRating(response.data);
         }
         catch (e) {
-            alert(e);
+            setErrorMessage("Profile retrieve failed.")
         }
     }
 
@@ -239,7 +337,7 @@ export default function Profile() {
 
             }
         } catch (e) {
-            alert(e);
+            setErrorMessage("Profile retrieve failed.")
         }
     }
 
@@ -267,8 +365,9 @@ export default function Profile() {
                     },
                 }
             );
+            return true;
         } catch (e) {
-            alert(e);
+            return false;
         }
     }
 
@@ -276,10 +375,21 @@ export default function Profile() {
         if (currentUserEmail === "") {
             navigate("/login");
         } else {
-            getProfile(currentUserEmail);
-            getTags(currentUserEmail);
-            getTimeline(currentUserEmail);
-            getRating(currentUserEmail);
+            if (match == true) {
+                getProfile(currentUserEmail);
+                getTags(currentUserEmail);
+                getTimeline(currentUserEmail);
+                getRating(currentUserEmail);
+                getPosts(currentUserEmail);
+            }
+            //profile being visted
+            else {
+                getProfile(profileEmail);
+                getTags(profileEmail);
+                getTimeline(profileEmail);
+                getRating(profileEmail);
+                getPosts(profileEmail);
+            }
         }
     }, [edit]);
 
@@ -302,7 +412,7 @@ export default function Profile() {
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
-                            <li><a href="#">Home</a></li>
+                            <li><a onClick={gotoHomePage}>Home</a></li>
                             <li><a href="#">About</a></li>
                             <li><a href="#">Moment</a></li>
                             <li><a href="#">Contact</a></li>
@@ -317,7 +427,7 @@ export default function Profile() {
                             {/* <!--
                             <button type="button" onclick="logoutUser()">Logout</button> --> */}
                             <a href="#">Setting</a>
-                            {!edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
+                            {match && !edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
                         </div>
                     </div>
                     {edit ?
@@ -346,10 +456,14 @@ export default function Profile() {
                                     fontSize: "14px"
                                 }}>Cancel</Button>
                         </div> : null}
+                    {loading && <CircularProgress size={30} sx={{ marginLeft: "20px" }} color="secondary" />}
+                    {errorMessage && <Alert severity="error" variant="filled" sx={{ marginLeft: "10px", width: "400px", height: "40px" }}>
+                        An error Occured — <strong>{errorMessage}</strong>
+                    </Alert>}
                 </div>
             </header >
 
-            <div class="left">
+            <div class="profileLeft">
 
                 <div class="profile-upper">
                     {/* <!--
@@ -357,10 +471,10 @@ export default function Profile() {
                         <img src="../random.png" alt="to be changed" width="30" height="30">
                     </div>
                 --> */}
-                    {currentUserEmail}
+                    {username ? username + " • " + currentEmail : currentEmail}
                     <Box>
                         {/* Put the Rating here */}
-                        <Rate rating={rating} setRating={setRating} />
+                        <Rate rating={rating} setRating={setRating} read={match} rate={(_, newValue) => { addRating(currentEmail, newValue) }} />
                     </Box>
                     <li><a href="#">follower|following</a></li>
                     {/* <!-- color change based on profile photo, to be added later--> */}
@@ -396,17 +510,45 @@ export default function Profile() {
                 </div>
 
                 <div class="posts">
-                    <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" editMode={edit} allowTopicEdit={true} section="Skills" />
+                    <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="55vw" height="70vh" editMode={edit} isSkill={false} section="Experiences" />
                 </div>
 
             </div>
 
             <form id="myform" onSubmit={(e) => { e.preventDefault() }}>
-                <Box class="right">
+                <div class="profileRight">
                     {/* <!-- time line starts here--> */}
-                    <MomentieTimeline timelineList={timelineList} setTimelineList={setTimelineList} width="300px" height="70vh" editMode={edit} allowTopicEdit={false} section="Experiences" />
-                </Box>
+                    <div class="skillRight">
+                        <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" height="40vh" editMode={edit} isSkill={true} section="Skills" />
+                    </div>
+
+                    <div className="userPost">
+                        <Box>
+                            <Typography sx={{ marginBottom: "20px", fontSize: "16pt", color: '#BEACAC' }}>Posts</Typography>
+                            {match && <Box sx={{ display: "flex", alignItems: 'center' }}>
+                                <TextField
+                                    required
+                                    id="outlined-required"
+                                    label="Post Content"
+                                    sx={{ margin: "px" }}
+                                    onChange={(e) => { handleEditPost(e) }}
+                                />
+                                <Button variant="contained" onClick={(e) => { handleAddPostContent(currentUserEmail) }}
+                                    sx={{
+                                        backgroundColor: "#BEACAC",
+                                        marginLeft: "20px",
+                                        color: '#F5F5F5',
+                                        borderColor: "#BEACAC"
+                                    }}>Make Post</Button>
+                            </Box>}
+                        </Box>
+                        <MomentiePost postList={postList} setPostList={setPostList} />
+                    </div>
+                </div>
+
             </form>
+
+
 
         </div >
     );
