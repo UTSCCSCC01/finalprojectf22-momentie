@@ -47,8 +47,6 @@ const postGetByUser = (req: any, res: any) => {
     });
 }
 
-module.exports = { postCreate, postGetByUser };
-
 const postGetById = async (req: any, res: any) => {
 
     const postId = req.params["postId"]
@@ -66,5 +64,5 @@ const postGetById = async (req: any, res: any) => {
     return res.status(200).json(postObj)
 }
 
-module.exports = { postCreate, postGetById };
+module.exports = { postCreate, postGetById, postGetByUser };
 
