@@ -49,7 +49,7 @@ const edit_profile = async (req: any, res: any) => {
 
   /** Identity is not authenticated */
   if (req.user === undefined || !req.user.email == email)
-    return res.status(501).json({ err: 'Identity is not authenticated' })
+    return res.status(401).json({ err: 'user is not authorized' })
 
   /** Update user profile */
   let newProfile = await ProfileModel.findOneAndUpdate({ email: email },

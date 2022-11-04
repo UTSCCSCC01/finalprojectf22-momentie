@@ -3,19 +3,21 @@ import PostModel from '../../model/postModel';
 
 const postCreate = (req: any, res: any) => {
     if (req.user === undefined) {
-        return res.status(404).end("please login first");
+        return res.status(401).end("User is not authorized");
     }
 
     const email = req.user.email;
+    const content = req.body.content;
     if (email === "" || email === undefined) {
-        return res.status(401).send("Email missing");
+        return res.status(400).send("Email missing");
+    }
+    if (content === "" || content === undefined) {
+        return res.status(400).send("Email missing");
     }
 
     UserModel.findOne({ email: email }, function (err: any, user: any) {
         if (err) return res.status(500).end(err);
-        if (!user) {
-            return res.status(404).end("user does not exist");
-        }
+        
         const newPost = new PostModel({
             email: email,
             content: req.body.content,
@@ -24,10 +26,7 @@ const postCreate = (req: any, res: any) => {
 
         PostModel.create(newPost, (err: any) => {
             if (err) return res.status(500).end(err);
-            if (!user) {
-                return res.status(404).end("user does not exist");
-            }
-            console.log(newPost);
+
             return res.status(200).send("post created");
         });
     })

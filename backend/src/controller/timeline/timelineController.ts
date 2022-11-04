@@ -47,8 +47,7 @@ const timelineCreate = (req: any, res: any) => {
 
         TimelineModel.create(newTimeline, (err: any) => {
             if (err) {
-                console.log(err);
-                return res.status(409).send(err);
+                return res.status(500).send(err);
             }
             console.log(newTimeline);
             return res.status(200).send("timeline created");
