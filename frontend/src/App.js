@@ -39,7 +39,8 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route exact path="/profile" element={<Profile />} />
+      <Route path="/profile/:email" element={<Profile />} />
       <Route path="/home" element={<Home />} />
       {/* <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} /> */}
       {/* <Route path="/tag" element={<MomentieTag contentRef={editTagData} width={100} height={30} edit={false} />} /> */}

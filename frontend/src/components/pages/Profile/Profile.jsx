@@ -1,6 +1,6 @@
 import "./profile.css";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { backendHost } from '../../../constants';
 import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
@@ -12,6 +12,7 @@ import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
 import MomentiePost from "../../post/MomentiePost";
+
 
 export default function Profile() {
 
@@ -36,6 +37,14 @@ export default function Profile() {
 
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
+    
+    var currentEmail = currentUserEmail;
+    var match = true;
+
+    const profileEmail = useParams().email;
+
+    // check if the currentLoginUser email matches the profile user email that routes to
+    checkEmailMatch();
 
     const [postList, setPostList] = useState([]);
     const postListBackup = useRef(JSON.parse(JSON.stringify(postList)));
@@ -71,6 +80,13 @@ export default function Profile() {
 
     function handleEditDescription(e) {
         setDescription(e.target.value);
+    }
+
+    function checkEmailMatch() {
+        if (profileEmail != null && profileEmail != currentUserEmail) {
+            match = false;
+            currentEmail = profileEmail;
+        }
     }
 
     async function editProfileAPI(email, description) {
@@ -239,22 +255,7 @@ export default function Profile() {
     }
 
     function gotoHomePage() {
-        axios.defaults.withCredentials = true;
-        // 没找到home的api，只有post的，以后再改下
-        axios.post(backendHost + `/account/home`,
-            {},
-            {
-                headers: {
-                    'Access-Control-Allow-Credentials': true,
-                    'Access-Control-Allow-Origin': backendHost,
-                },
-            }
-        ).then(() => {
-            dispatch(changeEmail({ currentUserEmail }));
-            navigate("/home");
-        }).catch(function () {
-            navigate("/home");
-        });
+        navigate("/home");
     }
 
     async function getRating(email) {
@@ -354,11 +355,21 @@ export default function Profile() {
         if (currentUserEmail === "") {
             navigate("/login");
         } else {
-            getProfile(currentUserEmail);
-            getTags(currentUserEmail);
-            getTimeline(currentUserEmail);
-            getRating(currentUserEmail);
-            getPosts(currentUserEmail);
+            if (match == true) {
+                getProfile(currentUserEmail);
+                getTags(currentUserEmail);
+                getTimeline(currentUserEmail);
+                getRating(currentUserEmail);
+                getPosts(currentUserEmail);
+            }
+            //profile being visted
+            else {
+                getProfile(profileEmail);
+                getTags(profileEmail);
+                getTimeline(profileEmail);
+                getRating(profileEmail);
+                getPosts(profileEmail);
+            }
         }
     }, [edit]);
 
@@ -396,8 +407,7 @@ export default function Profile() {
                             {/* <!--
                             <button type="button" onclick="logoutUser()">Logout</button> --> */}
                             <a href="#">Setting</a>
-                            {!edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
-                            {/* {!addPost ? <a href="#" onClick={() => { setaddPost(true) }}>Add Post</a> : null} */}
+                            {match && !edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
                         </div>
                     </div>
                     {edit ?
@@ -441,7 +451,7 @@ export default function Profile() {
                         <img src="../random.png" alt="to be changed" width="30" height="30">
                     </div>
                 --> */}
-                    {currentUserEmail}
+                    {currentEmail}
                     <Box>
                         {/* Put the Rating here */}
                         <Rate rating={rating} setRating={setRating} />
