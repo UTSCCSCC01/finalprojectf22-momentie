@@ -27,6 +27,11 @@ const timelineCreate = (req: any, res: any) => {
         return res.status(401).send("endTime is required");
     }
 
+    //make sure the begin time is smaller than the end date
+    if (new Date(req.body.startTime).getTime() > new Date(req.body.endTime).getTime()) {
+        return res.status(401).send("invalid time period: startTime should not be later than endTime");
+    }
+
     UserModel.findOne({ email: email }, function (err: any, user: any) {
         if (err) return res.status(500).end(err);
         if (!user) {
@@ -90,6 +95,30 @@ const timelineEdit = (req: any, res: any) => {
         TimelineModel.deleteMany({ email: email }, (err: any) => {
             if (err) return res.status(500).send(err);
             console.log("previous timeline deleted successfully");
+            //validation
+            const tlMap = timelineList.map((obj: any) => ({ ...obj, email: email }));
+            for(let i of tlMap.values()){
+                console.log(i);
+                if (i.topic === "" || i.topic === undefined) {
+                    return res.status(401).send("topic is required");
+                }
+                if (i.title === "" || i.title === undefined) {
+                    return res.status(401).send("title is required");
+                }
+                if (i.content === "" || i.content === undefined) {
+                    return res.status(401).send("content is required");
+                }
+                if (i.startTime === "" || i.startTime === undefined) {
+                    return res.status(401).send("startTime is required");
+                }
+                if (i.endTime === "" || i.endTime === undefined) {
+                    return res.status(401).send("endTime is required");
+                }
+                //make sure the begin time is smaller than the end date
+                if (new Date(i.startTime).getTime() > new Date(i.endTime).getTime()) {
+                    return res.status(401).send("invalid time period: startTime should not be later than endTime");
+                }
+            }
             //update new information
             TimelineModel.insertMany(timelineList.map((obj: any) => ({ ...obj, email: email })),
                 (err: any, timelines: any) => {
