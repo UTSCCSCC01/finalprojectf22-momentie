@@ -37,7 +37,7 @@ export default function Profile() {
 
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
-    
+
     var currentEmail = currentUserEmail;
     var match = true;
 
@@ -123,6 +123,7 @@ export default function Profile() {
             );
             setDescription(res.data.description);
             descriptionBackup.current = res.data.description;
+            setUserName(res.data.username);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -451,7 +452,7 @@ export default function Profile() {
                         <img src="../random.png" alt="to be changed" width="30" height="30">
                     </div>
                 --> */}
-                    {currentEmail}
+                    {username ? username + " • " + currentEmail : currentEmail}
                     <Box>
                         {/* Put the Rating here */}
                         <Rate rating={rating} setRating={setRating} />
