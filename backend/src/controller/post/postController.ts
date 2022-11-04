@@ -33,8 +33,18 @@ const postCreate = (req: any, res: any) => {
     })
 }
 
-const postRetriByUser = (req: any, res: any) => {
-    
+const postGetByUser = (req: any, res: any) => {
+    var email = req.params["email"];
+    if(!email) {
+        return res.status(400).end("Please provide email");
+    }
+    //get all posts of the user
+    PostModel.find({"email": email}, (err: any, posts: any) => {
+        if(err){
+            return res.status(500).end(err);
+        }
+        return res.status(200).json(posts);
+    });
 }
 
-module.exports = { postCreate, postRetriByUser };
+module.exports = { postCreate, postGetByUser };
