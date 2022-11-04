@@ -32,6 +32,8 @@ export default function Profile() {
     const [description, setDescription] = useState("");
     const descriptionBackup = useRef(JSON.parse(JSON.stringify(description)));
 
+    const [postContent, setPostContent] = useState("");
+
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
 
@@ -55,11 +57,8 @@ export default function Profile() {
         skillTimelineBackup.current = JSON.parse(JSON.stringify(skillTimeline));
         timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
         tagListBackup.current = JSON.parse(JSON.stringify(tagList));
-        postListBackup.current = JSON.parse(JSON.stringify(postList));
         setLoading(false);
         setEdit(false);
-
-
     }
 
     function handleCancel() {
@@ -67,7 +66,6 @@ export default function Profile() {
         setTimelineList(JSON.parse(JSON.stringify(timelineBackup.current)));
         setSkillTimeline(JSON.parse(JSON.stringify(skillTimelineBackup.current)));
         setDescription(JSON.parse(JSON.stringify(descriptionBackup.current)));
-        setPostList(JSON.parse(JSON.stringify(postListBackup.current)));
         setEdit(false);
     }
 
@@ -129,6 +127,7 @@ export default function Profile() {
             );
             setTagList(res.data);
             tagListBackup.current = res.data;
+            console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -194,6 +193,32 @@ export default function Profile() {
         }
     }
 
+    function handleEditPost(e){
+        setPostContent(e.target.value);
+    }
+
+    async function handleAddPostContent(email){
+        let newList = [...postList];
+        if (postContent !== undefined && postContent !== null && postContent !== ''){
+            axios.defaults.withCredentials = true;
+            try {
+                await axios.post(backendHost + `/post/`,
+                    { content: postContent, email: email },
+                    {
+                        headers: {
+                            'Access-Control-Allow-Credentials': true,
+                            'Access-Control-Allow-Origin': backendHost,
+                        },
+                    }
+                );
+                newList.push({content: postContent, email: email})
+                setPostList(newList);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+    }
 
     function logoutUser() {
         axios.defaults.withCredentials = true;
@@ -372,7 +397,7 @@ export default function Profile() {
                             <button type="button" onclick="logoutUser()">Logout</button> --> */}
                             <a href="#">Setting</a>
                             {!edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
-                            {!addPost ? <a href="#" onClick={() => { setaddPost(true) }}>Add Post</a> : null}
+                            {/* {!addPost ? <a href="#" onClick={() => { setaddPost(true) }}>Add Post</a> : null} */}
                         </div>
                     </div>
                     {edit ?
@@ -443,6 +468,21 @@ export default function Profile() {
                         {/* Put the tag here */}
                         <p>Tag</p>
                         <MomentieTag tagList={tagList} setTagList={setTagList} width={100} height={30} edit={edit} />
+                        <Box>
+                            <Box sx={{ display: "flex", alignItems: 'center' }}>
+                                <TextField
+                                required
+                                id="outlined-required"
+                                label="Post Content"
+                                sx={{ margin: "px" }}
+                                onChange={(e) => { handleEditPost(e) }}
+                                />
+                                <Button variant="contained" onClick={(e) => {handleAddPostContent(currentUserEmail)}}
+                                sx={{backgroundColor: "#BEACAC",
+                                color: '#F5F5F5',
+                                borderColor: "#BEACAC"}}>Make Post</Button>
+                            </Box>
+                        </Box>
                         <MomentiePost postList={postList} setPostList={setPostList}/>
                     </Box>
                 </div>
