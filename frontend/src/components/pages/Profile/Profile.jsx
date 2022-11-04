@@ -1,6 +1,6 @@
 import "./profile.css";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { backendHost } from '../../../constants';
 import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
@@ -11,6 +11,7 @@ import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
+
 
 export default function Profile() {
 
@@ -32,6 +33,13 @@ export default function Profile() {
 
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
+    
+    var currentEmail = currentUserEmail;
+    var match = true;
+
+    const profileEmail = useParams().email;
+
+    checkEmailMatch();
 
     //customize color
     const navigate = useNavigate();
@@ -66,6 +74,13 @@ export default function Profile() {
 
     function handleEditDescription(e) {
         setDescription(e.target.value);
+    }
+
+    function checkEmailMatch() {
+        if (profileEmail != null && profileEmail != currentUserEmail) {
+            match = false;
+            currentEmail = profileEmail;
+        }
     }
 
     async function editProfileAPI(email, description) {
@@ -301,10 +316,19 @@ export default function Profile() {
         if (currentUserEmail === "") {
             navigate("/login");
         } else {
-            getProfile(currentUserEmail);
-            getTags(currentUserEmail);
-            getTimeline(currentUserEmail);
-            getRating(currentUserEmail);
+            if (match == true) {
+                getProfile(currentUserEmail);
+                getTags(currentUserEmail);
+                getTimeline(currentUserEmail);
+                getRating(currentUserEmail);
+            }
+            else {
+                getProfile(profileEmail);
+                getTags(profileEmail);
+                getTimeline(profileEmail);
+                getRating(profileEmail);
+            }
+            
         }
     }, [edit]);
 
@@ -386,7 +410,7 @@ export default function Profile() {
                         <img src="../random.png" alt="to be changed" width="30" height="30">
                     </div>
                 --> */}
-                    {currentUserEmail}
+                    {currentEmail}
                     <Box>
                         {/* Put the Rating here */}
                         <Rate rating={rating} setRating={setRating} />
