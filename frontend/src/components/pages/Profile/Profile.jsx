@@ -6,7 +6,7 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress } from '@mui/material'
+import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Typography } from '@mui/material'
 import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
@@ -468,22 +468,6 @@ export default function Profile() {
                         {/* Put the tag here */}
                         <p>Tag</p>
                         <MomentieTag tagList={tagList} setTagList={setTagList} width={100} height={30} edit={edit} />
-                        <Box>
-                            <Box sx={{ display: "flex", alignItems: 'center' }}>
-                                <TextField
-                                required
-                                id="outlined-required"
-                                label="Post Content"
-                                sx={{ margin: "px" }}
-                                onChange={(e) => { handleEditPost(e) }}
-                                />
-                                <Button variant="contained" onClick={(e) => {handleAddPostContent(currentUserEmail)}}
-                                sx={{backgroundColor: "#BEACAC",
-                                color: '#F5F5F5',
-                                borderColor: "#BEACAC"}}>Make Post</Button>
-                            </Box>
-                        </Box>
-                        <MomentiePost postList={postList} setPostList={setPostList}/>
                     </Box>
                 </div>
 
@@ -504,9 +488,35 @@ export default function Profile() {
             <form id="myform" onSubmit={(e) => { e.preventDefault() }}>
                 <div class="profileRight">
                     {/* <!-- time line starts here--> */}
-                    <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" height="40vh" editMode={edit} isSkill={true} section="Skills" />
+                    <div class="skillRight">
+                        <MomentieTimeline timelineList={skillTimeline} setTimelineList={setSkillTimeline} width="300px" height="40vh" editMode={edit} isSkill={true} section="Skills" />
+                    </div>
+                    
+                    <div className="userPost">
+                        <Box>
+                            <Typography sx={{ marginBottom: "20px", fontSize: "16pt", color: '#BEACAC'}}>Posts</Typography>
+                            <Box sx={{ display: "flex", alignItems: 'center' }}>
+                                <TextField
+                                required
+                                id="outlined-required"
+                                label="Post Content"
+                                sx={{ margin: "px" }}
+                                onChange={(e) => { handleEditPost(e) }}
+                                />
+                                <Button variant="contained" onClick={(e) => {handleAddPostContent(currentUserEmail)}}
+                                sx={{backgroundColor: "#BEACAC",
+                                marginLeft: "20px",
+                                color: '#F5F5F5',
+                                borderColor: "#BEACAC"}}>Make Post</Button>
+                            </Box>
+                        </Box>
+                        <MomentiePost postList={postList} setPostList={setPostList}/>
+                    </div>
                 </div>
+                
             </form>
+
+
 
         </div >
     );

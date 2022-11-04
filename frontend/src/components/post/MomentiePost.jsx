@@ -15,7 +15,6 @@ import Box from '@mui/material/Box';
 export default function RecipeReviewCard(props) {
 
   const {postList} = props;
-  const [postContent, setPostCOntent] = useState('');
   
 
   return (
@@ -23,7 +22,7 @@ export default function RecipeReviewCard(props) {
       {postList.map((post) => {
         
         return (
-          <Card sx={{ maxWidth: 345 }}>
+          <Card sx={{ maxWidth: 345 , margin: "15px 0px 0px 0px"}}>
             <CardHeader
               action={
                 <IconButton aria-label="settings">
