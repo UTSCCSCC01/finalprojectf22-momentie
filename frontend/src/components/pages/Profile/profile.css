@@ -322,6 +322,7 @@ nav a:hover::before {
     background-color: #F5F5F5;
 }
 
+
 .timeline{
     display: flex;
     justify-self: center;

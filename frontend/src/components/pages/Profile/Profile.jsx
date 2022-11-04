@@ -11,10 +11,12 @@ import { brown } from '@mui/material/colors';
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
+import MomentiePost from "../../post/MomentiePost";
 
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
+    const [addPost, setaddPost] = useState(false);
     const [username, setUserName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -33,6 +35,9 @@ export default function Profile() {
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
 
+    const [postList, setPostList] = useState([]);
+    const postListBackup = useRef(JSON.parse(JSON.stringify(postList)));
+
     //customize color
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -50,6 +55,7 @@ export default function Profile() {
         skillTimelineBackup.current = JSON.parse(JSON.stringify(skillTimeline));
         timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
         tagListBackup.current = JSON.parse(JSON.stringify(tagList));
+        postListBackup.current = JSON.parse(JSON.stringify(postList));
         setLoading(false);
         setEdit(false);
 
@@ -61,6 +67,7 @@ export default function Profile() {
         setTimelineList(JSON.parse(JSON.stringify(timelineBackup.current)));
         setSkillTimeline(JSON.parse(JSON.stringify(skillTimelineBackup.current)));
         setDescription(JSON.parse(JSON.stringify(descriptionBackup.current)));
+        setPostList(JSON.parse(JSON.stringify(postListBackup.current)));
         setEdit(false);
     }
 
@@ -166,6 +173,27 @@ export default function Profile() {
         }
         return true;
     }
+
+
+    async function getPosts(email) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/post/user/` + email,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setPostList(res.data);
+            postListBackup.current = res.data;
+            console.log(res.data);
+        } catch (e) {
+            setErrorMessage("Profile retrieve failed.")
+        }
+    }
+
 
     function logoutUser() {
         axios.defaults.withCredentials = true;
@@ -305,6 +333,7 @@ export default function Profile() {
             getTags(currentUserEmail);
             getTimeline(currentUserEmail);
             getRating(currentUserEmail);
+            getPosts(currentUserEmail);
         }
     }, [edit]);
 
@@ -343,6 +372,7 @@ export default function Profile() {
                             <button type="button" onclick="logoutUser()">Logout</button> --> */}
                             <a href="#">Setting</a>
                             {!edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
+                            {!addPost ? <a href="#" onClick={() => { setaddPost(true) }}>Add Post</a> : null}
                         </div>
                     </div>
                     {edit ?
@@ -413,6 +443,7 @@ export default function Profile() {
                         {/* Put the tag here */}
                         <p>Tag</p>
                         <MomentieTag tagList={tagList} setTagList={setTagList} width={100} height={30} edit={edit} />
+                        <MomentiePost postList={postList} setPostList={setPostList}/>
                     </Box>
                 </div>
 
