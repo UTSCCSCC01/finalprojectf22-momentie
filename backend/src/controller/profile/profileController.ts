@@ -62,7 +62,7 @@ const edit_profile = async (req: any, res: any) => {
 const likeRetri = (req: any, res: any) => {
   const email = req.query.email;
   if (email) {
-    ProfileModel.findOne({email: email}, function(err: any, profile: any) {
+    ProfileModel.findOne({ email: email }, function (err: any, profile: any) {
       if (err) return res.status(500).end(err);
       if (profile) {
         return res.status(200).json(profile.like)

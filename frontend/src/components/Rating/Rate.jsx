@@ -7,12 +7,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 export default function BasicRating(props) {
-    const { rating, setRating } = props
+    const { rating, setRating, rate } = props
+    var read = props.read
 
     return (
         <Box sx={{ display: "flex", alignItems: 'center' }}>
             <Typography>Rating</Typography>
-            <Rating name="rate" value={rating} readOnly precision={0.5} size="large" sx={{ margin: "50px", alignSelf: "center" }} />
+            <Rating
+                name="rate"
+                value={rating}
+                readOnly={read}
+                precision={0.5} size="large" sx={{ margin: "50px", alignSelf: "center" }}
+                onChange={rate}
+            />
         </Box>
     );
 }
