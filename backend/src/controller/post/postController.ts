@@ -44,7 +44,7 @@ const postGetByUser = (req: any, res: any) => {
             return res.status(500).end(err);
         }
         return res.status(200).json(posts);
-    });
+    }).sort({createdAt: 'desc'});
 }
 
 const postGetById = async (req: any, res: any) => {
