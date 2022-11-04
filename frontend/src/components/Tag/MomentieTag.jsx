@@ -2,9 +2,7 @@ import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import TagFacesIcon from '@mui/icons-material/TagFaces';
-import { useState, useEffect, useRef } from 'react';
-import SelectInput from '@mui/material/Select/SelectInput';
+import { useRef } from 'react';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 
@@ -67,7 +65,7 @@ export default function ChipsArray(props) {
           m: 0,
         }}
         component="ul"
-      >
+      >·
 
         {tagList.map((tag) => {
           let icon;
