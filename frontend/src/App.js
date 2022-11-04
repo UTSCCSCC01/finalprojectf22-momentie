@@ -3,7 +3,6 @@ import { useRef } from 'react';
 import Login from '../src/components/pages/Login/Login.jsx'
 import Profile from '../src/components/pages/Profile/Profile.jsx'
 import SignUp from './components/pages/SignUp/SignUp.jsx';
-import Visit from './components/VisitPage/visit.jsx';
 import MomentieTimeline from './components/Timeline/MomentieTimeline.jsx';
 // import Rate from './components/Rating/Rate.jsx';
 
@@ -38,8 +37,8 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/profile/:email" element={<Visit />} />
+      <Route exact path="/profile" element={<Profile />} />
+      <Route path="/profile/:email" element={<Profile />} />
       <Route path="/home" element={<Home />} />
       {/* <Route path="/timeline" element={<MomentieTimeline contentRef={editableDataRef} width="300px" editMode={false} allowTopicEdit={false} printData={printData} />} /> */}
       <Route path="/tag" element={<MomentieTag contentRef={editTagData} width={100} height={30} edit={false} />} />
