@@ -39,6 +39,7 @@ export default function Profile() {
 
     const profileEmail = useParams().email;
 
+    // check if the currentLoginUser email matches the profile user email that routes to
     checkEmailMatch();
 
     //customize color
@@ -322,6 +323,7 @@ export default function Profile() {
                 getTimeline(currentUserEmail);
                 getRating(currentUserEmail);
             }
+            //profile being visted
             else {
                 getProfile(profileEmail);
                 getTags(profileEmail);
@@ -366,7 +368,7 @@ export default function Profile() {
                             {/* <!--
                             <button type="button" onclick="logoutUser()">Logout</button> --> */}
                             <a href="#">Setting</a>
-                            {!edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
+                            {match && !edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
                         </div>
                     </div>
                     {edit ?
