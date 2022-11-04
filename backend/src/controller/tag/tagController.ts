@@ -17,7 +17,7 @@ const tagRetri = (req: any, res: any) => {
       return res.status(200).json(tags)
     })
   } else {
-    return res.status(500).end('uesr email or tag type is required')
+    return res.status(400).end('tag type is required')
   }
 }
 
