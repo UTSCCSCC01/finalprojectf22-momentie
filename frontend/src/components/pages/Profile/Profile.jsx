@@ -34,6 +34,7 @@ export default function Profile() {
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
     
+
     var currentEmail = currentUserEmail;
     var match = true;
 
@@ -400,7 +401,7 @@ export default function Profile() {
                     {currentEmail}
                     <Box>
                         {/* Put the Rating here */}
-                        <Rate rating={rating} setRating={setRating} />
+                        <Rate rating={rating} setRating={setRating} read={match}/>
                     </Box>
                     <li><a href="#">follower|following</a></li>
                     {/* <!-- color change based on profile photo, to be added later--> */}
