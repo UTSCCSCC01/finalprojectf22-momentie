@@ -33,7 +33,7 @@ export default function Profile() {
 
     const [rating, setRating] = useState(0);
     const currentUserEmail = useSelector((state) => state.email);
-    
+
 
     var currentEmail = currentUserEmail;
     var match = true;
@@ -206,6 +206,25 @@ export default function Profile() {
         navigate("/home");
     }
 
+    async function addRating(email, like) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.patch(backendHost + `/profile/like`,
+                { like: like },
+                {
+                    params: { email: email },
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setRating(res.data.like);
+        } catch (e) {
+            setErrorMessage("Rating profile failed.")
+        }
+
+    }
     async function getRating(email) {
         axios.defaults.withCredentials = true;
         try {
@@ -316,7 +335,7 @@ export default function Profile() {
                 getTimeline(profileEmail);
                 getRating(profileEmail);
             }
-            
+
         }
     }, [edit]);
 
@@ -401,7 +420,7 @@ export default function Profile() {
                     {currentEmail}
                     <Box>
                         {/* Put the Rating here */}
-                        <Rate rating={rating} setRating={setRating} read={match}/>
+                        <Rate rating={rating} setRating={setRating} read={match} rate={(_, newValue) => { addRating(currentEmail, newValue) }} />
                     </Box>
                     <li><a href="#">follower|following</a></li>
                     {/* <!-- color change based on profile photo, to be added later--> */}

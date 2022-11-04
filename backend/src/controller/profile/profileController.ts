@@ -14,13 +14,13 @@ const retrieve_profile = async (req: any, res: any) => {
 
     return res.status(200).json(profile)
   } else if (popularity === "true") {
-      const numOfProfile = 5;
-      const profile = await ProfileModel.find({}).sort({ like: -1}).limit(numOfProfile);
-      if (profile) 
-        return res.status(200).json(profile);
-      else {
-        return res.status(501).json({ err: 'Failed to find profiles' })
-      }
+    const numOfProfile = 5;
+    const profile = await ProfileModel.find({}).sort({ like: -1 }).limit(numOfProfile);
+    if (profile)
+      return res.status(200).json(profile);
+    else {
+      return res.status(501).json({ err: 'Failed to find profiles' })
+    }
   }
 
   /** Retrieve all profile data */
@@ -62,7 +62,7 @@ const edit_profile = async (req: any, res: any) => {
 const likeRetri = (req: any, res: any) => {
   const email = req.query.email;
   if (email) {
-    ProfileModel.findOne({email: email}, function(err: any, profile: any) {
+    ProfileModel.findOne({ email: email }, function (err: any, profile: any) {
       if (err) return res.status(500).end(err);
       if (profile) {
         return res.status(200).json(profile.like)
