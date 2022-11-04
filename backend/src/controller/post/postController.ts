@@ -39,12 +39,12 @@ const postGetByUser = (req: any, res: any) => {
         return res.status(400).end("Please provide email");
     }
     //get all posts of the user
-    PostModel.find({"email": email}, (err: any, posts: any) => {
+    PostModel.find({"email": email}).sort({createdAt: 'desc'}).exec((err: any, posts: any) => {
         if(err){
             return res.status(500).end(err);
         }
         return res.status(200).json(posts);
-    }).sort({createdAt: 'desc'});
+    });
 }
 
 const postGetById = async (req: any, res: any) => {
