@@ -13,14 +13,24 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, TextField } from "@mui/material";
-
+import { Autocomplete, TextField, Chip } from "@mui/material";
+import MomentieUserList from "../../UserList/MomentieUserList";
+const userList = [{ email: "lsp@gmail.com", username: "dead", like: 5 },
+{ email: "Chris1@gmail.com", username: "I", like: 5 },
+{ email: "Chris2@gmail.com", username: "I", like: 5 },
+{ email: "Chris3@gmail.com", username: "I", like: 5 },
+{ email: "Chris4@gmail.com", username: "I", like: 5 },
+{ email: "Chris5@gmail.com", username: "I", like: 5 },
+{ email: "Chris6@gmail.com", username: "I", like: 5 },];
+// const userList = null
 export default function Home() {
 
     const [username, setUserName] = useState("");
     const [email, setEmail] = useState('');
     const [errorMessage, setErrorMessage] = useState("");
     const currentUserEmail = useSelector((state) => state.email);
+    const [searchOption, setSearchOption] = useState({ label: 'By Email' });
+    const [labelList, setLabelList] = useState([]);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -107,16 +117,58 @@ export default function Home() {
                     </div>
                 </div>
             </header >
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: "100%" }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: "100%", marginBottom: "20px" }}>
                 <Paper
                     component="form"
-                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: "80%", marginTop: "10%", marginBottom: "10%" }}
+                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: "80%", marginTop: "5%", border: "1px solid #999" }}
                 >
-                    <InputBase
+                    {'By Email' === searchOption.label && <InputBase
                         sx={{ ml: 1, flex: 1 }}
                         placeholder="Search By Email"
                         inputProps={{ 'aria-label': 'search by email' }}
-                    />
+                    />}
+                    {'By Tags' === searchOption.label && <Autocomplete
+                        multiple
+                        options={[]}
+                        freeSolo
+                        sx={{ ml: 1, flex: 1 }}
+                        renderTags={(value, getTagProps) =>
+                            value.map((option, index) => (
+                                <Chip sx={{ height: "100%" }} label={option} {...getTagProps({ index })} />
+                            ))
+                        }
+                        onChange={(_, v) => {
+                            setLabelList(v);
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder={'Tags'}
+                            />
+                        )}
+                    />}
+
+                    {'By Experience' === searchOption.label && <Autocomplete
+                        multiple
+                        options={[]}
+                        freeSolo
+                        sx={{ ml: 1, flex: 1 }}
+                        renderTags={(value, getTagProps) =>
+                            value.map((option, index) => (
+                                <Chip sx={{ height: "100%" }} label={option} {...getTagProps({ index })} />
+                            ))
+                        }
+                        onChange={(_, v) => {
+                            setLabelList(v);
+                            console.log(v)
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder={'Experiences'}
+                            />
+                        )}
+                    />}
                     <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
                         <SearchIcon />
                     </IconButton>
@@ -126,13 +178,19 @@ export default function Home() {
                         disableClearable
                         id="combo-box-demo"
                         defaultValue={{ label: 'By Email' }}
+                        value={searchOption}
                         options={[{ label: 'By Email' }, { label: 'By Tags' }, { label: 'By Experience' }]}
                         getOptionLabel={(option) => option.label}
+                        isOptionEqualToValue={(option, value) => option.label === value.label}
                         sx={{ width: 300, marginTop: "10px", marginBottom: "10px" }}
+                        onChange={(_, v) => { setLabelList([]); setSearchOption(v) }}
                         renderInput={(params) => <TextField {...params} defaultValue='By Email' type='text' label="Search Method" />}
                     />
+
                 </Paper>
             </Box>
+            {userList && <MomentieUserList userList={userList}></MomentieUserList>}
+
             <div class="left">
                 <div class="mainpost">
                     <div class="post">
