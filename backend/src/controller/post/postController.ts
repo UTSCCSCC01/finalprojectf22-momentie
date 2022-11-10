@@ -71,10 +71,6 @@ const postDeleteById = async (req: any, res: any) => {
         return res.status(400).end("Invalid ObjectId");
     }
     
-    // Missing post id
-    if (!postId) {
-        return res.status(400).end("Post Id is not provided...")
-    }
     let postObj = await PostModel.findById(postId);
     // Posts not found
     if (!postObj) {
