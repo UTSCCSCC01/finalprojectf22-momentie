@@ -15,9 +15,7 @@ export default function MomentieUserList(props) {
     const { userList, cardPerPage } = props
     const [pageNumber, setPageNumber] = useState(1);
     const navigate = useNavigate();
-    if (!cardPerPage || cardPerPage <= 0) {
-        cardPerPage = 6;
-    }
+    const elmOnPage = !cardPerPage || cardPerPage < 1 ? 6 : cardPerPage
 
     function toProfile(email) {
         navigate('/profile/' + email);
@@ -26,7 +24,7 @@ export default function MomentieUserList(props) {
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <Box sx={{ display: "flex", alignItems: "flex-start", width: "80%", minHeight: "35vh" }}>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {userList.slice((pageNumber - 1) * cardPerPage, pageNumber * cardPerPage).map((user) => (
+                    {pageNumber > 0 && userList.slice((pageNumber - 1) * elmOnPage, pageNumber * elmOnPage).map((user) => (
                         <Grid item xs={2} sm={4} md={4} key={user.email} >
                             <Item sx={{ height: "10vh" }}>
                                 <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
@@ -56,7 +54,7 @@ export default function MomentieUserList(props) {
                 </Grid>
 
             </Box>
-            <Pagination onChange={(_, num) => { setPageNumber(num) }} sx={{ justifyContent: "flex-start", marginLeft: "-50px" }} count={Math.ceil(userList.length / cardPerPage)} variant="outlined" shape="rounded" />
+            <Pagination onChange={(_, num) => { setPageNumber(num) }} sx={{ justifyContent: "flex-start", marginLeft: "-50px" }} count={Math.ceil(userList.length / elmOnPage)} variant="outlined" shape="rounded" />
         </Box >
     );
 }
