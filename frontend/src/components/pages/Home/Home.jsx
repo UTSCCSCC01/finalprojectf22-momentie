@@ -6,7 +6,14 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass } from '@mui/material'
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import { Autocomplete, TextField } from "@mui/material";
 
 export default function Home() {
 
@@ -66,7 +73,7 @@ export default function Home() {
         } else {
             getHome(currentUserEmail);
         }
-    }, );
+    },);
 
     return (
         <div class="page">
@@ -78,16 +85,10 @@ export default function Home() {
                         <img src={require("./logo.png")} alt="to be changed" height="40" />
                     </h1>
                     {/* <!-- serachbar of header --> */}
-                    <div class="search-container">
-                        <form action="/action_page.php">
-                            <input type="text" placeholder="Search.." name="search" class="search-bar" />
-                            <button type="submit">GO<i class="fa fa-search"></i></button>
-                        </form>
-                    </div>
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
-                            <li><a href="#" onClick={gotoProfilePage}>Profile</a></li>
+                            <li><a href="#" onClick={gotoProfilePage}>My Profile</a></li>
                             <li><a href="#">About</a></li>
                             <li><a href="#">Moment</a></li>
                             <li><a href="#">Contact</a></li>
@@ -106,7 +107,32 @@ export default function Home() {
                     </div>
                 </div>
             </header >
-
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: "100%" }}>
+                <Paper
+                    component="form"
+                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: "80%", marginTop: "10%", marginBottom: "10%" }}
+                >
+                    <InputBase
+                        sx={{ ml: 1, flex: 1 }}
+                        placeholder="Search By Email"
+                        inputProps={{ 'aria-label': 'search by email' }}
+                    />
+                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+                        <SearchIcon />
+                    </IconButton>
+                    <Divider sx={{ m: 0.6, borderRightWidth: 3 }} flexItem orientation="vertical" />
+                    <Autocomplete
+                        disablePortal
+                        disableClearable
+                        id="combo-box-demo"
+                        defaultValue={{ label: 'By Email' }}
+                        options={[{ label: 'By Email' }, { label: 'By Tags' }, { label: 'By Experience' }]}
+                        getOptionLabel={(option) => option.label}
+                        sx={{ width: 300, marginTop: "10px", marginBottom: "10px" }}
+                        renderInput={(params) => <TextField {...params} defaultValue='By Email' type='text' label="Search Method" />}
+                    />
+                </Paper>
+            </Box>
             <div class="left">
                 <div class="mainpost">
                     <div class="post">
@@ -121,7 +147,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-
             <div class="middle">
                 {/* <!-- other recomand users --> */}
                 <div class="post">
