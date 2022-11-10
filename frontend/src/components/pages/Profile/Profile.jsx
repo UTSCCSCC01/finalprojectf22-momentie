@@ -403,12 +403,6 @@ export default function Profile() {
                         <img src={require("./logo.png")} alt="to be changed" height="40" />
                     </h1>
                     {/* <!-- serachbar of header --> */}
-                    <div class="search-container">
-                        <form action="/action_page.php">
-                            <input type="text" placeholder="Search.." name="search" class="search-bar" />
-                            <button type="submit">GO<i class="fa fa-search"></i></button>
-                        </form>
-                    </div>
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
