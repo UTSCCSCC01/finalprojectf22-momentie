@@ -63,5 +63,25 @@ const postGetById = async (req: any, res: any) => {
     return res.status(200).json(postObj)
 }
 
-module.exports = { postCreate, postGetById, postGetByUser };
+const postDeleteById = async (req: any, res: any) => {
+    const postId = req.params["postId"]
+    // Missing post id
+    if (!postId) {
+        return res.status(400).end("Post Id is not provided...")
+    }
+    let postObj = await PostModel.findById(postId);
+    // Posts not found
+    if (!postObj) {
+        return res.status(404).end("Post not found...")
+    }
+    postObj.deleteOne((err: any) => {
+        if (err) {
+            return res.status(500).end(err);
+        }
+    });
+    // Found
+    return res.status(200).json(postObj)
+}
+
+module.exports = { postCreate, postGetById, postGetByUser, postDeleteById };
 
