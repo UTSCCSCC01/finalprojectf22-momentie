@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import UserModel from '../../model/userModel';
 import PostModel from '../../model/postModel';
 
@@ -64,7 +65,12 @@ const postGetById = async (req: any, res: any) => {
 }
 
 const postDeleteById = async (req: any, res: any) => {
-    const postId = req.params["postId"]
+    try{
+        var postId = new mongoose.Types.ObjectId(req.params["postId"]);
+    } catch(err: any){
+        return res.status(400).end("Invalid ObjectId");
+    }
+    
     // Missing post id
     if (!postId) {
         return res.status(400).end("Post Id is not provided...")
@@ -78,9 +84,9 @@ const postDeleteById = async (req: any, res: any) => {
         if (err) {
             return res.status(500).end(err);
         }
+         // Found
+        return res.status(200).json(postObj)
     });
-    // Found
-    return res.status(200).json(postObj)
 }
 
 module.exports = { postCreate, postGetById, postGetByUser, postDeleteById };
