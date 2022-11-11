@@ -56,4 +56,14 @@ const userLogout = (req: any, res: any) => {
     });
 };
 
-module.exports = { userLogin, userSignUp, userLogout }
+const userRetriByUsername = (req: any, res: any) => {
+    const username = req.params["username"];
+    UserModel.find({"username": username}).sort({createdAt: -1}).exec((err: any, users: any) => {
+        if(err){
+            return res.status(500).end(err);
+        }
+        return res.status(200).json(users);
+    });
+};
+
+module.exports = { userLogin, userSignUp, userLogout, userRetriByUsername }
