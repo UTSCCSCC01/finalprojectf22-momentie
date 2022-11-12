@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
 
 export interface Image extends mongoose.Document {
-  file: JSON;
-  uploadedAt?: string;
+  file: Object,
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 const Image = new Schema({
@@ -12,5 +13,5 @@ const Image = new Schema({
   }
 }, { timestamps: true });
 
-const LikeModel = mongoose.model('image', Image);
-export default LikeModel;
+const ImageModel = mongoose.model("imageData", Image);
+export default ImageModel;
