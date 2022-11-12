@@ -2,6 +2,7 @@
 // import * from './userAuth';
 import UserModel from '../../model/userModel';
 import ProfileModel from '../../model/profileModel';
+import TimelineModel from '../../model/timelineModel';
 
 const userLogin = (req: any, res: any) => {
     console.log("user: ", req.user);
@@ -58,12 +59,42 @@ const userLogout = (req: any, res: any) => {
 
 const userRetriByUsername = (req: any, res: any) => {
     const username = req.params["username"];
-    UserModel.find({"username": username}).sort({createdAt: -1}).exec((err: any, users: any) => {
-        if(err){
+    UserModel.find({ "username": username }).sort({ createdAt: -1 }).exec((err: any, users: any) => {
+        if (err) {
             return res.status(500).end(err);
         }
         return res.status(200).json(users);
     });
 };
 
-module.exports = { userLogin, userSignUp, userLogout, userRetriByUsername }
+const userRetriBySkill = async (req: any, res: any) => {
+    // Retrieve title from the request
+    const title = req.params["title"];
+    const regex = new RegExp(title, 'i')
+    // Find all timeline objects containing 'title' in their <title> field
+    let timelines = await TimelineModel.find({ "title": { $regex: regex } });
+
+    // Some variables
+    let emails: Set<String> = new Set();
+    let users = new Array();
+
+    // Retrieve distinct emails having that skill/experience
+    timelines.forEach(timeline => {
+        emails.add(timeline.get('email'));
+    })
+
+    // Convert set to array so that Promise can be applied
+    let emails_arr = [...emails];
+
+    // Promise
+    Promise.all(emails_arr.map(async (email) => {
+        // Find corresponding user accounts based on emails
+        let user = await UserModel.findOne({ 'email': email });
+        users.push(user)
+    })).then(() => {
+        // Return results wrapped in a list of JSON objects
+        return res.status(200).json(users)
+    })
+};
+
+module.exports = { userLogin, userSignUp, userLogout, userRetriByUsername, userRetriBySkill }
