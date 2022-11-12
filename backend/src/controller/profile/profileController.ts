@@ -1,5 +1,6 @@
 import ProfileModel from '../../model/profileModel'
 import LikeModel from '../../model/likeModel';
+import ImageModel from '../../model/imageModel';
 
 const retrieve_profile = async (req: any, res: any) => {
   const { page, email, popularity } = req.query;
@@ -14,13 +15,13 @@ const retrieve_profile = async (req: any, res: any) => {
 
     return res.status(200).json(profile)
   } else if (popularity === "true") {
-      const numOfProfile = 5;
-      const profile = await ProfileModel.find({}).sort({ like: -1}).limit(numOfProfile);
-      if (profile) 
-        return res.status(200).json(profile);
-      else {
-        return res.status(404).json({ err: 'Failed to find profiles' })
-      }
+    const numOfProfile = 5;
+    const profile = await ProfileModel.find({}).sort({ like: -1 }).limit(numOfProfile);
+    if (profile)
+      return res.status(200).json(profile);
+    else {
+      return res.status(404).json({ err: 'Failed to find profiles' })
+    }
   }
 
   /** Retrieve all profile data */
@@ -112,4 +113,28 @@ const rate_profile = async (req: any, res: any) => {
   return res.status(200).json(newProfile)
 }
 
-module.exports = { retrieve_profile, edit_profile, rate_profile, likeRetri }
+const uploadImage = async (req: any, res: any) => {
+  // req.file can be used to access all file properties
+  try {
+    //check if the request has an image or not
+    if (!req.file) {
+      return res.status(400).end('You must provide at least 1 file');
+    } else {
+      let imageUploadObject = {
+        file: {
+          data: req.file.buffer,
+          contentType: req.file.mimetype
+        }
+      };
+      const uploadObject = new ImageModel(imageUploadObject);
+      // saving the object into the database
+      await ImageModel.create(uploadObject);
+
+      return res.status(200).send('Image upload successfully')
+    }
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+module.exports = { retrieve_profile, edit_profile, rate_profile, likeRetri, uploadImage }
