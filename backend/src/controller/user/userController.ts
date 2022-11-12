@@ -70,6 +70,10 @@ const userRetriByUsername = (req: any, res: any) => {
 const userRetriBySkill = async (req: any, res: any) => {
     // Retrieve title from the request
     const title = req.params["title"];
+    if (!title) {
+        return res.status(400).end('Missing title...');
+    }
+
     const regex = new RegExp(title, 'i')
     // Find all timeline objects containing 'title' in their <title> field
     let timelines = await TimelineModel.find({ "title": { $regex: regex } });
@@ -94,6 +98,8 @@ const userRetriBySkill = async (req: any, res: any) => {
     })).then(() => {
         // Return results wrapped in a list of JSON objects
         return res.status(200).json(users)
+    }).catch(error => {
+        return res.status(500).end('Something went wrong...')
     })
 };
 
