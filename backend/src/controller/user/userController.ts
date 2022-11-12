@@ -99,7 +99,7 @@ const userRetriBySkill = async (req: any, res: any) => {
         // Return results wrapped in a list of JSON objects
         return res.status(200).json(users)
     }).catch(error => {
-        return res.status(500).end('Something went wrong...')
+        return res.status(500).end(error)
     })
 };
 
