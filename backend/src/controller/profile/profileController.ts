@@ -24,9 +24,7 @@ const retrieve_profile = async (req: any, res: any) => {
       return res.status(404).json({ err: 'Failed to find profiles' })
     }
   } else if (tag) {
-    let tags = tag.replace(/'/g, '"');
-    tags = JSON.parse(tags);
-    UserTagModel.find({'title': {$in: tags}}, function(err: any, userTag: any) {
+    UserTagModel.find({'title': {$in: tag}}, function(err: any, userTag: any) {
       if (err) return res.status(500).end(err);
       const emails = userTag.map((tag:any) => tag.email)
       ProfileModel.find({'email': {$in: emails}}, null, {sort: { like: -1 }}, function(err: any, profiles: any) {
