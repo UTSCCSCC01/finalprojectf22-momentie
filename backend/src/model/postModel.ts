@@ -9,7 +9,7 @@ export interface Post extends mongoose.Document {
 const Post = new Schema ({
     content: { type: String },
     email: {type: String },
-    image: {type: String },
+    imageId: {type: String },
 },{ timestamps: true });
 
 const PostModel = mongoose.model('postData', Post);

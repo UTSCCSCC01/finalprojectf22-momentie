@@ -126,6 +126,13 @@ const rate_profile = async (req: any, res: any) => {
 
 const uploadImage = async (req: any, res: any) => {
   // req.file can be used to access all file properties
+  let email = ''
+  if (req.user) {
+    email = req.user.email
+  } else {
+    return res.status(401).send("User is not authorized...")
+  }
+  
   try {
     //check if the request has an image or not
     if (!req.file) {
@@ -139,13 +146,30 @@ const uploadImage = async (req: any, res: any) => {
       };
       const uploadObject = new ImageModel(imageUploadObject);
       // saving the object into the database
-      await ImageModel.create(uploadObject);
-
-      return res.status(200).send('Image upload successfully')
+      ImageModel.create(uploadObject, function (err: any, image: any) {
+         if (err) return res.status(500).end(err);
+         ProfileModel.updateOne({email: email}, {image: image._id}, function(err:any, profile:any) {
+          if (err) return res.status(500).end(err);
+          return res.status(200).send('Image upload successfully')
+         })
+      })
     }
   } catch (error) {
     return res.status(500).send(error);
   }
 }
 
-module.exports = { retrieve_profile, edit_profile, rate_profile, likeRetri, uploadImage }
+const imageRetri = (req: any, res:any) => {
+  const email = req.body.email
+  if(!email) return res.status(400).end('email is missing')
+  ProfileModel.findOne({email: email}, function(err: any, profile: any) {
+    if (err) return res.status(500).end(err);
+    const imageId = profile.image;
+    ImageModel.findById(imageId, function(err: any, image: any) {
+      if (err) return res.status(500).end(err);
+      return res.status(200).json(image)
+    })
+  })
+}
+
+module.exports = { retrieve_profile, edit_profile, rate_profile, likeRetri, uploadImage, imageRetri }

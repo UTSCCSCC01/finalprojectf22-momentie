@@ -7,7 +7,7 @@ const upload = multer({ storage: storage });
 var router = express.Router();
 
 const { retrieve_profile, uploadImage,
-  edit_profile, likeRetri, rate_profile } = require('../controller/profile/profileController');
+  edit_profile, likeRetri, rate_profile, imageRetri } = require('../controller/profile/profileController');
 const { timelineCreate, timelineRetri, timelineEdit } = require('../controller/timeline/timelineController')
 
 
@@ -22,4 +22,5 @@ router.patch('/:email/timeline', timelineEdit);
 router.get('/like', likeRetri);
 
 router.post('/upload', upload.single("file"), uploadImage);
+router.get('/image', imageRetri);
 export = router;
