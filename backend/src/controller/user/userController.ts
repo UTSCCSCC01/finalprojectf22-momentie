@@ -3,6 +3,7 @@
 import UserModel from '../../model/userModel';
 import ProfileModel from '../../model/profileModel';
 import TimelineModel from '../../model/timelineModel';
+import { findSourceMap } from 'module';
 
 const userLogin = (req: any, res: any) => {
     console.log("user: ", req.user);
@@ -78,7 +79,6 @@ const userRetriBySkill = async (req: any, res: any) => {
     // Some variables
     let regexs: Array<RegExp> = new Array();
     let emails: Set<string> = new Set();
-    let users = new Array();
 
     // single skill/experience title
     if (typeof (title) === 'string') {
@@ -102,17 +102,11 @@ const userRetriBySkill = async (req: any, res: any) => {
     // Convert set to array so that Promise can be applied
     let emails_arr = [...emails];
 
-    // Promise
-    Promise.all(emails_arr.map(async (email) => {
-        // Find corresponding user accounts based on emails
-        let user = await ProfileModel.findOne({ 'email': email });
-        users.push(user)
-    })).then(() => {
-        // Return results wrapped in a list of JSON objects
-        return res.status(200).json(users)
-    }).catch(error => {
-        return res.status(500).end(error)
-    })
+    // Find all users
+    ProfileModel.find({ 'email': { $in: emails_arr } }, null, { sort: { like: -1 } }, (err: any, profiles: any) => {
+        if (err) return res.status(500).end(err);
+        return res.status(200).json(profiles);
+    });
 };
 
 module.exports = { userLogin, userSignUp, userLogout, userRetriByUsername, userRetriBySkill }
