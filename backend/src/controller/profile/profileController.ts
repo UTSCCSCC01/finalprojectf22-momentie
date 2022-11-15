@@ -24,10 +24,10 @@ const retrieve_profile = async (req: any, res: any) => {
       return res.status(404).json({ err: 'Failed to find profiles' })
     }
   } else if (tag) {
-    UserTagModel.find({'title': {$in: tag}}, function(err: any, userTag: any) {
+    UserTagModel.find({ 'title': { $in: tag } }, function (err: any, userTag: any) {
       if (err) return res.status(500).end(err);
-      const emails = userTag.map((tag:any) => tag.email)
-      ProfileModel.find({'email': {$in: emails}}, null, {sort: { like: -1 }}, function(err: any, profiles: any) {
+      const emails = userTag.map((tag: any) => tag.email)
+      ProfileModel.find({ 'email': { $in: emails } }, null, { sort: { like: -1 } }, function (err: any, profiles: any) {
         if (err) return res.status(500).end(err);
         return res.status(200).json(profiles);
       })
@@ -37,10 +37,10 @@ const retrieve_profile = async (req: any, res: any) => {
     let profiles = await ProfileModel.find()
     let profile_pool_size = profiles.length
 
-      /** page provided but not email */
+    /** page provided but not email */
     if (page && page * 10 <= profile_pool_size) {
-    let sorted_profiles = profiles.slice(page * 10, (page + 1) * 10 - 1)
-    return res.status(200).json(sorted_profiles)
+      let sorted_profiles = profiles.slice(page * 10, (page + 1) * 10 - 1)
+      return res.status(200).json(sorted_profiles)
     }
 
     /** display the first 10 user profiles (neither email nor page is provided */
@@ -132,7 +132,7 @@ const uploadImage = async (req: any, res: any) => {
   } else {
     return res.status(401).send("User is not authorized...")
   }
-  
+
   try {
     //check if the request has an image or not
     if (!req.file) {
@@ -147,11 +147,11 @@ const uploadImage = async (req: any, res: any) => {
       const uploadObject = new ImageModel(imageUploadObject);
       // saving the object into the database
       ImageModel.create(uploadObject, function (err: any, image: any) {
-         if (err) return res.status(500).end(err);
-         ProfileModel.updateOne({email: email}, {image: image._id}, function(err:any, profile:any) {
+        if (err) return res.status(500).end(err);
+        ProfileModel.updateOne({ email: email }, { image: image._id }, function (err: any, profile: any) {
           if (err) return res.status(500).end(err);
           return res.status(200).send('Image upload successfully')
-         })
+        })
       })
     }
   } catch (error) {
@@ -159,16 +159,21 @@ const uploadImage = async (req: any, res: any) => {
   }
 }
 
-const imageRetri = (req: any, res:any) => {
-  const email = req.body.email
-  if(!email) return res.status(400).end('email is missing')
-  ProfileModel.findOne({email: email}, function(err: any, profile: any) {
+const imageRetri = (req: any, res: any) => {
+  const email = req.query.email
+  if (!email) return res.status(400).end('email is missing')
+  ProfileModel.findOne({ email: email }, function (err: any, profile: any) {
     if (err) return res.status(500).end(err);
     const imageId = profile.image;
-    ImageModel.findById(imageId, function(err: any, image: any) {
-      if (err) return res.status(500).end(err);
-      return res.status(200).json(image)
-    })
+    if (profile.image) {
+      ImageModel.findById(imageId, function (err: any, image: any) {
+        if (err) return res.status(500).end(err);
+        res.set("Content-Type", image.file.contentType);
+        return res.status(200).send(image.file.data)
+      })
+    } else {
+      return res.status(404).end(err);
+    }
   })
 }
 

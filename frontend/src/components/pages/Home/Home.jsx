@@ -16,12 +16,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, TextField, Chip } from "@mui/material";
 import MomentieUserList from "../../UserList/MomentieUserList";
 const userList = [{ email: "lsp@gmail.com", username: "dead", like: 5 },
-{ email: "Chris1@gmail.com", username: "I", like: 5 },
-{ email: "Chris2@gmail.com", username: "I", like: 5 },
-{ email: "Chris3@gmail.com", username: "I", like: 5 },
-{ email: "Chris4@gmail.com", username: "I", like: 5 },
-{ email: "Chris5@gmail.com", username: "I", like: 5 },
-{ email: "Chris6@gmail.com", username: "I", like: 5 },];
+{ email: "candy@gmail.com", username: "", like: 5 },];
 // const userList = null
 export default function Home() {
 

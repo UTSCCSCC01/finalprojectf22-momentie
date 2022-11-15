@@ -3,6 +3,9 @@ import { experimentalStyled as styled } from '@mui/material/styles';
 import { useState } from "react";
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { useNavigate } from "react-router-dom";
+import { backendHost } from "../../constants";
+import axios from "axios";
+
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#D9D9D9',
     ...theme.typography.body2,
@@ -20,6 +23,7 @@ export default function MomentieUserList(props) {
     function toProfile(email) {
         navigate('/profile/' + email);
     }
+
     return (
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <Box sx={{ display: "flex", alignItems: "flex-start", width: "80%", minHeight: "35vh" }}>
@@ -29,7 +33,7 @@ export default function MomentieUserList(props) {
                             <Item sx={{ height: "10vh" }}>
                                 <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
                                     <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-                                        <Avatar sx={{ height: '70px', width: '70px', marginRight: "10px" }} alt={user.email} src="dasda" />
+                                        <Avatar sx={{ height: '70px', width: '70px', marginRight: "10px" }} alt={user.email} crossorigin use-credentials src={backendHost + `/profile/image?email=` + user.email} />
                                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
 
                                             {user.username && <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user.username}</Typography>}
