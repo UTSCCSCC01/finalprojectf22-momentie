@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const passport = require('passport');
 
-const { userLogin, userSignUp, userLogout, userRetriByUsername } = require('../controller/user/userController');
+const { userLogin, userSignUp, userLogout, userRetriByUsername, userRetriBySkill } = require('../controller/user/userController');
 
 function isAuthenticated(req: any, res: any, next: any) {
   if (req.user)
@@ -21,5 +21,6 @@ router.post('/login', passport.authenticate('local'), userLogin);
 router.post('/signup', userSignUp);
 router.post('/logout', userLogout);
 router.get('/name/:username', userRetriByUsername);
+router.get('/skill/search', userRetriBySkill);
 
 export = router
