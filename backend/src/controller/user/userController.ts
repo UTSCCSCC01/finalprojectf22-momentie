@@ -69,18 +69,30 @@ const userRetriByUsername = (req: any, res: any) => {
 
 const userRetriBySkill = async (req: any, res: any) => {
     // Retrieve title from the request
-    const title = req.params["title"];
+    const title = req.query.title;
+
     if (!title) {
         return res.status(400).end('Missing title...');
     }
 
-    const regex = new RegExp(title, 'i')
-    // Find all timeline objects containing 'title' in their <title> field
-    let timelines = await TimelineModel.find({ "title": { $regex: regex } });
-
     // Some variables
-    let emails: Set<String> = new Set();
+    let regexs: Array<RegExp> = new Array();
+    let emails: Set<string> = new Set();
     let users = new Array();
+
+    // single skill/experience title
+    if (typeof (title) === 'string') {
+        regexs.push(new RegExp(title, 'i'));
+    }
+    // multiple skill/experience titles
+    else {
+        title.forEach((element: string) => {
+            regexs.push(new RegExp(element, 'i'));
+        })
+    }
+
+    // // Find all timeline objects containing 'title' in their <title> field
+    let timelines = await TimelineModel.find({ "title": { $in: regexs } });
 
     // Retrieve distinct emails having that skill/experience
     timelines.forEach(timeline => {
@@ -93,7 +105,7 @@ const userRetriBySkill = async (req: any, res: any) => {
     // Promise
     Promise.all(emails_arr.map(async (email) => {
         // Find corresponding user accounts based on emails
-        let user = await UserModel.findOne({ 'email': email });
+        let user = await ProfileModel.findOne({ 'email': email });
         users.push(user)
     })).then(() => {
         // Return results wrapped in a list of JSON objects
