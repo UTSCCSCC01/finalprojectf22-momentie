@@ -21,6 +21,6 @@ router.post('/login', passport.authenticate('local'), userLogin);
 router.post('/signup', userSignUp);
 router.post('/logout', userLogout);
 router.get('/name/:username', userRetriByUsername);
-router.get('/skill/:title', userRetriBySkill);
+router.get('/skill/search', userRetriBySkill);
 
 export = router
