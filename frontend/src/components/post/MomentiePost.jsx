@@ -14,12 +14,12 @@ import Box from '@mui/material/Box';
 
 export default function RecipeReviewCard(props) {
 
-  const {postList, setPostList, postEdit} = props;
+  const {postList, setPostList, postEdit, deletePost} = props;
   
-  const handleDelete = (postToDelete) => {
-    let newList = postList.filter((post) => post._id !== postToDelete);
-    setPostList(newList);
-  };
+  // const handleDelete = (postToDelete) => {
+  //   let newList = postList.filter((post) => post._id !== postToDelete);
+  //   setPostList(newList);
+  // };
 
   return (
     <Box>
@@ -28,9 +28,9 @@ export default function RecipeReviewCard(props) {
           <Card sx={{ maxWidth: 345 , margin: "15px 0px 0px 0px"}} key = {post._id}>
             <CardHeader
             action={
-              <IconButton aria-label="settings">
+              <IconButton aria-label="settings" onClick={() => { deletePost(post._id) }}>
                 {postEdit ? 
-                <DeleteIcon onClick={() => { handleDelete(post._id) }}/>
+                <DeleteIcon />
                 :null}
               </IconButton>
             }

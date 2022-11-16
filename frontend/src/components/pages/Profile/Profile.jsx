@@ -228,12 +228,30 @@ export default function Profile() {
                         },
                     }
                 );
-                newList.push({ content: postContent, email: email })
-                setPostList(newList);
+                getPosts(email);
                 return true;
             } catch (e) {
                 return false;
             }
+        }
+    }
+
+    async function deletePost(postId) {
+        axios.defaults.withCredentials = true;
+            try {
+                await axios.delete(backendHost + `/post/id/` + postId,
+                    {
+                        headers: {
+                            'Access-Control-Allow-Credentials': true,
+                            'Access-Control-Allow-Origin': backendHost,
+                        },
+                    }
+                );
+                let newList = postList.filter((post) => post._id !== postId);
+                setPostList(newList);
+                return true;
+            } catch (e) {
+                return false;
         }
     }
 
@@ -536,7 +554,7 @@ export default function Profile() {
                                     }}>Make Post</Button>
                             </Box>}
                         </Box>
-                        <MomentiePost postList={postList} setPostList={setPostList} postEdit={postEdit} />
+                        <MomentiePost postList={postList} setPostList={setPostList} postEdit={postEdit} deletePost={deletePost}/>
                     </div>
                 </div>
 
