@@ -60,7 +60,8 @@ const userLogout = (req: any, res: any) => {
 
 const userRetriByUsername = (req: any, res: any) => {
     const username = req.params["username"];
-    UserModel.find({ "username": username }).sort({ createdAt: -1 }).exec((err: any, users: any) => {
+
+    ProfileModel.find({ "username": new RegExp(username, 'i') }).sort({ like: -1 }).exec((err: any, users: any) => {
         if (err) {
             return res.status(500).end(err);
         }
@@ -92,7 +93,17 @@ const userRetriBySkill = async (req: any, res: any) => {
     }
 
     // // Find all timeline objects containing 'title' in their <title> field
-    let timelines = await TimelineModel.find({ "title": { $in: regexs } });
+    let timelines = await TimelineModel.find({
+        $or: [
+            { "title": { $in: regexs } },
+            {
+                $and: [
+                    { "topic": { $ne: 'experience' } },
+                    { "topic": { $in: regexs } }
+                ]
+            }
+        ]
+    });
 
     // Retrieve distinct emails having that skill/experience
     timelines.forEach(timeline => {
