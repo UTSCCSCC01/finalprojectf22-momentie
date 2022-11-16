@@ -17,7 +17,7 @@ import MomentiePost from "../../post/MomentiePost";
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
-    const [addPost, setaddPost] = useState(false);
+    const [postEdit] = useState(true);
     const [username, setUserName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -144,7 +144,7 @@ export default function Profile() {
             );
             setTagList(res.data);
             tagListBackup.current = res.data;
-            console.log(res.data);
+            // console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -228,12 +228,30 @@ export default function Profile() {
                         },
                     }
                 );
-                newList.push({ content: postContent, email: email })
-                setPostList(newList);
+                getPosts(email);
                 return true;
             } catch (e) {
                 return false;
             }
+        }
+    }
+
+    async function deletePost(postId) {
+        axios.defaults.withCredentials = true;
+            try {
+                await axios.delete(backendHost + `/post/id/` + postId,
+                    {
+                        headers: {
+                            'Access-Control-Allow-Credentials': true,
+                            'Access-Control-Allow-Origin': backendHost,
+                        },
+                    }
+                );
+                let newList = postList.filter((post) => post._id !== postId);
+                setPostList(newList);
+                return true;
+            } catch (e) {
+                return false;
         }
     }
 
@@ -536,7 +554,7 @@ export default function Profile() {
                                     }}>Make Post</Button>
                             </Box>}
                         </Box>
-                        <MomentiePost postList={postList} setPostList={setPostList} />
+                        <MomentiePost postList={postList} setPostList={setPostList} postEdit={postEdit} deletePost={deletePost}/>
                     </div>
                 </div>
 

@@ -65,7 +65,7 @@ export default function ChipsArray(props) {
           m: 0,
         }}
         component="ul"
-      >·
+      >
 
         {tagList.map((tag) => {
           let icon;
