@@ -17,7 +17,7 @@ import MomentiePost from "../../post/MomentiePost";
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
-    const [addPost, setaddPost] = useState(false);
+    const [postEdit] = useState(true);
     const [username, setUserName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -204,7 +204,7 @@ export default function Profile() {
             );
             setPostList(res.data);
             postListBackup.current = res.data;
-            // console.log(res.data);
+            console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -536,7 +536,7 @@ export default function Profile() {
                                     }}>Make Post</Button>
                             </Box>}
                         </Box>
-                        <MomentiePost postList={postList} setPostList={setPostList} />
+                        <MomentiePost postList={postList} setPostList={setPostList} postEdit={postEdit} />
                     </div>
                 </div>
 
