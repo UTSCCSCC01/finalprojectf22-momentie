@@ -144,7 +144,7 @@ export default function Profile() {
             );
             setTagList(res.data);
             tagListBackup.current = res.data;
-            console.log(res.data);
+            // console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -204,7 +204,7 @@ export default function Profile() {
             );
             setPostList(res.data);
             postListBackup.current = res.data;
-            console.log(res.data);
+            // console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
