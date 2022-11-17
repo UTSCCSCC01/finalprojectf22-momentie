@@ -377,29 +377,15 @@ export default function Home() {
             {dataList.length != 0 && <MomentieUserList userList={dataList}></MomentieUserList>}
 
             <div class="left">
-                <div class="mainpost">
-                    <div class="post">
-                        {currentUserEmail}
-
-                    </div>
-
-                </div>
                 <div class="otherpost">
                     <div class="post">
-                        other recomand post
+                        Recommended Posts
                     </div>
                 </div>
-            </div>
-            <div class="middle">
-                {/* <!-- other recomand users --> */}
-                <div class="post">
-                    recomand users
-                </div>
-
             </div>
             <div class="right">
                 <div class="post">
-                    tags
+                    Popular tags
                 </div>
 
             </div>
