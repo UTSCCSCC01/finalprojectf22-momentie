@@ -29,6 +29,9 @@ export default function Home() {
     const [labelList, setLabelList] = useState([]);
     const [singleSearchText, setSingleSearchText] = useState('');
 
+    const [popTagList, setPopTagList] = useState([]);
+    const popTagListBackup = useRef(JSON.parse(JSON.stringify(popTagList)));
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -221,6 +224,25 @@ export default function Home() {
             default:
                 setDataList([])
                 setErrorMessage("Search Operation Failed");
+        }
+    }
+
+    async function getPopularTags() {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/tag/top`,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setPopTagList(res.data);
+            popTagListBackup.current = res.data;
+            // console.log(res.data);
+        } catch (e) {
+            setErrorMessage("HomePage retrieve failed.")
         }
     }
 
