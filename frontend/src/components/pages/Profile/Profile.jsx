@@ -208,31 +208,31 @@ export default function Profile() {
 
     }
 
-    async function getUserImage(email) {
-        axios.defaults.withCredentials = true;
-        try {
-            let res = await axios.get(backendHost + `/post/image/`,{
-                params: { email },
-            },
-                {
-                    headers: {
-                        'Access-Control-Allow-Credentials': true,
-                        'Access-Control-Allow-Origin': backendHost,
-                    },
-                }
-            );
-            let image_as_base64 = URL.createObjectURL(res.data);
-            let image_as_files = res.data;
-            setUserImage({
-                image_preview: image_as_base64,
-                image_file: image_as_files,
-            });
- //         userImageBackup.current = res.data;
-            console.log(res.data);
-        } catch (e) {
-            setErrorMessage("Profile retrieve failed.")
-        }
-    }
+//     async function getUserImage(email) {
+//         axios.defaults.withCredentials = true;
+//         try {
+//             let res = await axios.get(backendHost + `/post/image/`,{
+//                 params: { email },
+//             },
+//                 {
+//                     headers: {
+//                         'Access-Control-Allow-Credentials': true,
+//                         'Access-Control-Allow-Origin': backendHost,
+//                     },
+//                 }
+//             );
+//             let image_as_base64 = URL.createObjectURL(res.data);
+//             let image_as_files = res.data;
+//             setUserImage({
+//                 image_preview: image_as_base64,
+//                 image_file: image_as_files,
+//             });
+//  //         userImageBackup.current = res.data;
+//             console.log(res.data);
+//         } catch (e) {
+//             setErrorMessage("Profile retrieve failed.")
+//         }
+//     }
 
     async function changeUserImage() {
         axios.defaults.withCredentials = true;
