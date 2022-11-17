@@ -17,7 +17,6 @@ import MomentiePost from "../../post/MomentiePost";
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
-    const [postEdit] = useState(true);
     const [username, setUserName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -47,8 +46,6 @@ export default function Profile() {
     checkEmailMatch();
 
     const [postList, setPostList] = useState([]);
-    const postListBackup = useRef(JSON.parse(JSON.stringify(postList)));
-
     //customize color
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -144,7 +141,7 @@ export default function Profile() {
             );
             setTagList(res.data);
             tagListBackup.current = res.data;
-            console.log(res.data);
+            // console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -204,7 +201,7 @@ export default function Profile() {
             );
             setPostList(res.data);
             postListBackup.current = res.data;
-            //console.log(res.data);
+            console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -215,7 +212,6 @@ export default function Profile() {
     }
 
     async function handleAddPostContent(email) {
-        let newList = [...postList];
         if (postContent !== undefined && postContent !== null && postContent !== '') {
             axios.defaults.withCredentials = true;
             try {
@@ -554,7 +550,7 @@ export default function Profile() {
                                     }}>Make Post</Button>
                             </Box>}
                         </Box>
-                        <MomentiePost postList={postList} setPostList={setPostList} postEdit={postEdit} deletePost={deletePost}/>
+                        <MomentiePost postList={postList} setPostList={setPostList} match={match} deletePost={deletePost}/>
                     </div>
                 </div>
 
