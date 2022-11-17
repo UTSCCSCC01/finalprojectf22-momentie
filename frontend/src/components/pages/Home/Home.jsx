@@ -15,6 +15,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, TextField, Chip, CircularProgress, Alert } from "@mui/material";
 import MomentieUserList from "../../UserList/MomentieUserList";
+import MomentieTag from "../../Tag/MomentieTag";
 import qs from 'qs'
 const userList = [{ email: "lsp@gmail.com", username: "dead", like: 5 },
 { email: "candy@gmail.com", username: "", like: 5 },];
@@ -29,6 +30,7 @@ export default function Home() {
     const [labelList, setLabelList] = useState([]);
     const [singleSearchText, setSingleSearchText] = useState('');
 
+    const [change, setChange] = useState(false);
     const [popTagList, setPopTagList] = useState([]);
     const popTagListBackup = useRef(JSON.parse(JSON.stringify(popTagList)));
 
@@ -238,9 +240,10 @@ export default function Home() {
                     },
                 }
             );
-            setPopTagList(res.data);
-            popTagListBackup.current = res.data;
-            // console.log(res.data);
+            let tags = res.data.map((tag) => ({title: tag}));
+            setPopTagList(tags);
+            popTagListBackup.current = tags;
+            //console.log(tags);
         } catch (e) {
             setErrorMessage("HomePage retrieve failed.")
         }
@@ -253,8 +256,11 @@ export default function Home() {
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
+        } 
+        else {
+            getPopularTags();
         }
-    },);
+    }, [change]);
 
     return (
         <div class="page">
@@ -386,6 +392,7 @@ export default function Home() {
             <div class="right">
                 <div class="post">
                     Popular tags
+                    <MomentieTag tagList={popTagList} setTagList={setPopTagList} width={100} height={30} edit={false} />
                 </div>
 
             </div>
