@@ -614,7 +614,7 @@ export default function Profile() {
                     </>
                     :<Avatar 
                         alt="Remy Sharp" 
-                        src={userImage.image_preview} 
+                        src={backendHost + `/profile/image?email=` + currentUserEmail}
                         sx={{ width: 100, height: 100 }}
                     />
                     }
