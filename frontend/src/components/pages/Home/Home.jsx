@@ -18,6 +18,7 @@ import MomentieUserList from "../../UserList/MomentieUserList";
 import MomentieTag from "../../Tag/MomentieTag";
 import MomentiePost from "../../post/MomentiePost";
 import qs from 'qs'
+
 const userList = [{ email: "lsp@gmail.com", username: "dead", like: 5 },
 { email: "candy@gmail.com", username: "", like: 5 },];
 // const userList = null
@@ -32,7 +33,6 @@ export default function Home() {
     const [singleSearchText, setSingleSearchText] = useState('');
     const [popularPostList, setpopularPostList] = useState([]);
 
-    const [change, setChange] = useState(false);
     const [popTagList, setPopTagList] = useState([]);
     const popTagListBackup = useRef(JSON.parse(JSON.stringify(popTagList)));
 
@@ -290,7 +290,11 @@ export default function Home() {
         if (currentUserEmail === "") {
             navigate("/login");
         }
-    },);
+        else {
+            getPopularPosts();
+            getPopularTags();
+        }
+    }, []);
 
     return (
         <div class="page">
@@ -424,6 +428,9 @@ export default function Home() {
             <div class="right">
                 <div class="post">
                     Popular tags
+                    <div>
+                        <br />
+                    </div>
                     <MomentieTag tagList={popTagList} setTagList={setPopTagList} width={100} height={30} edit={false} />
                 </div>
 
