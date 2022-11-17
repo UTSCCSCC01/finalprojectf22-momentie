@@ -46,8 +46,6 @@ export default function Profile() {
     checkEmailMatch();
 
     const [postList, setPostList] = useState([]);
-    const postListBackup = useRef(JSON.parse(JSON.stringify(postList)));
-
     //customize color
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -201,8 +199,6 @@ export default function Profile() {
                 }
             );
             setPostList(res.data);
-            postListBackup.current = res.data;
-            console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }

@@ -15,6 +15,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, TextField, Chip, CircularProgress, Alert } from "@mui/material";
 import MomentieUserList from "../../UserList/MomentieUserList";
+import MomentiePost from "../../post/MomentiePost";
+
 import qs from 'qs'
 const userList = [{ email: "lsp@gmail.com", username: "dead", like: 5 },
 { email: "candy@gmail.com", username: "", like: 5 },];
@@ -28,6 +30,7 @@ export default function Home() {
     const [searchOption, setSearchOption] = useState({ label: 'By Email' });
     const [labelList, setLabelList] = useState([]);
     const [singleSearchText, setSingleSearchText] = useState('');
+    const [popularPostList, setpopularPostList] = useState([]);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -228,11 +231,44 @@ export default function Home() {
         navigate("/profile");
     }
 
+    async function getPopularPosts() {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/profile/`,
+                { params: {popularity: "true"}}, 
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            let popularUserList = res.data;
+            let newlist = [];
+            for (let i = 0; i < popularUserList.length; i++) {
+                let res = await axios.get(backendHost + `/post/user/` + popularUserList[i].email,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            newlist.push(res.data[0]);
+            }
+            setpopularPostList(newlist);
+        } catch (e) {
+            setErrorMessage("Profile retrieve failed.")
+        }
+    }
+
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
+        } else {
+            getPopularPosts();
         }
-    },);
+    },[]);
 
     return (
         <div class="page">
@@ -358,7 +394,9 @@ export default function Home() {
                 <div class="otherpost">
                     <div class="post">
                         Recommended Posts
+                        <MomentiePost postList={popularPostList} setPostList={setpopularPostList} match={false} deletePost={null}/>
                     </div>
+                    
                 </div>
             </div>
             <div class="right">
