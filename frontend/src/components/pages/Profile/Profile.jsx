@@ -6,12 +6,12 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Typography } from '@mui/material'
-import { brown } from '@mui/material/colors';
+import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Typography, IconButton, Avatar, getImageListItemBarUtilityClass} from '@mui/material'
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
 import MomentiePost from "../../post/MomentiePost";
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 
 export default function Profile() {
@@ -32,6 +32,9 @@ export default function Profile() {
     const [description, setDescription] = useState("");
     const descriptionBackup = useRef(JSON.parse(JSON.stringify(description)));
 
+    const [userImage, setUserImage] = useState({image_preview: null, image_file: null});
+ //   const userImageBackup = useRef(JSON.parse(JSON.stringify(userImage)));
+
     const [postContent, setPostContent] = useState("");
 
     const [rating, setRating] = useState(0);
@@ -46,6 +49,8 @@ export default function Profile() {
     checkEmailMatch();
 
     const [postList, setPostList] = useState([]);
+    const postListBackup = useRef(JSON.parse(JSON.stringify(postList)));
+    
     //customize color
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -53,7 +58,7 @@ export default function Profile() {
     async function handleSave() {
         setLoading(true);
         if (!await editProfileAPI(currentUserEmail, description) ||
-            !await changeTags() || !await changeTimeline()) {
+            !await changeTags() || !await changeTimeline() || !await changeUserImage() ) {
             setLoading(false);
             setErrorMessage("Some save failed.");
             handleCancel();
@@ -63,6 +68,7 @@ export default function Profile() {
         skillTimelineBackup.current = JSON.parse(JSON.stringify(skillTimeline));
         timelineBackup.current = JSON.parse(JSON.stringify(timelineList));
         tagListBackup.current = JSON.parse(JSON.stringify(tagList));
+//        userImageBackup.current = JSON.parse(JSON.stringify(userImage));
         setLoading(false);
         setEdit(false);
     }
@@ -72,6 +78,7 @@ export default function Profile() {
         setTimelineList(JSON.parse(JSON.stringify(timelineBackup.current)));
         setSkillTimeline(JSON.parse(JSON.stringify(skillTimelineBackup.current)));
         setDescription(JSON.parse(JSON.stringify(descriptionBackup.current)));
+//        setUserImage(JSON.parse(JSON.stringify(userImage.current)));
         setEdit(false);
     }
 
@@ -186,6 +193,70 @@ export default function Profile() {
         return true;
     }
 
+    function handleEditUserImage(e) {
+        let image_as_base64 = URL.createObjectURL(e.target.files[0]);
+        let image_as_files = e.target.files[0];
+
+        if (image_as_files !== null){
+            console.log(image_as_base64);
+            setUserImage({
+                image_preview: image_as_base64,
+                image_file: image_as_files,
+            });
+        }
+
+    }
+
+    async function getUserImage(email) {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/post/image/`,{
+                params: { email },
+            },
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            let image_as_base64 = URL.createObjectURL(res.data);
+            let image_as_files = res.data;
+            setUserImage({
+                image_preview: image_as_base64,
+                image_file: image_as_files,
+            });
+ //         userImageBackup.current = res.data;
+            console.log(res.data);
+        } catch (e) {
+            setErrorMessage("Profile retrieve failed.")
+        }
+    }
+
+    async function changeUserImage() {
+        axios.defaults.withCredentials = true;
+        try {
+            let formData = new FormData();
+            formData.append('file', userImage.image_file);
+            console.log(userImage.image_file)
+            await axios.post(backendHost + `/profile/upload`,
+                formData,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            console.log("successful");
+            return true;
+        } 
+        catch (e) {
+            console.log("fail");
+            console.log(e);
+            return false;
+        }
+    }
 
     async function getPosts(email) {
         axios.defaults.withCredentials = true;
@@ -392,6 +463,7 @@ export default function Profile() {
                 getTimeline(currentUserEmail);
                 getRating(currentUserEmail);
                 getPosts(currentUserEmail);
+                //getUserImage(currentEmail);
             }
             //profile being visted
             else {
@@ -400,6 +472,7 @@ export default function Profile() {
                 getTimeline(profileEmail);
                 getRating(profileEmail);
                 getPosts(profileEmail);
+               //getUserImage(profileEmail);
             }
         }
     }, [edit]);
@@ -459,7 +532,9 @@ export default function Profile() {
                                     borderRadius: 3,
                                     color: "#BEACAC",
                                     fontSize: "14px"
-                                }}>Cancel</Button>
+                                }}>
+                                    Cancel
+                            </Button>
                         </div> : null}
                     {loading && <CircularProgress size={30} sx={{ marginLeft: "20px" }} color="secondary" />}
                     {errorMessage && <Alert severity="error" variant="filled" sx={{ marginLeft: "10px", width: "400px", height: "40px" }}>
@@ -508,10 +583,41 @@ export default function Profile() {
 
                 <div class="profile-photo">
                     {/* <!-- --> */}
-                    <img src={require("./random.png")} class="rounded-circle" width="100" height="100" />
-                    <div class="photo-middle">
-                        <div class="photo-middle-text">Upload Photo</div>
-                    </div>
+                    {edit ? 
+                    <>
+                        <Avatar 
+                            alt="preview" 
+                            src={userImage.image_preview} 
+                            sx={{ width: 100, height: 100 }}
+                        />
+                        <IconButton 
+                            aria-label="upload picture" 
+                            component="label"
+                            style={{
+                                borderRadius: 50,
+                                backgroundColor: "#BEACAC",
+                                color: "#F5F5F5",
+                                width: "100",
+                                height: "100"
+                            }}>
+                            <input 
+                                hidden accept="image/*" 
+                                type="file"
+                                onChange={ (event) => {
+                                    console.log("file uploaded");
+                                    console.log(event.target.files[0]);
+                                    handleEditUserImage(event);
+                                }}
+                            />
+                            <PhotoCamera />
+                        </IconButton>
+                    </>
+                    :<Avatar 
+                        alt="Remy Sharp" 
+                        src={userImage.image_preview} 
+                        sx={{ width: 100, height: 100 }}
+                    />
+                    }
                 </div>
 
                 <div class="posts">
