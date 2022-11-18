@@ -116,6 +116,7 @@ export default function MomentieTimelineItem(props) {
                                     options={countries}
                                     autoHighlight
                                     getOptionLabel={(option) => option.label}
+                                    isOptionEqualToValue={(option, value) => option.label === value.label}
                                     onChange={(_, v) => { handleChangeContent(v ? v : "", "location") }}
                                     value={contentJson.location ? contentJson.location : null}
                                     renderOption={(props, option) => (

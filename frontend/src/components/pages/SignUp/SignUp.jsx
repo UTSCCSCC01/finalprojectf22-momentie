@@ -3,7 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { backendHost } from '../../../constants';
-import { Link, Button, Alert, AlertTitle, CircularProgress } from "@mui/material";
+import { Link, Button, Alert, AlertTitle, CircularProgress, Avatar, Tooltip, IconButton } from "@mui/material";
 export default function SignUp() {
     // Get the user input
     const [email, setEmail] = useState('');
@@ -11,6 +11,22 @@ export default function SignUp() {
     const [username, setUsername] = useState('');
     const [errorMessage, setErrorMessage] = useState("");
     const [signingUp, setSigningUp] = useState(false);
+    // const [userImage, setUserImage] = useState({ image_preview: null, image_file: null });
+
+    // function handleEditUserImage(e) {
+    //     let image_as_base64 = URL.createObjectURL(e.target.files[0]);
+    //     let image_as_files = e.target.files[0];
+
+    //     if (image_as_files !== null) {
+    //         console.log(image_as_base64);
+    //         setUserImage({
+    //             image_preview: image_as_base64,
+    //             image_file: image_as_files,
+    //         });
+    //     }
+
+    // }
+
     const navigate = useNavigate();
 
     function switchToLogin(e) {
@@ -74,9 +90,24 @@ export default function SignUp() {
                 </div>
 
                 {/* <!-- Profile Picture --> */}
-                <div class="picture">
-                    Upload Picture
-                </div>
+                {/* <Tooltip title={"Upload Image"} followCursor>
+                    <IconButton
+                        component="label" sx={{ width: 100, height: 100, marginLeft: "100px", marginBottom: "20px" }}>
+                        <input
+                            hidden accept="image/*"
+                            type="file"
+                            onChange={(event) => {
+                                handleEditUserImage(event);
+                            }}
+                        />
+                        <Avatar
+
+                            alt="Profile"
+                            src={userImage.image_preview}
+                            sx={{ width: 100, height: 100, contenteditable: "true" }}
+                        />
+                    </IconButton>
+                </Tooltip> */}
 
             </div>
 
@@ -100,8 +131,11 @@ export default function SignUp() {
 
                 </div>
 
+
+            </div>
+            <div class="informationBox" style={{ "margin-top": "20px" }}>
                 {/* <!-- right part of the box --> */}
-                <div class="inforRight">
+                <div class="inforLeft">
 
                     {/* <!-- Text --> */}
                     <div class="label">
@@ -116,9 +150,7 @@ export default function SignUp() {
                         onChange={e => setUsername(e.target.value)} />
 
                 </div>
-
             </div>
-
             {/* <!-- This box contains second row, password and join in as --> */}
             <div class="informationBox" style={{ "margin-top": "20px" }}>
 
@@ -136,18 +168,6 @@ export default function SignUp() {
                         class="ipt"
                         id="password"
                         onChange={e => setPassword(e.target.value)} />
-
-                </div>
-
-                {/* <!-- right part of the box --> */}
-                <div class="inforRight">
-
-                    {/* <!-- Text --> */}
-                    <div class="label">
-                        join in as
-                    </div>
-                    {/* <!-- input box --> */}
-                    <input type="text" placeholder="please input your identity" class="ipt" id="identity" />
 
                 </div>
             </div>
