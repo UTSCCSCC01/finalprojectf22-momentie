@@ -27,7 +27,7 @@ With the emergence of an overwhelming number of new tools and techniques, as wel
    npm run dev
    
    ```
-4. Start frontend (go to finalprojectf22-momentie/frontend/src/LoginPage/Login.html)
+4. Start frontend (runs on port 3000)
 
    ```
    cd frontend
@@ -37,7 +37,6 @@ With the emergence of an overwhelming number of new tools and techniques, as wel
 
 ## Contribution
 ### Do you use gitflow?
-[Github Process](https://docs.google.com/document/d/1wo8c4RdI67wcYsZ6mEC2RVEnHDcnPcPNomcEHfWH7ZQ/edit?usp=sharing)
 
 Yes.
 the master branch contains official/released source code. **DO NOT** direct push to this branch. This is the release branch and the commits of this branch will only come from merging from develop branch or reverting.
@@ -49,25 +48,44 @@ individual feature/bugfix branch contains an exclusive developing feature/bug fi
 ### What do you name your branches?
 Feature Branches:
 - Features:
-	- Branch name should follow [Area of focus]-[short description]-[JIRA Issue]. An example would be: “frontend-add-profile-picture-JIRA-3000”
-	- Should not be branched from main
+	- Branch name should follow frontend/backend/[Any other focus]-sprintN-[description]-[Trello ID]. An example would be: “frontend-sprint1-add-profile-picture-MOM-121”
+	- Should be branched from develop
 - Bug Fixes:<br>
-	- Branch name should follow bugfix [Area of focus]-[short description]-[JIRA Issue]. An example would be bugfix-backend-http-request-blocked-JIRA3001
-	- Should not be branched from main
+	- Branch name should follow bugfix-frontend/backend/[Any other focus]-sprintN-[description]-[Trello ID]. An example would be "bugfix-backend-sprint2-http-request-blocked-JIRA3001"
+	- Should be branched from develop
 - Feature branch of feature branches: If you are not the only one working on this branch, communicate with your partners.
 
+## Trello Board Integration
+### Boards
+- Card Templates: Standards on creating a card
+- SprintN Backlog: Contains all User Stories for this sprint
+- SprintN-1 Retrospective Tasks: Contains the retrospective tasks from previous sprints
+- Story Backlog: All User stories that are not mapped to a sprint
+- SprintN Frontend: Tasks for the frontend team in SprintN
+- SprintN Backend: Tasks for the frontend team in SprintN
+- In Progress: Tasks that have started
+- Code Review: Tasks that opened a Pull Request waiting for review
+- Done SprintN: The tasks/stories finished during the sprint
+
+### Practices
+1. Stories are assigned a story point, a priority, a label of Story Value and a Label for being a user story. Should be parent to the tasks that belong to it. There should be a CoS and a Checklist detail for the CoS.
+2. Task are assigned a priority and a label of task. Title follows Templates in Card Templates. Each card should have one member associated. The description should have a brief CoS that matches the one on Github Pull Request. Should be child of the user stories it belong.
+3. Tasks should have clear dependency on which ones are blocking which.
+4. After Tasks are in progress, Add the github branch into the task.
+5. When the task is ready for review, Add the PR into the task
+6. Reviewer is the one responsible for moving the card from Code Review to Done.
+
+
 ### Do you use Github issues or another ticketing website?
-We also use Jira for tracking the progress.
+We also use Trello for tracking the progress.
 
 ### Do you use pull requests?
 Pull Request Format(subject to change):
 	
-- Title: [JIRA Issue]: Short description, try using past tense.
+- Title: [Trello ID]-Few words description, try using past tense.
 - Comment:
-	- Link to JIRA Issue
-	- Changes: List your changes
-	- Usage(Optional): Explain how to use your new change to help the team to test the change.
-	- Further Information(Optional)
+	- Description on the change in detail
+	- Checklist/Metric of success/Testbale for the code reviewer 
 
 **DO NOT** merge the changes on PR by yourself.
 Pull requests should be reviewed by Shaopeng Lin or Yawen Zhang, who will be responsible to do a sanity check on code quality and whether the changes are working. They will either approve and merge the branch or request a change if things are incorrect. If you request a change, provide the needed fixes and re-request review.
