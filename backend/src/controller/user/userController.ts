@@ -2,6 +2,8 @@
 // import * from './userAuth';
 import UserModel from '../../model/userModel';
 import ProfileModel from '../../model/profileModel';
+import TimelineModel from '../../model/timelineModel';
+import { findSourceMap } from 'module';
 
 const userLogin = (req: any, res: any) => {
     console.log("user: ", req.user);
@@ -56,4 +58,66 @@ const userLogout = (req: any, res: any) => {
     });
 };
 
-module.exports = { userLogin, userSignUp, userLogout }
+const userRetriByUsername = (req: any, res: any) => {
+    const username = req.params["username"];
+
+    ProfileModel.find({ "username": new RegExp(username, 'i') }).sort({ like: -1 }).exec((err: any, users: any) => {
+        if (err) {
+            return res.status(500).end(err);
+        }
+        return res.status(200).json(users);
+    });
+};
+
+const userRetriBySkill = async (req: any, res: any) => {
+    // Retrieve title from the request
+    const title = req.query.title;
+
+    if (!title) {
+        return res.status(400).end('Missing title...');
+    }
+
+    // Some variables
+    let regexs: Array<RegExp> = new Array();
+    let emails: Set<string> = new Set();
+
+    // single skill/experience title
+    if (typeof (title) === 'string') {
+        regexs.push(new RegExp(title, 'i'));
+    }
+    // multiple skill/experience titles
+    else {
+        title.forEach((element: string) => {
+            regexs.push(new RegExp(element, 'i'));
+        })
+    }
+
+    // // Find all timeline objects containing 'title' in their <title> field
+    let timelines = await TimelineModel.find({
+        $or: [
+            { "title": { $in: regexs } },
+            {
+                $and: [
+                    { "topic": { $ne: 'experience' } },
+                    { "topic": { $in: regexs } }
+                ]
+            }
+        ]
+    });
+
+    // Retrieve distinct emails having that skill/experience
+    timelines.forEach(timeline => {
+        emails.add(timeline.get('email'));
+    })
+
+    // Convert set to array so that Promise can be applied
+    let emails_arr = [...emails];
+
+    // Find all users
+    ProfileModel.find({ 'email': { $in: emails_arr } }, null, { sort: { like: -1 } }, (err: any, profiles: any) => {
+        if (err) return res.status(500).end(err);
+        return res.status(200).json(profiles);
+    });
+};
+
+module.exports = { userLogin, userSignUp, userLogout, userRetriByUsername, userRetriBySkill }

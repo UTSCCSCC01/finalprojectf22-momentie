@@ -6,14 +6,35 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass } from '@mui/material'
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import { Autocomplete, TextField, Chip, CircularProgress, Alert } from "@mui/material";
+import MomentieUserList from "../../UserList/MomentieUserList";
+import MomentieTag from "../../Tag/MomentieTag";
+import MomentiePost from "../../post/MomentiePost";
+import qs from 'qs'
 
+const userList = [{ email: "lsp@gmail.com", username: "dead", like: 5 },
+{ email: "candy@gmail.com", username: "", like: 5 },];
+// const userList = null
 export default function Home() {
 
-    const [username, setUserName] = useState("");
-    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const currentUserEmail = useSelector((state) => state.email);
+    const [dataList, setDataList] = useState([]);
+    const [searchOption, setSearchOption] = useState({ label: 'By Email' });
+    const [labelList, setLabelList] = useState([]);
+    const [singleSearchText, setSingleSearchText] = useState('');
+    const [popularPostList, setpopularPostList] = useState([]);
+
+    const [popTagList, setPopTagList] = useState([]);
+    const popTagListBackup = useRef(JSON.parse(JSON.stringify(popTagList)));
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -37,11 +58,17 @@ export default function Home() {
         });
     }
 
-    async function getHome(email) {
+    async function handleSearchEmail() {
         axios.defaults.withCredentials = true;
+        if (singleSearchText.trim().length == 0) {
+            setDataList([])
+            return;
+        }
         try {
+            setLoading(true);
+            setErrorMessage("");
             let res = await axios.get(backendHost + `/profile/`,
-                { params: { email } },
+                { params: { email: singleSearchText } },
                 {
                     headers: {
                         'Access-Control-Allow-Credentials': true,
@@ -49,24 +76,225 @@ export default function Home() {
                     },
                 }
             );
-            //set favourite post
+            setDataList([res.data])
+            setLoading(false);
         } catch (e) {
-            setErrorMessage("Home retrieve failed.")
-        }
+            setLoading(false);
+            setDataList([])
+            if (e.response && e.response.status == 404) {
+                setErrorMessage("Email not found")
+            } else {
+                setErrorMessage("Search Operation Failed")
+            }
 
+        }
+    }
+
+    async function handleSearchEmail() {
+        axios.defaults.withCredentials = true;
+        if (singleSearchText.trim().length == 0) {
+            setDataList([])
+            return;
+        }
+        try {
+            setLoading(true);
+            setErrorMessage("");
+            let res = await axios.get(backendHost + `/profile/`,
+                { params: { email: singleSearchText } },
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setDataList([res.data])
+            setLoading(false);
+        } catch (e) {
+            setLoading(false);
+            setDataList([])
+            if (e.response && e.response.status == 404) {
+                setErrorMessage("Email not found")
+            } else {
+                setErrorMessage("Search Operation Failed")
+            }
+        }
+    }
+
+    async function handleSearchUsername() {
+        axios.defaults.withCredentials = true;
+        if (singleSearchText.trim().length == 0) {
+            setDataList([])
+            return;
+        }
+        try {
+            setLoading(true);
+            setErrorMessage("");
+            let res = await axios.get(backendHost + `/account/name/` + singleSearchText,
+                {},
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setDataList(res.data);
+            setLoading(false);
+            if (res.data.length === 0) {
+                setErrorMessage("No User Found")
+            }
+        } catch (e) {
+            setLoading(false);
+            setDataList([])
+            setErrorMessage("Search Operation Failed")
+        }
+    }
+
+    async function handleSearchTag() {
+        axios.defaults.withCredentials = true;
+        if (labelList.length == 0) {
+            setDataList([])
+            return;
+        }
+        try {
+            setLoading(true);
+            setErrorMessage("");
+            let res = await axios.get(backendHost + `/profile/?${labelList.map((n, index) => `tag[${index}]=${n}`).join('&')}`,
+                {},
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setDataList(res.data);
+            setLoading(false);
+            if (res.data.length === 0) {
+                setErrorMessage("No User Found")
+            }
+        } catch (e) {
+            setLoading(false);
+            setDataList([])
+            setErrorMessage("Search Operation Failed")
+        }
+    }
+
+    async function handleSearchExp() {
+        axios.defaults.withCredentials = true;
+        if (labelList.length == 0) {
+            setDataList([])
+            return
+        }
+        try {
+            setLoading(true);
+            setErrorMessage("");
+            let res = await axios.get(backendHost + `/account/skill/search?${labelList.map((n, index) => `title[${index}]=${n}`).join('&')}`,
+                {},
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setDataList(res.data);
+            setLoading(false);
+            if (res.data.length === 0) {
+                setErrorMessage("No User Found")
+            }
+        } catch (e) {
+            setLoading(false);
+            setDataList([])
+            setErrorMessage("Search Operation Failed")
+        }
+    }
+
+    async function handleSearch() {
+        switch (searchOption.label) {
+            case 'By Email':
+                await handleSearchEmail();
+                break;
+            case 'By Username':
+                await handleSearchUsername();
+                break;
+            case 'By Tags':
+                await handleSearchTag();
+                break;
+            case 'By Experience':
+                await handleSearchExp();
+                break;
+            default:
+                setDataList([])
+                setErrorMessage("Search Operation Failed");
+        }
+    }
+
+    async function getPopularTags() {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/tag/top`,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            let tags = res.data.map((tag) => ({title: tag}));
+            setPopTagList(tags);
+            popTagListBackup.current = tags;
+            //console.log(tags);
+        } catch (e) {
+            setErrorMessage("HomePage retrieve failed.")
+        }
     }
 
     function gotoProfilePage() {
         navigate("/profile");
     }
 
+    async function getPopularPosts() {
+        axios.defaults.withCredentials = true;
+        try {
+            let res = await axios.get(backendHost + `/profile/`,
+                { params: {popularity: "true"}}, 
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            let popularUserList = res.data;
+            let newlist = [];
+            for (let i = 0; i < popularUserList.length; i++) {
+                let res = await axios.get(backendHost + `/post/user/` + popularUserList[i].email,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            newlist.push(res.data[0]);
+            }
+            setpopularPostList(newlist);
+        } catch (e) {
+            setErrorMessage("Profile retrieve failed.")
+        }
+    }
+
     useEffect(() => {
         if (currentUserEmail === "") {
             navigate("/login");
-        } else {
-            getHome(currentUserEmail);
         }
-    }, );
+        else {
+            getPopularPosts();
+            getPopularTags();
+        }
+    }, []);
 
     return (
         <div class="page">
@@ -78,16 +306,10 @@ export default function Home() {
                         <img src={require("./logo.png")} alt="to be changed" height="40" />
                     </h1>
                     {/* <!-- serachbar of header --> */}
-                    <div class="search-container">
-                        <form action="/action_page.php">
-                            <input type="text" placeholder="Search.." name="search" class="search-bar" />
-                            <button type="submit">GO<i class="fa fa-search"></i></button>
-                        </form>
-                    </div>
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
-                            <li><a href="#" onClick={gotoProfilePage}>Profile</a></li>
+                            <li><a href="#" onClick={gotoProfilePage}>My Profile</a></li>
                             <li><a href="#">About</a></li>
                             <li><a href="#">Moment</a></li>
                             <li><a href="#">Contact</a></li>
@@ -106,32 +328,110 @@ export default function Home() {
                     </div>
                 </div>
             </header >
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: "100%", marginBottom: "20px" }}>
+                <Paper
+                    component="form"
+                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: "80%", marginTop: "5%", border: "1px solid #999" }}
+                >
+                    {'By Email' === searchOption.label && <InputBase
+                        sx={{ ml: 1, flex: 1 }}
+                        placeholder="Search By Email"
+                        inputProps={{ 'aria-label': 'search by email' }}
+                        onChange={(e) => { setSingleSearchText(e.target.value) }}
+                    />}
+                    {'By Username' === searchOption.label && <InputBase
+                        sx={{ ml: 1, flex: 1 }}
+                        placeholder="Search By Username"
+                        inputProps={{ 'aria-label': 'search by username' }}
+                        onChange={(e) => { setSingleSearchText(e.target.value) }}
+                    />}
+                    {'By Tags' === searchOption.label && <Autocomplete
+                        multiple
+                        options={[]}
+                        freeSolo
+                        sx={{ ml: 1, flex: 1 }}
+                        renderTags={(value, getTagProps) =>
+                            value.map((option, index) => (
+                                <Chip sx={{ height: "100%" }} label={option} {...getTagProps({ index })} />
+                            ))
+                        }
+                        onChange={(_, v) => {
+                            setLabelList(v);
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder={'Tags: Type in a label and hit enter to add to list'}
+                            />
+                        )}
+                    />}
+
+                    {'By Experience' === searchOption.label && <Autocomplete
+                        multiple
+                        options={[]}
+                        freeSolo
+                        sx={{ ml: 1, flex: 1 }}
+                        renderTags={(value, getTagProps) =>
+                            value.map((option, index) => (
+                                <Chip sx={{ height: "100%" }} label={option} {...getTagProps({ index })} />
+                            ))
+                        }
+                        onChange={(_, v) => {
+                            setLabelList(v);
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder={'Experiences: Type in a label and hit enter to add to list'}
+                            />
+                        )}
+                    />}
+                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearch}>
+                        <SearchIcon />
+                    </IconButton>
+                    <Divider sx={{ m: 0.6, borderRightWidth: 3 }} flexItem orientation="vertical" />
+                    <Autocomplete
+                        disablePortal
+                        disableClearable
+                        id="combo-box-demo"
+                        defaultValue={{ label: 'By Email' }}
+                        value={searchOption}
+                        options={[{ label: 'By Email' }, { label: 'By Username' }, { label: 'By Tags' }, { label: 'By Experience' }]}
+                        getOptionLabel={(option) => option.label}
+                        isOptionEqualToValue={(option, value) => option.label === value.label}
+                        sx={{ width: 300, marginTop: "10px", marginBottom: "10px" }}
+                        onChange={(_, v) => { setSingleSearchText(''); setLabelList([]); setSearchOption(v) }}
+                        renderInput={(params) => <TextField {...params} defaultValue='By Email' type='text' label="Search Method" />}
+                    />
+
+                </Paper>
+
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: "100%", marginBottom: "20px" }}>
+                {loading && <CircularProgress size={30} sx={{}} color="secondary" />}
+                {errorMessage && <Alert severity="error" variant="filled" sx={{}}>
+                    An error Occured — <strong>{errorMessage}</strong>
+                </Alert>}
+            </Box>
+
+            {dataList.length != 0 && <MomentieUserList userList={dataList}></MomentieUserList>}
 
             <div class="left">
-                <div class="mainpost">
-                    <div class="post">
-                        {currentUserEmail}
-
-                    </div>
-
-                </div>
                 <div class="otherpost">
                     <div class="post">
-                        other recomand post
+                        Recommended Posts
+                        <MomentiePost postList={popularPostList} setPostList={setpopularPostList} match={false} deletePost={null}/>
                     </div>
+                    
                 </div>
-            </div>
-
-            <div class="middle">
-                {/* <!-- other recomand users --> */}
-                <div class="post">
-                    recomand users
-                </div>
-
             </div>
             <div class="right">
                 <div class="post">
-                    tags
+                    Popular tags
+                    <div>
+                        <br />
+                    </div>
+                    <MomentieTag tagList={popTagList} setTagList={setPopTagList} width={100} height={30} edit={false} />
                 </div>
 
             </div>

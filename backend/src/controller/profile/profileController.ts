@@ -1,8 +1,10 @@
 import ProfileModel from '../../model/profileModel'
 import LikeModel from '../../model/likeModel';
+import ImageModel from '../../model/imageModel';
+import UserTagModel from '../../model/userTagModel';
 
 const retrieve_profile = async (req: any, res: any) => {
-  const { page, email, popularity } = req.query;
+  const { page, email, popularity, tag } = req.query;
   /** email provided */
   if (email) {
 
@@ -14,27 +16,42 @@ const retrieve_profile = async (req: any, res: any) => {
 
     return res.status(200).json(profile)
   } else if (popularity === "true") {
-      const numOfProfile = 5;
-      const profile = await ProfileModel.find({}).sort({ like: -1}).limit(numOfProfile);
-      if (profile) 
-        return res.status(200).json(profile);
-      else {
-        return res.status(404).json({ err: 'Failed to find profiles' })
-      }
+    const numOfProfile = 5;
+    const profile = await ProfileModel.find({}).sort({ like: -1 }).limit(numOfProfile);
+    if (profile)
+      return res.status(200).json(profile);
+    else {
+      return res.status(404).json({ err: 'Failed to find profiles' })
+    }
+  } else if (tag) {
+    let regexs: Array<RegExp> = new Array();
+
+    tag.forEach((element: string) => {
+      regexs.push(new RegExp(element, 'i'));
+    })
+    UserTagModel.find({ 'title': { $in: regexs } }, function (err: any, userTag: any) {
+      if (err) return res.status(500).end(err);
+      const emails = userTag.map((tag: any) => tag.email)
+      ProfileModel.find({ 'email': { $in: emails } }, null, { sort: { like: -1 } }, function (err: any, profiles: any) {
+        if (err) return res.status(500).end(err);
+        return res.status(200).json(profiles);
+      })
+    })
+  } else {
+    /** Retrieve all profile data */
+    let profiles = await ProfileModel.find()
+    let profile_pool_size = profiles.length
+
+    /** page provided but not email */
+    if (page && page * 10 <= profile_pool_size) {
+      let sorted_profiles = profiles.slice(page * 10, (page + 1) * 10 - 1)
+      return res.status(200).json(sorted_profiles)
+    }
+
+    /** display the first 10 user profiles (neither email nor page is provided */
+    return res.status(200).json(profiles.slice(0, 9))
   }
 
-  /** Retrieve all profile data */
-  let profiles = await ProfileModel.find()
-  let profile_pool_size = profiles.length
-
-  /** page provided but not email */
-  if (page && page * 10 <= profile_pool_size) {
-    let sorted_profiles = profiles.slice(page * 10, (page + 1) * 10 - 1)
-    return res.status(200).json(sorted_profiles)
-  }
-
-  /** display the first 10 user profiles (neither email nor page is provided */
-  return res.status(200).json(profiles.slice(0, 9))
 }
 
 const edit_profile = async (req: any, res: any) => {
@@ -112,4 +129,57 @@ const rate_profile = async (req: any, res: any) => {
   return res.status(200).json(newProfile)
 }
 
-module.exports = { retrieve_profile, edit_profile, rate_profile, likeRetri }
+const uploadImage = async (req: any, res: any) => {
+  // req.file can be used to access all file properties
+  let email = ''
+  if (req.user) {
+    email = req.user.email
+  } else {
+    return res.status(401).send("User is not authorized...")
+  }
+
+  try {
+    //check if the request has an image or not
+    if (!req.file) {
+      return res.status(400).end('You must provide at least 1 file');
+    } else {
+      let imageUploadObject = {
+        file: {
+          data: req.file.buffer,
+          contentType: req.file.mimetype
+        }
+      };
+      const uploadObject = new ImageModel(imageUploadObject);
+      // saving the object into the database
+      ImageModel.create(uploadObject, function (err: any, image: any) {
+        if (err) return res.status(500).end(err);
+        ProfileModel.updateOne({ email: email }, { image: image._id }, function (err: any, profile: any) {
+          if (err) return res.status(500).end(err);
+          return res.status(200).send('Image upload successfully')
+        })
+      })
+    }
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+}
+
+const imageRetri = (req: any, res: any) => {
+  const email = req.query.email
+  if (!email) return res.status(400).end('email is missing')
+  ProfileModel.findOne({ email: email }, function (err: any, profile: any) {
+    if (err) return res.status(500).end(err);
+    const imageId = profile.image;
+    if (profile.image) {
+      ImageModel.findById(imageId, function (err: any, image: any) {
+        if (err) return res.status(500).end(err);
+        res.set("Content-Type", image.file.contentType);
+        return res.status(200).send(image.file.data)
+      })
+    } else {
+      return res.status(404).end(err);
+    }
+  })
+}
+
+module.exports = { retrieve_profile, edit_profile, rate_profile, likeRetri, uploadImage, imageRetri }

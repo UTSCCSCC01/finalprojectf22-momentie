@@ -6,18 +6,17 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Typography } from '@mui/material'
-import { brown } from '@mui/material/colors';
+import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Typography, IconButton, Avatar, getImageListItemBarUtilityClass } from '@mui/material'
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
 import MomentiePost from "../../post/MomentiePost";
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 
 export default function Profile() {
 
     const [edit, setEdit] = useState(false);
-    const [addPost, setaddPost] = useState(false);
     const [username, setUserName] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
@@ -32,6 +31,8 @@ export default function Profile() {
 
     const [description, setDescription] = useState("");
     const descriptionBackup = useRef(JSON.parse(JSON.stringify(description)));
+
+    const [userImage, setUserImage] = useState({ image_preview: null, image_file: null });
 
     const [postContent, setPostContent] = useState("");
 
@@ -56,7 +57,7 @@ export default function Profile() {
     async function handleSave() {
         setLoading(true);
         if (!await editProfileAPI(currentUserEmail, description) ||
-            !await changeTags() || !await changeTimeline()) {
+            !await changeTags() || !await changeTimeline() || !await changeUserImage()) {
             setLoading(false);
             setErrorMessage("Some save failed.");
             handleCancel();
@@ -144,7 +145,6 @@ export default function Profile() {
             );
             setTagList(res.data);
             tagListBackup.current = res.data;
-            console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -190,6 +190,45 @@ export default function Profile() {
         return true;
     }
 
+    function handleEditUserImage(e) {
+        let image_as_base64 = URL.createObjectURL(e.target.files[0]);
+        let image_as_files = e.target.files[0];
+
+        if (image_as_files !== null) {
+            console.log(image_as_base64);
+            setUserImage({
+                image_preview: image_as_base64,
+                image_file: image_as_files,
+            });
+        }
+
+    }
+
+    async function changeUserImage() {
+        if (!userImage.image_file) {
+            return true
+        }
+        axios.defaults.withCredentials = true;
+        try {
+            let formData = new FormData();
+            formData.append('file', userImage.image_file);
+            console.log(userImage.image_file)
+            await axios.post(backendHost + `/profile/upload`,
+                formData,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            setUserImage({ image_preview: userImage.image_file, image_file: userImage.image_file })
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    }
 
     async function getPosts(email) {
         axios.defaults.withCredentials = true;
@@ -203,8 +242,6 @@ export default function Profile() {
                 }
             );
             setPostList(res.data);
-            postListBackup.current = res.data;
-            console.log(res.data);
         } catch (e) {
             setErrorMessage("Profile retrieve failed.")
         }
@@ -215,7 +252,6 @@ export default function Profile() {
     }
 
     async function handleAddPostContent(email) {
-        let newList = [...postList];
         if (postContent !== undefined && postContent !== null && postContent !== '') {
             axios.defaults.withCredentials = true;
             try {
@@ -228,12 +264,30 @@ export default function Profile() {
                         },
                     }
                 );
-                newList.push({ content: postContent, email: email })
-                setPostList(newList);
+                getPosts(email);
                 return true;
             } catch (e) {
                 return false;
             }
+        }
+    }
+
+    async function deletePost(postId) {
+        axios.defaults.withCredentials = true;
+        try {
+            await axios.delete(backendHost + `/post/id/` + postId,
+                {
+                    headers: {
+                        'Access-Control-Allow-Credentials': true,
+                        'Access-Control-Allow-Origin': backendHost,
+                    },
+                }
+            );
+            let newList = postList.filter((post) => post._id !== postId);
+            setPostList(newList);
+            return true;
+        } catch (e) {
+            return false;
         }
     }
 
@@ -381,6 +435,8 @@ export default function Profile() {
                 getTimeline(currentUserEmail);
                 getRating(currentUserEmail);
                 getPosts(currentUserEmail);
+                userImage.image_preview = backendHost + `/profile/image?email=` + currentUserEmail
+
             }
             //profile being visted
             else {
@@ -389,6 +445,7 @@ export default function Profile() {
                 getTimeline(profileEmail);
                 getRating(profileEmail);
                 getPosts(profileEmail);
+                userImage.image_preview = backendHost + `/profile/image?email=` + profileEmail
             }
         }
     }, [edit]);
@@ -403,12 +460,6 @@ export default function Profile() {
                         <img src={require("./logo.png")} alt="to be changed" height="40" />
                     </h1>
                     {/* <!-- serachbar of header --> */}
-                    <div class="search-container">
-                        <form action="/action_page.php">
-                            <input type="text" placeholder="Search.." name="search" class="search-bar" />
-                            <button type="submit">GO<i class="fa fa-search"></i></button>
-                        </form>
-                    </div>
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
@@ -454,7 +505,9 @@ export default function Profile() {
                                     borderRadius: 3,
                                     color: "#BEACAC",
                                     fontSize: "14px"
-                                }}>Cancel</Button>
+                                }}>
+                                Cancel
+                            </Button>
                         </div> : null}
                     {loading && <CircularProgress size={30} sx={{ marginLeft: "20px" }} color="secondary" />}
                     {errorMessage && <Alert severity="error" variant="filled" sx={{ marginLeft: "10px", width: "400px", height: "40px" }}>
@@ -503,10 +556,39 @@ export default function Profile() {
 
                 <div class="profile-photo">
                     {/* <!-- --> */}
-                    <img src={require("./random.png")} class="rounded-circle" width="100" height="100" />
-                    <div class="photo-middle">
-                        <div class="photo-middle-text">Upload Photo</div>
-                    </div>
+                    {edit ?
+                        <>
+                            <Avatar
+                                alt="preview"
+                                src={userImage.image_preview}
+                                sx={{ width: 100, height: 100 }}
+                            />
+                            <IconButton
+                                aria-label="upload picture"
+                                component="label"
+                                style={{
+                                    borderRadius: 50,
+                                    backgroundColor: "#BEACAC",
+                                    color: "#F5F5F5",
+                                    width: "100",
+                                    height: "100"
+                                }}>
+                                <input
+                                    hidden accept="image/*"
+                                    type="file"
+                                    onChange={(event) => {
+                                        handleEditUserImage(event);
+                                    }}
+                                />
+                                <PhotoCamera />
+                            </IconButton>
+                        </>
+                        : <Avatar
+                            alt="Remy Sharp"
+                            src={edit ? userImage.image_preview : backendHost + `/profile/image?email=` + currentEmail}
+                            sx={{ width: 100, height: 100 }}
+                        />
+                    }
                 </div>
 
                 <div class="posts">
@@ -527,7 +609,6 @@ export default function Profile() {
                             <Typography sx={{ marginBottom: "20px", fontSize: "16pt", color: '#BEACAC' }}>Posts</Typography>
                             {match && <Box sx={{ display: "flex", alignItems: 'center' }}>
                                 <TextField
-                                    required
                                     id="outlined-required"
                                     label="Post Content"
                                     sx={{ margin: "px" }}
@@ -542,7 +623,7 @@ export default function Profile() {
                                     }}>Make Post</Button>
                             </Box>}
                         </Box>
-                        <MomentiePost postList={postList} setPostList={setPostList} />
+                        <MomentiePost postList={postList} setPostList={setPostList} match={match} deletePost={deletePost} />
                     </div>
                 </div>
 
