@@ -15,6 +15,8 @@
 
  - Avoid deleting tasks as it causes Trello disfunction. Use archive instead.
 
+ - Documentatio should be done immediately after the feature is implemented
+
 ## Best Experience 
 
  - Tasks flow in smoothly and time distributed evenly
