@@ -1,7 +1,8 @@
 # finalprojectf22-momentie
 ## Motivation
 With the emergence of an overwhelming number of new tools and techniques, as well as the frequent changes in Internet companies, the most common problem that undergraduates have to face is how to make themselves more competitive in the job market, so that they can get their desired job offers. Not only the undergraduates but also those who are pursuing other programs, and people who want to transition to other careers. With all of this, we’ve come up with a product, Momentie (the pronunciation of the word is quite similar to the Cantonese word, 冇问题, which means “don’t worry, it is ok, we’ve got you”), that can help people who are struggling in seeking jobs, transitioning to other jobs. Momentie aims to provide a platform for industry elites to give detailed descriptions and timelines on their progression and people seeking help can easily navigate to topics they are interested in. We want to centralize the scattered career advice/tutorial information around the web into Momentie, which will allow people in the future to have guidance and make their career life easier and stress-free.
-
+<br><br>
+![Alt text](./READMEImage/loginImg.PNG?raw=true "Title")
 
 ## Installation
 1. Install [Node.js v18.9.0 (npm 8.15.0)](https://nodejs.org/en/download/current/) or at least Node >= v16.13.0 and NPM => 8.15 
@@ -89,3 +90,7 @@ Pull Request Format(subject to change):
 
 **DO NOT** merge the changes on PR by yourself.
 Pull requests should be reviewed by Shaopeng Lin or Yawen Zhang, who will be responsible to do a sanity check on code quality and whether the changes are working. They will either approve and merge the branch or request a change if things are incorrect. If you request a change, provide the needed fixes and re-request review.
+
+<br><br>
+![Alt text](./READMEImage/examplePR.png?raw=true "Title")
+
