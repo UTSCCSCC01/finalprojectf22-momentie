@@ -92,5 +92,5 @@ Pull Request Format(subject to change):
 Pull requests should be reviewed by Shaopeng Lin or Yawen Zhang, who will be responsible to do a sanity check on code quality and whether the changes are working. They will either approve and merge the branch or request a change if things are incorrect. If you request a change, provide the needed fixes and re-request review.
 
 <br><br>
-![Alt text](./READMEImage/examplePR.png?raw=true "Title")
+![Alt text](./READMEImage/ExamplePR.png?raw=true "Title")
 
