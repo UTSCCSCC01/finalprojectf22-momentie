@@ -522,35 +522,38 @@ export default function Profile() {
 
                 <div class="profile-upper">
                     <Box sx={{ display: "flex" }}>
-                        <Box sx={{ display: "flex", flexDirection: "column", gap: "30px" }}>
-                            {username ? username + " • " + currentEmail : currentEmail}
-                            <Avatar
-                                alt={currentEmail}
-                                src={userImage.image_preview}
-                                sx={{ width: 120, height: 120, boxShadow: "0 0 5px 0 rgba(34, 34, 34, 1)" }}
-                                elevation={2}
-                            />
+                        <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                            <Typography sx={{ textAlign: "left", fontSize: 20, fontWeight: 'bold' }}>{username ? username + " • " + currentEmail : currentEmail}</Typography>
+                            <Box sx={{ display: "flex" }}>
+                                <Avatar
+                                    alt={currentEmail}
+                                    src={userImage.image_preview}
+                                    sx={{ width: 120, height: 120, boxShadow: "0 0 5px 0 rgba(34, 34, 34, 1)" }}
+                                    elevation={2}
+                                />
+                                {edit ? <IconButton
+                                    aria-label="upload picture"
+                                    component="label"
+                                    style={{
+                                        borderRadius: 50,
+                                        backgroundColor: "#BEACAC",
+                                        color: "#F5F5F5",
+                                        alignSelf: "end",
+                                        height: "40px",
+                                        width: "40px"
+                                    }}>
+                                    <input
+                                        hidden accept="image/*"
+                                        type="file"
+                                        onChange={(event) => {
+                                            handleEditUserImage(event);
+                                        }}
+                                    />
+                                    <PhotoCamera />
+                                </IconButton> : <Box sx={{ width: "40px" }} />}
+                            </Box>
                         </Box>
-                        {edit ? <IconButton
-                            aria-label="upload picture"
-                            component="label"
-                            style={{
-                                borderRadius: 50,
-                                backgroundColor: "#BEACAC",
-                                color: "#F5F5F5",
-                                alignSelf: "end",
-                                height: "40px",
-                                width: "40px"
-                            }}>
-                            <input
-                                hidden accept="image/*"
-                                type="file"
-                                onChange={(event) => {
-                                    handleEditUserImage(event);
-                                }}
-                            />
-                            <PhotoCamera />
-                        </IconButton> : <Box sx={{ width: "40px" }} />}
+
                         <Box sx={{ marginLeft: "20px" }}>
                             {/* Put the Rating here */}
                             <Rate rating={rating} setRating={setRating} read={match} rate={(_, newValue) => { addRating(currentEmail, newValue) }} />
