@@ -76,6 +76,7 @@ export default function Profile() {
         setTimelineList(JSON.parse(JSON.stringify(timelineBackup.current)));
         setSkillTimeline(JSON.parse(JSON.stringify(skillTimelineBackup.current)));
         setDescription(JSON.parse(JSON.stringify(descriptionBackup.current)));
+        setUserImage({ image_preview: null, image_file: null })
         setEdit(false);
     }
 
@@ -195,7 +196,6 @@ export default function Profile() {
         let image_as_files = e.target.files[0];
 
         if (image_as_files !== null) {
-            console.log(image_as_base64);
             setUserImage({
                 image_preview: image_as_base64,
                 image_file: image_as_files,
@@ -212,7 +212,6 @@ export default function Profile() {
         try {
             let formData = new FormData();
             formData.append('file', userImage.image_file);
-            console.log(userImage.image_file)
             await axios.post(backendHost + `/profile/upload`,
                 formData,
                 {
@@ -222,7 +221,6 @@ export default function Profile() {
                     },
                 }
             );
-            setUserImage({ image_preview: userImage.image_file, image_file: userImage.image_file })
             return true;
         }
         catch (e) {
@@ -435,7 +433,9 @@ export default function Profile() {
                 getTimeline(currentUserEmail);
                 getRating(currentUserEmail);
                 getPosts(currentUserEmail);
-                userImage.image_preview = backendHost + `/profile/image?email=` + currentUserEmail
+                if (userImage && !userImage.image_preview) {
+                    userImage.image_preview = backendHost + `/profile/image?email=` + currentUserEmail
+                }
 
             }
             //profile being visted
@@ -445,7 +445,9 @@ export default function Profile() {
                 getTimeline(profileEmail);
                 getRating(profileEmail);
                 getPosts(profileEmail);
-                userImage.image_preview = backendHost + `/profile/image?email=` + profileEmail
+                if (userImage && !userImage.image_preview) {
+                    userImage.image_preview = backendHost + `/profile/image?email=` + profileEmail
+                }
             }
         }
     }, [edit]);
@@ -519,20 +521,41 @@ export default function Profile() {
             <div class="profileLeft">
 
                 <div class="profile-upper">
-                    {/* <!--
-                    <div class="profile-photo">
-                        <img src="../random.png" alt="to be changed" width="30" height="30">
-                    </div>
-                --> */}
-                    {username ? username + " • " + currentEmail : currentEmail}
-                    <Box>
-                        {/* Put the Rating here */}
-                        <Rate rating={rating} setRating={setRating} read={match} rate={(_, newValue) => { addRating(currentEmail, newValue) }} />
+                    <Box sx={{ display: "flex" }}>
+                        <Box sx={{ display: "flex", flexDirection: "column", gap: "30px" }}>
+                            {username ? username + " • " + currentEmail : currentEmail}
+                            <Avatar
+                                alt={currentEmail}
+                                src={userImage.image_preview}
+                                sx={{ width: 120, height: 120, boxShadow: "0 0 5px 0 rgba(34, 34, 34, 1)" }}
+                                elevation={2}
+                            />
+                        </Box>
+                        {edit ? <IconButton
+                            aria-label="upload picture"
+                            component="label"
+                            style={{
+                                borderRadius: 50,
+                                backgroundColor: "#BEACAC",
+                                color: "#F5F5F5",
+                                alignSelf: "end",
+                                height: "40px",
+                                width: "40px"
+                            }}>
+                            <input
+                                hidden accept="image/*"
+                                type="file"
+                                onChange={(event) => {
+                                    handleEditUserImage(event);
+                                }}
+                            />
+                            <PhotoCamera />
+                        </IconButton> : <Box sx={{ width: "40px" }} />}
+                        <Box sx={{ marginLeft: "20px" }}>
+                            {/* Put the Rating here */}
+                            <Rate rating={rating} setRating={setRating} read={match} rate={(_, newValue) => { addRating(currentEmail, newValue) }} />
+                        </Box>
                     </Box>
-                    <li><a href="#">follower|following</a></li>
-                    {/* <!-- color change based on profile photo, to be added later--> */}
-
-
                 </div>
 
                 <div class="description">
@@ -556,39 +579,7 @@ export default function Profile() {
 
                 <div class="profile-photo">
                     {/* <!-- --> */}
-                    {edit ?
-                        <>
-                            <Avatar
-                                alt="preview"
-                                src={userImage.image_preview}
-                                sx={{ width: 100, height: 100 }}
-                            />
-                            <IconButton
-                                aria-label="upload picture"
-                                component="label"
-                                style={{
-                                    borderRadius: 50,
-                                    backgroundColor: "#BEACAC",
-                                    color: "#F5F5F5",
-                                    width: "100",
-                                    height: "100"
-                                }}>
-                                <input
-                                    hidden accept="image/*"
-                                    type="file"
-                                    onChange={(event) => {
-                                        handleEditUserImage(event);
-                                    }}
-                                />
-                                <PhotoCamera />
-                            </IconButton>
-                        </>
-                        : <Avatar
-                            alt="Remy Sharp"
-                            src={edit ? userImage.image_preview : backendHost + `/profile/image?email=` + currentEmail}
-                            sx={{ width: 100, height: 100 }}
-                        />
-                    }
+
                 </div>
 
                 <div class="posts">
