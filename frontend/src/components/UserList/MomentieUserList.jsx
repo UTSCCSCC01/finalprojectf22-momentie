@@ -33,7 +33,7 @@ export default function MomentieUserList(props) {
                             <Item sx={{ height: "10vh" }}>
                                 <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
                                     <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-                                        <Avatar sx={{ height: '70px', width: '70px', marginRight: "10px" }} alt={user.email} crossorigin use-credentials src={backendHost + `/profile/image?email=` + user.email} />
+                                        <Avatar elevation={2} sx={{ height: '70px', width: '70px', marginRight: "10px", boxShadow: "0 0 5px 0 rgba(34, 34, 34, 1)" }} alt={user.email} crossorigin use-credentials src={backendHost + `/profile/image?email=` + user.email} />
                                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
 
                                             {user.username && <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user.username}</Typography>}

@@ -37,8 +37,14 @@ header::after {
 }
 
 .logo {
-  float: left;
-  padding: 10px;
+  margin-left: 10px;
+    margin-top: 0;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 49.6px;
+    line-height: 60px;
+    color: #BEACAC;
 }
 
 nav {
@@ -63,7 +69,7 @@ nav a {
   color: #BEACAC;
   text-decoration: none;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 nav a:hover {
