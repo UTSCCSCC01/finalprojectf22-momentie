@@ -6,7 +6,7 @@
 
 /* Whole page is 100% width and 100vh height. Background color is from figma */
 .contentBox{
-    width: 100%;
+    width: 60%;
     /* 因为这个页面太长了我就给他搞到130了，后面会调一下，没时间了 */
     height: 100vh;
     background-color: #F5F5F5;
@@ -43,12 +43,12 @@
     flex-direction: column;
     width: 100%;
     height: fit-content;
+    margin-top: 5%;
     /* background-color: #008c8c; */
 }
 
 /* Text "register" */
 .register{
-    margin-left: 100px;
     font-family: 'Inter';
     font-style: normal;
     font-weight: 600;
@@ -94,7 +94,6 @@
 }
 
 .inforLeft {
-    margin-left: 100px;
     margin-right: 200px;
 }
 
@@ -163,4 +162,10 @@
     line-height: 23px;
     color: #BEACAC;
     margin: 20px auto 0;
+}
+
+/* divide the webpage into (left pard) and right part and stores the image */
+.loginRight{
+    float: left;
+    width: 40%;
 }

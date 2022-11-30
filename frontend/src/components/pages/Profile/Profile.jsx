@@ -456,30 +456,27 @@ export default function Profile() {
         <div class="page">
             {/* <!-- header of the page --> */}
             <header>
-                <div class="headbar">
+                <div class="headbar" style={{ marginLeft: "0" }}>
                     {/* <!-- logo of header --> */}
                     <h1 class="logo">
-                        <img src={require("./logo.png")} alt="to be changed" height="40" />
+                        <img src={require("./logo.png")} alt="to be changed" />
                     </h1>
                     {/* <!-- serachbar of header --> */}
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
                             <li><a onClick={gotoHomePage}>Home</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Moment</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">_____</a></li>
+                            <li><a href="#">_____</a></li>
+                            <li><a href="#">_____</a></li>
                         </ul>
                     </nav>
                     {/* <!-- dropdown me --> */}
-                    <div class="dropdown">
+                    <div class="dropdown" style={{ marginLeft: "auto" }}>
                         <button class="dropbtn">ME</button>
                         <div class="dropdown-content">
 
                             <a class="logout" onClick={logoutUser}>Logout</a>
-                            {/* <!--
-                            <button type="button" onclick="logoutUser()">Logout</button> --> */}
-                            <a href="#">Setting</a>
                             {match && !edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
                         </div>
                     </div>

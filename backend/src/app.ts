@@ -17,7 +17,6 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 600000,
         httpOnly: true,
         secure: false,
         sameSite: "lax",
