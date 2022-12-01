@@ -6,12 +6,13 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Typography, IconButton, Avatar, getImageListItemBarUtilityClass } from '@mui/material'
+import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Divider, Typography, IconButton, Avatar, getImageListItemBarUtilityClass } from '@mui/material'
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
 import MomentiePost from "../../post/MomentiePost";
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { fontWeight } from "@mui/system";
 
 
 export default function Profile() {
@@ -561,7 +562,8 @@ export default function Profile() {
                 <div class="description">
                     <Box>
                         <Box sx={{ marginBottom: "20px" }}>
-                            <p>Description</p>
+                            <Typography sx={{ fontWeight: "bold", fontSize: 24 }}>Description</Typography>
+
                             {edit ? <TextField
                                 required
                                 id="filled-required"
@@ -571,8 +573,9 @@ export default function Profile() {
                                 onChange={(e) => { handleEditDescription(e) }}
                             /> : <p>{description}</p>}
                         </Box>
+                        <Divider sx={{}} />
                         {/* Put the tag here */}
-                        <p>Tag</p>
+                        <Typography sx={{ fontWeight: "bold", fontSize: 24, marginTop: "20px", marginBottom: "20px" }}>Tags</Typography>
                         <MomentieTag tagList={tagList} setTagList={setTagList} width={100} height={30} edit={edit} />
                     </Box>
                 </div>
@@ -597,7 +600,7 @@ export default function Profile() {
 
                     <div className="userPost">
                         <Box>
-                            <Typography sx={{ marginBottom: "20px", fontSize: "16pt", color: '#BEACAC' }}>Posts</Typography>
+                            <Typography sx={{ marginBottom: "20px", fontWeight: "bold", fontSize: 24, color: '#BEACAC' }}>Posts</Typography>
                             {match && <Box sx={{ display: "flex", alignItems: 'center' }}>
                                 <TextField
                                     id="outlined-required"
