@@ -221,7 +221,7 @@ export default function Home() {
             case 'By Tags':
                 await handleSearchTag();
                 break;
-            case 'By Experience':
+            case 'By Experiences/Skills':
                 await handleSearchExp();
                 break;
             default:
@@ -362,7 +362,7 @@ export default function Home() {
                         )}
                     />}
 
-                    {'By Experience' === searchOption.label && <Autocomplete
+                    {'By Experiences/Skills' === searchOption.label && <Autocomplete
                         multiple
                         options={[]}
                         freeSolo
@@ -378,7 +378,7 @@ export default function Home() {
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                placeholder={'Experiences: Type in a label and hit enter to add to list'}
+                                placeholder={'Experiences/Skills: Type in a label and hit enter to add to list'}
                             />
                         )}
                     />}
@@ -392,7 +392,7 @@ export default function Home() {
                         id="combo-box-demo"
                         defaultValue={{ label: 'By Email' }}
                         value={searchOption}
-                        options={[{ label: 'By Email' }, { label: 'By Username' }, { label: 'By Tags' }, { label: 'By Experience' }]}
+                        options={[{ label: 'By Email' }, { label: 'By Username' }, { label: 'By Tags' }, { label: 'By Experiences/Skills' }]}
                         getOptionLabel={(option) => option.label}
                         isOptionEqualToValue={(option, value) => option.label === value.label}
                         sx={{ width: 300, marginTop: "10px", marginBottom: "10px" }}
