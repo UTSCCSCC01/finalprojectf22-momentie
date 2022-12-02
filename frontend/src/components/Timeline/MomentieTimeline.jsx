@@ -126,7 +126,7 @@ export default function MomentieTimeline(props) {
             justifyContent: "center",
             color: '#BEACAC',
         }}>
-            <Typography sx={{ margin: "20px", fontSize: "16pt" }}>{section}</Typography>
+            <Typography sx={{ margin: "20px", fontWeight: "bold", fontSize: 24, }}>{section}</Typography>
             {editMode && isSkill &&
                 <Button variant="outlined" startIcon={<AddCircleIcon />}
                     sx={{

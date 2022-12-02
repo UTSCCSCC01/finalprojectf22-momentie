@@ -53,7 +53,6 @@ export default function Home() {
             dispatch(changeEmail(""));
             navigate("/login");
         }).catch(function () {
-            alert('Something went wrong with the logout process.');
             navigate("/login");
         });
     }
@@ -222,7 +221,7 @@ export default function Home() {
             case 'By Tags':
                 await handleSearchTag();
                 break;
-            case 'By Experience':
+            case 'By Experiences/Skills':
                 await handleSearchExp();
                 break;
             default:
@@ -242,7 +241,7 @@ export default function Home() {
                     },
                 }
             );
-            let tags = res.data.map((tag) => ({title: tag}));
+            let tags = res.data.map((tag) => ({ title: tag }));
             setPopTagList(tags);
             popTagListBackup.current = tags;
             //console.log(tags);
@@ -259,7 +258,7 @@ export default function Home() {
         axios.defaults.withCredentials = true;
         try {
             let res = await axios.get(backendHost + `/profile/`,
-                { params: {popularity: "true"}}, 
+                { params: { popularity: "true" } },
                 {
                     headers: {
                         'Access-Control-Allow-Credentials': true,
@@ -271,14 +270,14 @@ export default function Home() {
             let newlist = [];
             for (let i = 0; i < popularUserList.length; i++) {
                 let res = await axios.get(backendHost + `/post/user/` + popularUserList[i].email,
-                {
-                    headers: {
-                        'Access-Control-Allow-Credentials': true,
-                        'Access-Control-Allow-Origin': backendHost,
-                    },
-                }
-            );
-            newlist.push(res.data[0]);
+                    {
+                        headers: {
+                            'Access-Control-Allow-Credentials': true,
+                            'Access-Control-Allow-Origin': backendHost,
+                        },
+                    }
+                );
+                newlist.push(res.data[0]);
             }
             setpopularPostList(newlist);
         } catch (e) {
@@ -300,30 +299,27 @@ export default function Home() {
         <div class="page">
             {/* <!-- header of the page --> */}
             <header>
-                <div class="headbar">
+                <div class="headbar" style={{ marginLeft: "0" }}>
                     {/* <!-- logo of header --> */}
                     <h1 class="logo">
-                        <img src={require("./logo.png")} alt="to be changed" height="40" />
+                        <img src={require("./logo.png")} alt="to be changed" />
                     </h1>
                     {/* <!-- serachbar of header --> */}
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
                             <li><a href="#" onClick={gotoProfilePage}>My Profile</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Moment</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">_____</a></li>
+                            <li><a href="#">_____</a></li>
+                            <li><a href="#">_____</a></li>
                         </ul>
                     </nav>
                     {/* <!-- dropdown me --> */}
-                    <div class="dropdown">
+                    <div class="dropdown" style={{ marginLeft: "auto" }}>
                         <button class="dropbtn">ME</button>
                         <div class="dropdown-content">
 
                             <a class="logout" onClick={logoutUser}>Logout</a>
-                            {/* <!--
-                            <button type="button" onclick="logoutUser()">Logout</button> --> */}
-                            <a href="#">Setting</a>
                         </div>
                     </div>
                 </div>
@@ -366,7 +362,7 @@ export default function Home() {
                         )}
                     />}
 
-                    {'By Experience' === searchOption.label && <Autocomplete
+                    {'By Experiences/Skills' === searchOption.label && <Autocomplete
                         multiple
                         options={[]}
                         freeSolo
@@ -382,7 +378,7 @@ export default function Home() {
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                placeholder={'Experiences: Type in a label and hit enter to add to list'}
+                                placeholder={'Experiences/Skills: Type in a label and hit enter to add to list'}
                             />
                         )}
                     />}
@@ -396,7 +392,7 @@ export default function Home() {
                         id="combo-box-demo"
                         defaultValue={{ label: 'By Email' }}
                         value={searchOption}
-                        options={[{ label: 'By Email' }, { label: 'By Username' }, { label: 'By Tags' }, { label: 'By Experience' }]}
+                        options={[{ label: 'By Email' }, { label: 'By Username' }, { label: 'By Tags' }, { label: 'By Experiences/Skills' }]}
                         getOptionLabel={(option) => option.label}
                         isOptionEqualToValue={(option, value) => option.label === value.label}
                         sx={{ width: 300, marginTop: "10px", marginBottom: "10px" }}
@@ -420,9 +416,9 @@ export default function Home() {
                 <div class="otherpost">
                     <div class="post">
                         Recommended Posts
-                        <MomentiePost postList={popularPostList} setPostList={setpopularPostList} match={false} deletePost={null}/>
+                        <MomentiePost postList={popularPostList} setPostList={setpopularPostList} match={false} deletePost={null} />
                     </div>
-                    
+
                 </div>
             </div>
             <div class="right">

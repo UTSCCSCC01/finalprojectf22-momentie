@@ -27,7 +27,8 @@ export default function Login() {
     //send request if all fields are filled.
     function check(e) {
         if (isEmpty(email) || isEmpty(password)) {
-            return alert("Please fill in your email and password!");
+            setErrorMessage("Please fill in your email and password!");
+            return;
         }
         else {    //send http request if no field is empty
             setLoggingIn(true);
@@ -65,11 +66,11 @@ export default function Login() {
             <div class="left">
 
                 {/* <!-- LogoBox:Store the logo "Momentie" --> */}
-                <div class="logoBox">
+                <header>
                     <div class="logo">
-                        Momentie
+                        <img src={require("./logo.png")} alt="to be changed" />
                     </div>
-                </div>
+                </header>
 
                 {/* <!-- LoginHeader Box:Store the header "Sign In"--> */}
                 <div class="LoginHeader">

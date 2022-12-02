@@ -6,12 +6,13 @@ import { changeEmail } from "../../../reduxStore/userSlice";
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react";
 import { useState, useRef } from "react";
-import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Typography, IconButton, Avatar, getImageListItemBarUtilityClass } from '@mui/material'
+import { Button, TextField, Box, getTablePaginationUtilityClass, Alert, AlertTitle, CircularProgress, Divider, Typography, IconButton, Avatar, getImageListItemBarUtilityClass } from '@mui/material'
 import MomentieTimeline from "../../Timeline/MomentieTimeline";
 import MomentieTag from "../../Tag/MomentieTag";
 import Rate from '../../Rating/Rate.jsx';
 import MomentiePost from "../../post/MomentiePost";
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { fontWeight } from "@mui/system";
 
 
 export default function Profile() {
@@ -76,6 +77,7 @@ export default function Profile() {
         setTimelineList(JSON.parse(JSON.stringify(timelineBackup.current)));
         setSkillTimeline(JSON.parse(JSON.stringify(skillTimelineBackup.current)));
         setDescription(JSON.parse(JSON.stringify(descriptionBackup.current)));
+        setUserImage({ image_preview: null, image_file: null })
         setEdit(false);
     }
 
@@ -195,7 +197,6 @@ export default function Profile() {
         let image_as_files = e.target.files[0];
 
         if (image_as_files !== null) {
-            console.log(image_as_base64);
             setUserImage({
                 image_preview: image_as_base64,
                 image_file: image_as_files,
@@ -212,7 +213,6 @@ export default function Profile() {
         try {
             let formData = new FormData();
             formData.append('file', userImage.image_file);
-            console.log(userImage.image_file)
             await axios.post(backendHost + `/profile/upload`,
                 formData,
                 {
@@ -222,7 +222,6 @@ export default function Profile() {
                     },
                 }
             );
-            setUserImage({ image_preview: userImage.image_file, image_file: userImage.image_file })
             return true;
         }
         catch (e) {
@@ -435,7 +434,9 @@ export default function Profile() {
                 getTimeline(currentUserEmail);
                 getRating(currentUserEmail);
                 getPosts(currentUserEmail);
-                userImage.image_preview = backendHost + `/profile/image?email=` + currentUserEmail
+                if (userImage && !userImage.image_preview) {
+                    userImage.image_preview = backendHost + `/profile/image?email=` + currentUserEmail
+                }
 
             }
             //profile being visted
@@ -445,7 +446,9 @@ export default function Profile() {
                 getTimeline(profileEmail);
                 getRating(profileEmail);
                 getPosts(profileEmail);
-                userImage.image_preview = backendHost + `/profile/image?email=` + profileEmail
+                if (userImage && !userImage.image_preview) {
+                    userImage.image_preview = backendHost + `/profile/image?email=` + profileEmail
+                }
             }
         }
     }, [edit]);
@@ -454,30 +457,27 @@ export default function Profile() {
         <div class="page">
             {/* <!-- header of the page --> */}
             <header>
-                <div class="headbar">
+                <div class="headbar" style={{ marginLeft: "0" }}>
                     {/* <!-- logo of header --> */}
                     <h1 class="logo">
-                        <img src={require("./logo.png")} alt="to be changed" height="40" />
+                        <img src={require("./logo.png")} alt="to be changed" />
                     </h1>
                     {/* <!-- serachbar of header --> */}
                     {/* <!-- button of header --> */}
                     <nav>
                         <ul>
                             <li><a onClick={gotoHomePage}>Home</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Moment</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">_____</a></li>
+                            <li><a href="#">_____</a></li>
+                            <li><a href="#">_____</a></li>
                         </ul>
                     </nav>
                     {/* <!-- dropdown me --> */}
-                    <div class="dropdown">
+                    <div class="dropdown" style={{ marginLeft: "auto" }}>
                         <button class="dropbtn">ME</button>
                         <div class="dropdown-content">
 
                             <a class="logout" onClick={logoutUser}>Logout</a>
-                            {/* <!--
-                            <button type="button" onclick="logoutUser()">Logout</button> --> */}
-                            <a href="#">Setting</a>
                             {match && !edit ? <a href="#" onClick={() => { setEdit(true) }}>Edit Profile</a> : null}
                         </div>
                     </div>
@@ -519,26 +519,51 @@ export default function Profile() {
             <div class="profileLeft">
 
                 <div class="profile-upper">
-                    {/* <!--
-                    <div class="profile-photo">
-                        <img src="../random.png" alt="to be changed" width="30" height="30">
-                    </div>
-                --> */}
-                    {username ? username + " • " + currentEmail : currentEmail}
-                    <Box>
-                        {/* Put the Rating here */}
-                        <Rate rating={rating} setRating={setRating} read={match} rate={(_, newValue) => { addRating(currentEmail, newValue) }} />
+                    <Box sx={{ display: "flex" }}>
+                        <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                            <Typography sx={{ textAlign: "left", fontSize: 20, fontWeight: 'bold' }}>{username ? username + " • " + currentEmail : currentEmail}</Typography>
+                            <Box sx={{ display: "flex" }}>
+                                <Avatar
+                                    alt={currentEmail}
+                                    src={userImage.image_preview}
+                                    sx={{ width: 120, height: 120, boxShadow: "0 0 5px 0 rgba(34, 34, 34, 1)" }}
+                                    elevation={2}
+                                />
+                                {edit ? <IconButton
+                                    aria-label="upload picture"
+                                    component="label"
+                                    style={{
+                                        borderRadius: 50,
+                                        backgroundColor: "#BEACAC",
+                                        color: "#F5F5F5",
+                                        alignSelf: "end",
+                                        height: "40px",
+                                        width: "40px"
+                                    }}>
+                                    <input
+                                        hidden accept="image/*"
+                                        type="file"
+                                        onChange={(event) => {
+                                            handleEditUserImage(event);
+                                        }}
+                                    />
+                                    <PhotoCamera />
+                                </IconButton> : <Box sx={{ width: "40px" }} />}
+                            </Box>
+                        </Box>
+
+                        <Box sx={{ marginLeft: "20px" }}>
+                            {/* Put the Rating here */}
+                            <Rate rating={rating} setRating={setRating} read={match} rate={(_, newValue) => { addRating(currentEmail, newValue) }} />
+                        </Box>
                     </Box>
-                    <li><a href="#">follower|following</a></li>
-                    {/* <!-- color change based on profile photo, to be added later--> */}
-
-
                 </div>
 
                 <div class="description">
                     <Box>
                         <Box sx={{ marginBottom: "20px" }}>
-                            <p>Description</p>
+                            <Typography sx={{ fontWeight: "bold", fontSize: 24 }}>Description</Typography>
+
                             {edit ? <TextField
                                 required
                                 id="filled-required"
@@ -548,47 +573,16 @@ export default function Profile() {
                                 onChange={(e) => { handleEditDescription(e) }}
                             /> : <p>{description}</p>}
                         </Box>
+                        <Divider sx={{}} />
                         {/* Put the tag here */}
-                        <p>Tag</p>
+                        <Typography sx={{ fontWeight: "bold", fontSize: 24, marginTop: "20px", marginBottom: "20px" }}>Tags</Typography>
                         <MomentieTag tagList={tagList} setTagList={setTagList} width={100} height={30} edit={edit} />
                     </Box>
                 </div>
 
                 <div class="profile-photo">
                     {/* <!-- --> */}
-                    {edit ?
-                        <>
-                            <Avatar
-                                alt="preview"
-                                src={userImage.image_preview}
-                                sx={{ width: 100, height: 100 }}
-                            />
-                            <IconButton
-                                aria-label="upload picture"
-                                component="label"
-                                style={{
-                                    borderRadius: 50,
-                                    backgroundColor: "#BEACAC",
-                                    color: "#F5F5F5",
-                                    width: "100",
-                                    height: "100"
-                                }}>
-                                <input
-                                    hidden accept="image/*"
-                                    type="file"
-                                    onChange={(event) => {
-                                        handleEditUserImage(event);
-                                    }}
-                                />
-                                <PhotoCamera />
-                            </IconButton>
-                        </>
-                        : <Avatar
-                            alt="Remy Sharp"
-                            src={edit ? userImage.image_preview : backendHost + `/profile/image?email=` + currentEmail}
-                            sx={{ width: 100, height: 100 }}
-                        />
-                    }
+
                 </div>
 
                 <div class="posts">
@@ -606,7 +600,7 @@ export default function Profile() {
 
                     <div className="userPost">
                         <Box>
-                            <Typography sx={{ marginBottom: "20px", fontSize: "16pt", color: '#BEACAC' }}>Posts</Typography>
+                            <Typography sx={{ marginBottom: "20px", fontWeight: "bold", fontSize: 24, color: '#BEACAC' }}>Posts</Typography>
                             {match && <Box sx={{ display: "flex", alignItems: 'center' }}>
                                 <TextField
                                     id="outlined-required"

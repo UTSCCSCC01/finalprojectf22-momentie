@@ -30,10 +30,10 @@ export default function MomentieUserList(props) {
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     {pageNumber > 0 && userList.slice((pageNumber - 1) * elmOnPage, pageNumber * elmOnPage).map((user) => (
                         <Grid item xs={2} sm={4} md={4} key={user.email} >
-                            <Item sx={{ height: "10vh" }}>
+                            <Item sx={{ height: "fit-content", width: "fit-content" }}>
                                 <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
                                     <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-                                        <Avatar sx={{ height: '70px', width: '70px', marginRight: "10px" }} alt={user.email} crossorigin use-credentials src={backendHost + `/profile/image?email=` + user.email} />
+                                        <Avatar elevation={2} sx={{ height: '70px', width: '70px', marginRight: "10px", boxShadow: "0 0 5px 0 rgba(34, 34, 34, 1)" }} alt={user.email} crossorigin use-credentials src={backendHost + `/profile/image?email=` + user.email} />
                                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
 
                                             {user.username && <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user.username}</Typography>}

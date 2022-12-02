@@ -6,6 +6,9 @@ import { useRef } from 'react';
 import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 
+const BackgroundPaper = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#D9D9D9',
+}));
 
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -48,22 +51,25 @@ export default function ChipsArray(props) {
           onChange={(e) => { handleAddTagName(e) }}
         /> : null}
         {edit ?
-          <Button variant="contained" onClick={handleAdd} 
-          sx={{backgroundColor: "#BEACAC",
-          color: '#F5F5F5',
-          borderColor: "#BEACAC"}}>Add Tag</Button> : null}
+          <Button variant="contained" onClick={handleAdd}
+            sx={{
+              backgroundColor: "#BEACAC",
+              color: '#F5F5F5',
+              borderColor: "#BEACAC"
+            }}>Add Tag</Button> : null}
       </Box>
 
 
-      <Paper
+      <BackgroundPaper
         sx={{
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           flexWrap: 'wrap',
           listStyle: 'none',
           p: 0.5,
           m: 0,
         }}
+        elevation={3}
         component="ul"
       >
 
@@ -83,7 +89,7 @@ export default function ChipsArray(props) {
             </ListItem>
           );
         })}
-      </Paper>
+      </BackgroundPaper>
     </Box>
 
   );
