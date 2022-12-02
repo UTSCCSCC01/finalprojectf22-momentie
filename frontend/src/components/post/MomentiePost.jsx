@@ -25,7 +25,7 @@ export default function RecipeReviewCard(props) {
       {postList.map((post) => {
         return (
           <Item sx={{ maxWidth: 345, margin: "15px 0px 0px 0px" }} key={post._id}>
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Box sx={{ display: "flex", flexDirection: "row"}}>
               <Avatar
                 alt={post.email}
                 src={backendHost + `/profile/image?email=` + post.email}
@@ -40,7 +40,7 @@ export default function RecipeReviewCard(props) {
                       : null}
                   </IconButton>
                 }
-                title={<Typography sx={{ fontSize: 22, fontWeight: "bold" }} color="text.secondary">
+                title={<Typography sx={{ fontSize: 17, fontWeight: "bold" }} color="text.secondary">
                   {post.email}
                 </Typography>}
               />
